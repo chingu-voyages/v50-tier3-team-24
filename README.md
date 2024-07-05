@@ -40,3 +40,4 @@ coding!
   ...
 
 - Teammate name #n: [GitHub](https://github.com/ghaccountname) / [LinkedIn](https://linkedin.com/in/liaccountname)
+- Mikey Nichols: [GitHub](https://github.com/mnichols08) / [LinkedIn](https://www.linkedin.com/in/mnix-dev/)
