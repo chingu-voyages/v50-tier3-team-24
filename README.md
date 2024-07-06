@@ -36,7 +36,7 @@ coding!
 
 - David Eastmond: [GitHub](https://github.com/davideastmond) / [LinkedIn](https://www.linkedin.com/in/david-eastmond-2783ab18a/)
 - Tandid Alam: [GitHub](https://github.com/Tandid) / [LinkedIn](https://www.linkedin.com/in/tandidalam/)
-
+- James Kyan: [GitHub](https://github.com/jkyan1988) / [LinkedIn](https://www.linkedin.com/in/james-kyan/)
   ...
 
 - Teammate name #n: [GitHub](https://github.com/ghaccountname) / [LinkedIn](https://linkedin.com/in/liaccountname)
