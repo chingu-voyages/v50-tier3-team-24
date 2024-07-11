@@ -1,28 +1,22 @@
-# voyage-tasks
+# annote.app
 
-If you are unsure of what should go into the `readme` let this article,
-written by an experienced Chingu, be your starting point -
-[Keys to a well written README](https://tinyurl.com/yk3wubft).
+Annotate articles with ease.
 
-And before we go there's "one more thing"! Once you decide what to include in your `readme` feel free to replace the text we've provided here.
+# Tech Stack
+- Frontend + backend: Nuxt 
+- Deployment: Coolify + Hetzner VPS
 
-> Own it & Make it your Own!
+# Contributing
+1. Branch off the dev branch, in the format of `<issueType>/<issue-number>_description-of-task`. For example, `docs/3_update-readme`. `issueType` belongs to any of feat:
+- fix:
+- chore:
+- docs: 
+- refactor: 
+You can also combine them like feat & docs:. 
+2. Make a PR and have at least 1 person approve it.
+3. Once approved, merge your own PR so commit history shows the author of the PR merging it.n
 
-## Team Documents
-
-You may find these helpful as you work together to organize your project.
-
-- [Team Project Ideas](./docs/team_project_ideas.md)
-- [Team Decision Log](./docs/team_decision_log.md)
-
-Meeting Agenda templates (located in the `/docs` directory in this repo):
-
-- Meeting - Voyage Kickoff --> ./docs/meeting-voyage_kickoff.docx
-- Meeting - App Vision & Feature Planning --> ./docs/meeting-vision_and_feature_planning.docx
-- Meeting - Sprint Retrospective, Review, and Planning --> ./docs/meeting-sprint_retrospective_review_and_planning.docx
-- Meeting - Sprint Open Topic Session --> ./docs/meeting-sprint_open_topic_session.docx
-
-## Our Team
+# Our Team
 
 - David Eastmond: [GitHub](https://github.com/davideastmond) / [LinkedIn](https://www.linkedin.com/in/david-eastmond-2783ab18a/)
 - Tandid Alam: [GitHub](https://github.com/Tandid) / [LinkedIn](https://www.linkedin.com/in/tandidalam/)
