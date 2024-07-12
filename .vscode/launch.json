@@ -8,7 +8,7 @@
             "name": "nuxt",
             "type": "node",
             "request": "launch",
-            "cwd": "${workspaceFolder}/app",
+            "cwd": "${workspaceFolder}",
             "runtimeExecutable": "pnpm",
             "runtimeArgs": ["run", "dev"],
         }

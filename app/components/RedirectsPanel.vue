@@ -20,6 +20,9 @@ async function updateRedirects () {
 
 <template>
   <div>
+    <h1 class="text-3xl font-bold underline border border-red-500">
+      Hello world!
+    </h1>
     <h3>Server redirects</h3>
     <form @submit.prevent="updateRedirects">
       <p><textarea v-model="redirects.text" rows="6" placeholder="/from /to (one redirect per line)" style="width: 300px;" /></p>
