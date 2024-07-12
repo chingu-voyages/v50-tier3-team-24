@@ -19,7 +19,7 @@ Annotate articles with ease.
 - refactor: 
 You can also combine them like feat & docs:. 
 2. Make a PR and have at least 1 person approve it.
-3. Once approved, merge your own PR so commit history shows the author of the PR merging it.n
+3. Once approved, merge your own PR so the commit history shows the author of a PR merging it in.
 
 # Our Team
 
