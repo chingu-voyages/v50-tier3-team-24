@@ -1,4 +1,4 @@
-import { defineNuxtConfig } from 'nuxt/config'
+import { defineNuxtConfig } from "nuxt/config";
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -7,10 +7,7 @@ export default defineNuxtConfig({
   future: { compatibilityVersion: 4 },
   // Nuxt Modules
   // https://nuxt.com/modules
-  modules: [
-    '@nuxthub/core',
-    '@nuxtjs/tailwindcss'
-  ],
+  modules: ["@nuxthub/core", "@nuxtjs/tailwindcss"],
   hub: {
     database: true,
     kv: true,
@@ -20,9 +17,9 @@ export default defineNuxtConfig({
   nitro: {
     experimental: {
       // Enable Server API documentation within NuxtHub
-      openAPI: true
-    }
+      openAPI: true,
+    },
   },
   // Development
   devtools: { enabled: true },
-})
+});
