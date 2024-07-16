@@ -4,7 +4,7 @@
 
 This is a class that encapsulates the CRUD logic for the annote_document table.
 
-## Functions
+## PostGreSQL Functions
 
 ### `create_annote_document_table`
 
