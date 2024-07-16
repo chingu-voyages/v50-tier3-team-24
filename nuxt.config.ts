@@ -4,7 +4,6 @@ import { defineNuxtConfig } from "nuxt/config";
 export default defineNuxtConfig({
   // Nuxt 4 directory structure and features
   // https://nuxt.com/docs/getting-started/upgrade#testing-nuxt-4
-  future: { compatibilityVersion: 4 },
   // Nuxt Modules
   // https://nuxt.com/modules
   modules: ["@nuxthub/core", "@nuxtjs/tailwindcss"],
