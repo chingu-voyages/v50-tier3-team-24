@@ -13,17 +13,9 @@ export class AnnoteDocumentDbClient {
     );
   }
 
-  private async createTableIfNotExist() {
-    // Run a function that will create the table if it doesn't exist
-    const { error } = await this.client.rpc("create_annote_document_table");
-    if (error) throw new Error(error.message);
-  }
-
   public async insertDocument(
     document: Partial<AnnoteDocument>
   ): Promise<void> {
-    await this.createTableIfNotExist();
-
     const { error } = await this.client.from(this.TABLE_NAME).insert(document);
 
     if (error) throw new Error(error.message);
@@ -32,7 +24,6 @@ export class AnnoteDocumentDbClient {
   public async getAllDocuments(): Promise<AnnoteDocument[]> {
     // TODO: Implement pagination
     // TODO: Once we have user authentication, we should only return documents that belong to the user
-    await this.createTableIfNotExist();
 
     const { data, error } = await this.client.from(this.TABLE_NAME).select("*");
 
@@ -42,8 +33,6 @@ export class AnnoteDocumentDbClient {
   }
 
   public async getDocumentById(id: number): Promise<AnnoteDocument | null> {
-    await this.createTableIfNotExist();
-
     const { data, error } = await this.client
       .from(this.TABLE_NAME)
       .select("*")
