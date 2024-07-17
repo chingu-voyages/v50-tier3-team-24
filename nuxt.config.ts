@@ -21,4 +21,16 @@ export default defineNuxtConfig({
   },
   // Development
   devtools: { enabled: true },
+  dir: {
+    pages: "app/pages",
+  },
+  components: {
+    dirs: [
+      {
+        path: "app/components",
+        global: true,
+      },
+      "app/components",
+    ],
+  },
 });
