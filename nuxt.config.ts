@@ -23,6 +23,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   dir: {
     pages: "app/pages",
+    layouts: "app/layouts",
   },
   components: {
     dirs: [
@@ -32,5 +33,12 @@ export default defineNuxtConfig({
       },
       "app/components",
     ],
+  },
+  // PostCSS Configuration
+  postcss: {
+    plugins: {
+      tailwindcss: {},
+      autoprefixer: {},
+    },
   },
 });
