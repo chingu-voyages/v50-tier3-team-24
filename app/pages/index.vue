@@ -1,7 +1,7 @@
 <template>
-  <main>
-    <ImageGallery />
-    <RedirectsPanel />
-    <MessagesPanel />
-  </main>
+  <div>
+    <h1>Welcome to Home Page</h1>
+  </div>
 </template>
+
+<script setup></script>
