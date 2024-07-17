@@ -1,0 +1,12 @@
+@font-face {
+  font-family: "Gloria Hallelujah";
+  src: url("/assets/fonts/GloriaHallelujah-Regular.woff2") format("woff2"),
+    url("/assets/fonts/GloriaHallelujah-Regular.woff") format("woff"),
+    url("/assets/fonts/GloriaHallelujah-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  font-family: "Gloria Hallelujah", sans-serif;
+}
