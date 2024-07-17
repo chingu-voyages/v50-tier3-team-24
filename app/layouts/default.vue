@@ -1,7 +1,7 @@
 <template>
   <div>
     <Navbar />
-    <main>
+    <main class="p-5">
       <slot />
     </main>
   </div>
@@ -10,9 +10,3 @@
 <script setup>
 import Navbar from "../components/Navbar.vue";
 </script>
-
-<style scoped>
-main {
-  padding: 20px;
-}
-</style>
