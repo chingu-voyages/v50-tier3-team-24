@@ -7,7 +7,7 @@
     <!-- This search bar section -->
     <div class="py-4 flex justify-end">
 
-      <div class="searchTextField flex">
+      <div class="searchTextField lightRoundedGreyBorder flex">
         <div class="self-center">
           <Icon name="mdi:magnify" color="black" size="1.5rem" />
         </div>
@@ -15,7 +15,7 @@
       </div>
 
       <!-- Drop down search filter -->
-      <div>
+      <div class="lightRoundedGreyBorder">
         <select>
           <option value="createdAscending">Date Created Ascending</option>
           <option value="createdDescending">Date Created Descending</option>
@@ -38,7 +38,6 @@
             </div>
             <div>
               <Icon name="mdi:share-variant-outline" color="black" />
-
             </div>
           </div>
         </div>
@@ -57,6 +56,9 @@
 
   .searchTextField {
     max-width: 240px;
+  }
+
+  .lightRoundedGreyBorder {
     border: 1px solid #DDDDDD;
     border-radius: 5px;
   }
