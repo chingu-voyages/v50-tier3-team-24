@@ -5,7 +5,7 @@
 <template>
   <div class="mt-4">
     <!-- This search bar section -->
-    <div class="py-4 flex justify-end">
+    <div class="py-4 flex justify-end gap-x-2 pr-4">
 
       <div class="searchTextField lightRoundedGreyBorder flex">
         <div class="self-center">
@@ -15,12 +15,14 @@
       </div>
 
       <!-- Drop down search filter -->
-      <div class="lightRoundedGreyBorder">
+      <div class="lightRoundedGreyBorder content-center">
         <select>
-          <option value="createdAscending">Date Created Ascending</option>
-          <option value="createdDescending">Date Created Descending</option>
-          <option value="alphaAscending">Alphabetical Ascending</option>
-          <option value="alphaDescending">Alphabetical Descending</option>
+          <option value="createdAscending">
+            <p>&#129031; Date Created Ascending</p>
+          </option>
+          <option value="createdDescending">&#129029; Date Created Descending</option>
+          <option value="alphaAscending">&#129031; Alphabetical Ascending</option>
+          <option value="alphaDescending">&#129029; Alphabetical Descending</option>
         </select>
       </div>
     </div>
@@ -51,7 +53,7 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    width: calc(100vw - 60px);
+    width: calc(100vw - 80px);
   }
 
   .searchTextField {
@@ -68,4 +70,8 @@
     border: none;
   }
 
+  select {
+    outline: none;
+    border: none;
+  }
 </style>
