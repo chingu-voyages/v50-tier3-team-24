@@ -6,6 +6,7 @@ export default defineNuxtConfig({
   // https://nuxt.com/docs/getting-started/upgrade#testing-nuxt-4
   // Nuxt Modules
   // https://nuxt.com/modules
+  css: ["@/public/assets/css/global.css"],
   modules: ["@nuxthub/core", "@nuxtjs/tailwindcss"],
   hub: {
     database: true,
@@ -23,6 +24,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   dir: {
     pages: "app/pages",
+    layouts: "app/layouts",
   },
   components: {
     dirs: [
@@ -32,5 +34,12 @@ export default defineNuxtConfig({
       },
       "app/components",
     ],
+  },
+
+  postcss: {
+    plugins: {
+      tailwindcss: {},
+      autoprefixer: {},
+    },
   },
 });
