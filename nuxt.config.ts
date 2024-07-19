@@ -7,6 +7,7 @@ export default defineNuxtConfig({
   // Nuxt Modules
   // https://nuxt.com/modules
   modules: ["@nuxthub/core", "@nuxtjs/tailwindcss", "@nuxt/icon"],
+  css: ["@/public/assets/css/global.css"],
   hub: {
     database: true,
     kv: true,
@@ -23,6 +24,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   dir: {
     pages: "app/pages",
+    layouts: "app/layouts",
   },
   components: {
     dirs: [
@@ -35,5 +37,11 @@ export default defineNuxtConfig({
   },
   imports: {
     dirs: ["types/*.ts", "types/**/*.ts"],
+  },
+  postcss: {
+    plugins: {
+      tailwindcss: {},
+      autoprefixer: {},
+    },
   },
 });
