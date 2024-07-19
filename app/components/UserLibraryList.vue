@@ -8,7 +8,7 @@
     <div class="py-4 flex justify-end gap-x-2 pr-4">
 
       <div class="searchTextField lightRoundedGreyBorder flex">
-        <div class="self-center">
+        <div class="self-center mt-2">
           <Icon name="mdi:magnify" color="black" size="1.5rem" />
         </div>
         <input type="text" placeholder="Search" class="searchInput w-full p-2 border border-black" />
