@@ -36,7 +36,10 @@
           </div>
           <div class="flex gap-x-2 pr-4">
             <div>
-              <Icon name="mdi:pencil-outline" color="black" />
+              <!-- TODO: fake-user is just a placeholder for now until we get users configured -->
+              <NuxtLink :to="`/fake-user/${doc.slug}`"> 
+                <Icon name="mdi:pencil-outline" color="black" />
+              </NuxtLink>
             </div>
             <div>
               <Icon name="mdi:share-variant-outline" color="black" />
