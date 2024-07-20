@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@nuxt/eslint": "^0.3.13",
+    "@nuxt/icon": "^1.1.1",
     "@nuxthub/core": "^0.7.0",
     "@supabase/supabase-js": "^2.44.4",
     "h3": "^1.12.0",
@@ -21,6 +22,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
+    "@iconify-json/mdi": "^1.1.67",
     "@nuxtjs/tailwindcss": "^6.12.1",
     "vue-tsc": "^2.0.22",
     "wrangler": "^3.62.0"

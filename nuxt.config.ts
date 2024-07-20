@@ -6,8 +6,8 @@ export default defineNuxtConfig({
   // https://nuxt.com/docs/getting-started/upgrade#testing-nuxt-4
   // Nuxt Modules
   // https://nuxt.com/modules
+  modules: ["@nuxthub/core", "@nuxtjs/tailwindcss", "@nuxt/icon"],
   css: ["@/public/assets/css/global.css"],
-  modules: ["@nuxthub/core", "@nuxtjs/tailwindcss"],
   hub: {
     database: true,
     kv: true,
@@ -35,7 +35,9 @@ export default defineNuxtConfig({
       "app/components",
     ],
   },
-
+  imports: {
+    dirs: ["types/*.ts", "types/**/*.ts"],
+  },
   postcss: {
     plugins: {
       tailwindcss: {},
