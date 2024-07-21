@@ -14,6 +14,7 @@ export default defineEventHandler<Promise<ApiResponse<AnnoteDocument>>>(
     const dbClient = new AnnoteDocumentDbClient();
     const apiResponse = {} as ApiResponse<AnnoteDocument>;
     const annoteDocument = await dbClient.getDocumentById(document_id);
+
     if (!annoteDocument) {
       // If no document is found, return a 404
       setResponseStatus(event, 404);

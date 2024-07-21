@@ -8,6 +8,7 @@ export default defineEventHandler<Promise<ApiResponse>>(async (event) => {
   const requestBody = await readBody<Partial<AnnoteDocument>>(event);
   const dbClient = new AnnoteDocumentDbClient();
   const apiResponse = {} as ApiResponse;
+
   try {
     await dbClient.insertDocument(requestBody);
     setResponseStatus(event, 201);
