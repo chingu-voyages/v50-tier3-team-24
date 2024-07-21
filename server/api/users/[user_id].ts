@@ -4,7 +4,7 @@ import { User } from "~~/types/user/user";
 
 export default defineEventHandler<Promise<ApiResponse<User>>>(async (event) => {
   // `/api/users/:user_id`; GET a user by ID
-  const user_id = parseInt(getRouterParam(event, "user_id") as string, 10);
+  const user_id = getRouterParam(event, "user_id") as string;
 
   const dbClient = new UserDbClient();
   const apiResponse = {} as ApiResponse<User>;

@@ -18,7 +18,7 @@ export class UserDbClient extends BaseDbClient {
     return data || [];
   }
 
-  public async getUserById(userId: number): Promise<User | null> {
+  public async getUserById(userId: string): Promise<User | null> {
     const { data, error } = await this.client
       .from(this.TABLE_NAME)
       .select("*")
