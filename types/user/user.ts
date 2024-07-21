@@ -1,11 +1,11 @@
 // user.ts
 export interface User {
-  userGuid: string;
+  user_id: string;
   username: string;
-  firstName: string;
-  lastName: string;
+  first_name: string;
+  last_name: string;
   email: string;
-  dateCreated: Date;
-  dateModified: Date;
+  created_at: Date;
+  updated_at: Date;
   documents: AnnoteDocument[];
 }
