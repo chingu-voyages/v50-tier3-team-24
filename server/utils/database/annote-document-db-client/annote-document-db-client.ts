@@ -1,4 +1,3 @@
-// annote-document-db-client.ts
 import { AnnoteDocument } from "~~/types/annote-document/annote-document";
 import { BaseDbClient } from "../base-db-client";
 
