@@ -7,6 +7,9 @@ export default defineNuxtConfig({
   // Nuxt Modules
   // https://nuxt.com/modules
   modules: ["@nuxthub/core", "@nuxtjs/tailwindcss", "@nuxt/icon"],
+  icon: {
+    provider: "iconify",
+  },
   css: ["@/public/assets/css/global.css"],
   hub: {
     database: true,
