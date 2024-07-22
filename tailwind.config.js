@@ -5,6 +5,7 @@ module.exports = {
     extend: {
       fontFamily: {
         gloria: ["Gloria Hallelujah", "sans-serif"],
+        verdana: ["Verdana", "sans-serif"],
       },
     },
   },
