@@ -6,7 +6,12 @@ export default defineNuxtConfig({
   // https://nuxt.com/docs/getting-started/upgrade#testing-nuxt-4
   // Nuxt Modules
   // https://nuxt.com/modules
-  modules: ["@nuxthub/core", "@nuxtjs/tailwindcss", "@nuxt/icon"],
+  modules: [
+    "@nuxthub/core",
+    "@nuxtjs/tailwindcss",
+    "@nuxt/icon",
+    "@nuxtjs/supabase",
+  ],
   css: ["@/public/assets/css/global.css"],
   hub: {
     database: true,
