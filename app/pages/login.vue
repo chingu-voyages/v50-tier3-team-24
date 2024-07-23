@@ -18,11 +18,13 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import { useAuth } from "../composables/useAuth";
 
-const email = ref("");
-const password = ref("");
+const email = ref("Jdoe@gmail.com");
+const password = ref("Password");
 const error = ref(null);
 const router = useRouter();
+const { login } = useAuth();
 
 const handleLogin = async () => {
   error.value = null;
@@ -40,6 +42,7 @@ const handleLogin = async () => {
       throw new Error(response.error);
     }
 
+    login(); // Update the authentication state
     router.push("about");
   } catch (err) {
     error.value = err.message;
