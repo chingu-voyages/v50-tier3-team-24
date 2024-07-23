@@ -23,27 +23,25 @@ import { useAuth } from "../composables/useAuth";
 const email = ref("Jdoe@gmail.com");
 const password = ref("Password");
 const error = ref(null);
+
 const router = useRouter();
+const supabase = useSupabaseClient();
+
 const { login } = useAuth();
 
 const handleLogin = async () => {
   error.value = null;
 
   try {
-    const response = await $fetch("/api/login", {
-      method: "POST",
-      body: {
-        email: email.value,
-        password: password.value,
-      },
+    const { data, error: loginError } = await supabase.auth.signInWithPassword({
+      email: email.value,
+      password: password.value,
     });
 
-    if (response.error) {
-      throw new Error(response.error);
-    }
+    if (loginError) throw loginError;
 
-    login(); // Update the authentication state
-    router.push("about");
+    await login(data.user); // Pass the user data to your login function
+    router.push("/about");
   } catch (err) {
     error.value = err.message;
   }

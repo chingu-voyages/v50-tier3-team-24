@@ -23,7 +23,8 @@
         </li>
 
         <!-- Conditional rendering for authentication -->
-        <li v-if="isAuthenticated">
+        <li v-if="user">
+          <span class="mr-2">{{ user.email }}</span>
           <button @click="handleLogout" class="no-underline font-gloria">
             Logout
           </button>
@@ -40,13 +41,15 @@
 
 <script setup>
 import { useRouter } from "vue-router";
-import { useAuth } from "../composables/useAuth";
 
-const { isAuthenticated, logout } = useAuth();
+const supabaseClient = useSupabaseClient();
+const user = useSupabaseUser();
 const router = useRouter();
 
-const handleLogout = () => {
-  logout();
-  router.push("/");
+const handleLogout = async () => {
+  const { error } = await supabaseClient.auth.signOut();
+  if (!error) {
+    router.push("/");
+  }
 };
 </script>
