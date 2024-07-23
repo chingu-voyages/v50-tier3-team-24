@@ -9,7 +9,6 @@ export default defineEventHandler<Promise<ApiResponse<User[]>>>(
 
     try {
       const users = await dbClient.getAllUsers();
-      setResponseStatus(event, 201);
       apiResponse.status = "ok";
       apiResponse.data = users;
     } catch (error: any) {
