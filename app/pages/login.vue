@@ -17,33 +17,14 @@
 
 <script setup>
 import { ref } from "vue";
-import { useRouter } from "vue-router";
 import { useAuth } from "../composables/useAuth";
 
 const email = ref("Jdoe@gmail.com");
 const password = ref("Password");
-const error = ref(null);
 
-const router = useRouter();
-const supabase = useSupabaseClient();
-
-const { login } = useAuth();
+const { login, error } = useAuth();
 
 const handleLogin = async () => {
-  error.value = null;
-
-  try {
-    const { data, error: loginError } = await supabase.auth.signInWithPassword({
-      email: email.value,
-      password: password.value,
-    });
-
-    if (loginError) throw loginError;
-
-    await login(data.user); // Pass the user data to your login function
-    router.push("/about");
-  } catch (err) {
-    error.value = err.message;
-  }
+  await login(email.value, password.value);
 };
 </script>

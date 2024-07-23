@@ -40,16 +40,12 @@
 </template>
 
 <script setup>
-import { useRouter } from "vue-router";
+import { useAuth } from "../composables/useAuth";
 
-const supabaseClient = useSupabaseClient();
 const user = useSupabaseUser();
-const router = useRouter();
+const { logout } = useAuth();
 
-const handleLogout = async () => {
-  const { error } = await supabaseClient.auth.signOut();
-  if (!error) {
-    router.push("/");
-  }
+const handleLogout = () => {
+  logout();
 };
 </script>
