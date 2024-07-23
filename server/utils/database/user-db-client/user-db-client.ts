@@ -55,7 +55,6 @@ export class UserDbClient extends BaseDbClient {
       password,
       created_at: new Date(),
       updated_at: new Date(),
-      documents: [],
     };
 
     const { data: insertedData, error: insertError } = await this.client
