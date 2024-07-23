@@ -39,7 +39,7 @@ export default defineNuxtConfig({
     ],
   },
   imports: {
-    dirs: ["types/*.ts", "types/**/*.ts"],
+    dirs: ["types/*.ts", "types/**/*.ts", "app/composables"],
   },
   postcss: {
     plugins: {
