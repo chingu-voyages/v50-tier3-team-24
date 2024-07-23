@@ -1,6 +1,6 @@
 import { createClient, SupabaseClient } from "@supabase/supabase-js";
 
-export class BaseDbClient {
+export abstract class BaseDbClient {
   protected client: SupabaseClient;
 
   constructor() {
