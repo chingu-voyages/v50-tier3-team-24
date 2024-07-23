@@ -4,9 +4,11 @@ import { BaseDbClient } from "../base-db-client";
 export class AnnoteDocumentDbClient extends BaseDbClient {
   private readonly TABLE_NAME = "annote_document";
 
-  public async insertDocument(
-    document: Partial<AnnoteDocument>
-  ): Promise<void> {
+  public async insertDocument(document: {
+    title: string;
+    body: string;
+    slug: string;
+  }): Promise<void> {
     const { error } = await this.client.from(this.TABLE_NAME).insert(document);
 
     if (error) throw new Error(error.message);
