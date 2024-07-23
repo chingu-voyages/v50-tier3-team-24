@@ -25,38 +25,22 @@
 
 <script setup>
 import { ref } from "vue";
-import { useRouter } from "vue-router";
+import { useAuth } from "../composables/useAuth";
 
 const username = ref("");
 const first_name = ref("");
 const last_name = ref("");
 const email = ref("");
 const password = ref("");
-const error = ref(null);
-const router = useRouter();
+const { signup, error } = useAuth();
 
 const handleSignup = async () => {
-  error.value = null;
-
-  try {
-    const response = await $fetch("/api/signup", {
-      method: "POST",
-      body: {
-        username: username.value,
-        first_name: first_name.value,
-        last_name: last_name.value,
-        email: email.value,
-        password: password.value,
-      },
-    });
-
-    if (response.error) {
-      throw new Error(response.error);
-    }
-
-    router.push("/login");
-  } catch (err) {
-    error.value = err.message;
-  }
+  await signup(
+    email.value,
+    password.value,
+    username.value,
+    first_name.value,
+    last_name.value
+  );
 };
 </script>
