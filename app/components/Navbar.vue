@@ -22,7 +22,6 @@
           <NuxtLink to="/new" class="no-underline font-gloria">New</NuxtLink>
         </li>
 
-        <!-- Conditional rendering for authentication -->
         <li v-if="user">
           <span class="mr-2">{{ user.email }}</span>
           <button @click="handleLogout" class="no-underline font-gloria">

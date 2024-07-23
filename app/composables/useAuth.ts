@@ -1,15 +1,14 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 
-const isAuthenticated = ref(false);
-const user = ref(null);
+const me = ref(null);
 const error = ref(null);
 
 export function useAuth() {
   const supabase = useSupabaseClient();
   const router = useRouter();
 
-  async function login(email, password) {
+  async function login(email: string, password: string) {
     error.value = null;
     try {
       const { data, error: loginError } =
@@ -20,8 +19,7 @@ export function useAuth() {
 
       if (loginError) throw loginError;
 
-      user.value = data.user;
-      console.log("User UUID:", data.user.id);
+      console.log("User UUID:", data.user.id); // Supabase's user auth ID
 
       const { data: userData, error: userError } = await supabase
         .from("users")
@@ -29,13 +27,13 @@ export function useAuth() {
         .eq("user_id", data.user.id)
         .single();
 
+      me.value = userData;
+      console.log(me.value);
+
       if (userError) throw userError;
 
-      console.log("user", userData);
-
-      isAuthenticated.value = true;
       router.push("/about");
-    } catch (err) {
+    } catch (err: any) {
       error.value = err.message;
     }
   }
@@ -43,17 +41,15 @@ export function useAuth() {
   async function logout() {
     const { error } = await supabase.auth.signOut();
     if (!error) {
-      isAuthenticated.value = false;
-      user.value = null;
+      me.value = null;
       router.push("/");
     } else {
-      error.value = error.message;
+      error.message;
     }
   }
 
   return {
-    isAuthenticated,
-    user,
+    me,
     error,
     login,
     logout,
