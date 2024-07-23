@@ -1,6 +1,6 @@
 export interface AnnoteDocument {
-  document_id: number;
-  user_id: number; // This is the foreign key that refers to the user
+  document_id: string;
+  user_id: string; // This is the foreign key that refers to the user
   slug: string; // Refers to the document slug
   title: string;
   body: string;

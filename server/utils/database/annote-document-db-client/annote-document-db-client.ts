@@ -32,7 +32,7 @@ export class AnnoteDocumentDbClient {
     return data || [];
   }
 
-  public async getDocumentById(id: number): Promise<AnnoteDocument | null> {
+  public async getDocumentById(id: string): Promise<AnnoteDocument | null> {
     const { data, error } = await this.client
       .from(this.TABLE_NAME)
       .select("*")
@@ -41,5 +41,32 @@ export class AnnoteDocumentDbClient {
     if (error) throw new Error(error.message);
 
     return data?.[0] || null;
+  }
+
+  public async updateDocumentTitleById(
+    id: string,
+    title: string,
+    slug: string
+  ): Promise<AnnoteDocument> {
+    const { data, error } = await this.client
+      .from(this.TABLE_NAME)
+      .update({ title: title, slug: slug })
+      .eq("document_id", id)
+      .select();
+
+    if (error) throw new Error(error.message);
+    return data?.[0];
+  }
+
+  public async getDocumentsBySlugStringPattern(
+    pattern: string
+  ): Promise<AnnoteDocument[]> {
+    const { data, error } = await this.client
+      .from(this.TABLE_NAME)
+      .select()
+      .like("slug", pattern);
+
+    if (error) throw new Error(error.message);
+    return data || [];
   }
 }

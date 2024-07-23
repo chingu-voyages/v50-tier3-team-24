@@ -5,14 +5,11 @@ export default defineEventHandler<Promise<ApiResponse<AnnoteDocument>>>(
   async (event) => {
     // `/api/annote_documents/:document_id`; GET an annote document by ID
     // TODO: the route parameter should be validated
-    const document_id = parseInt(
-      getRouterParam(event, "document_id") as string,
-      10
-    );
+    const document_id = getRouterParam(event, "document_id");
 
     const dbClient = new AnnoteDocumentDbClient();
     const apiResponse = {} as ApiResponse<AnnoteDocument>;
-    const annoteDocument = await dbClient.getDocumentById(document_id);
+    const annoteDocument = await dbClient.getDocumentById(document_id!);
     if (!annoteDocument) {
       // If no document is found, return a 404
       setResponseStatus(event, 404);
