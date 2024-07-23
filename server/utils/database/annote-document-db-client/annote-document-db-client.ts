@@ -1,17 +1,8 @@
-import { createClient, SupabaseClient } from "@supabase/supabase-js";
 import { AnnoteDocument } from "~~/types/annote-document/annote-document";
+import { BaseDbClient } from "../base-db-client";
 
-// When we start dealing with the user table, I think we can refactor this to inherit from a base class?
-export class AnnoteDocumentDbClient {
-  private client: SupabaseClient;
+export class AnnoteDocumentDbClient extends BaseDbClient {
   private readonly TABLE_NAME = "annote_document";
-
-  constructor() {
-    this.client = createClient(
-      process.env.SUPABASE_URL!,
-      process.env.SUPABASE_KEY!
-    );
-  }
 
   public async insertDocument(
     document: Partial<AnnoteDocument>
