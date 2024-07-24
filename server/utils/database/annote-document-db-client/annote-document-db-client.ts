@@ -8,10 +8,16 @@ export class AnnoteDocumentDbClient extends BaseDbClient {
     title: string;
     body: string;
     slug: string;
-  }): Promise<void> {
-    const { error } = await this.client.from(this.TABLE_NAME).insert(document);
+    description?: string;
+    source_url?: string;
+  }): Promise<AnnoteDocument> {
+    const { data, error } = await this.client
+      .from(this.TABLE_NAME)
+      .insert(document)
+      .select();
 
     if (error) throw new Error(error.message);
+    return data?.[0];
   }
 
   public async getAllDocuments(): Promise<AnnoteDocument[]> {
