@@ -25,7 +25,7 @@
 
   const documentId = route.query.id;
   if (documentId) {
-    const { data: fetchedDocument } = await useFetch<ApiResponse<AnnoteDocument>>(`/api/annote_documents/${documentId}`);
-    annoteDocument.value = fetchedDocument.value?.data!;
+    const { data: apiResponse } = await useFetch<ApiResponse<AnnoteDocument>>(`/api/annote_documents/${documentId}`);
+    annoteDocument.value = apiResponse.value?.data!;
   }
 </script>

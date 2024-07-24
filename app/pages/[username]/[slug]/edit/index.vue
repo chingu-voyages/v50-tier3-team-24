@@ -35,12 +35,12 @@
 
     if (documentTitle.value.trim() === "") return;
     
-    const { data: updatedDoc } = await useFetch<ApiResponse<AnnoteDocument>>(`/api/annote_documents/${id}`, {
+    const { data: apiResponse } = await useFetch<ApiResponse<AnnoteDocument>>(`/api/annote_documents/${id}`, {
       method: "PATCH",
       body: JSON.stringify({ title: documentTitle.value }),
     });
 
-    const { slug, document_id } = updatedDoc.value?.data!;
+    const { slug, document_id } = apiResponse.value?.data!;
 
     await navigateTo({
       path: `/library/${slug}/edit`,
@@ -55,17 +55,17 @@
     // It should send a patch request to the server to update the document body
     // The documentBody should be validated but I won't check for empty string here
 
-    const { data: updatedDoc } = await useFetch<ApiResponse<AnnoteDocument>>(`/api/annote_documents/${id}`, {
+    const { data: apiResponse } = await useFetch<ApiResponse<AnnoteDocument>>(`/api/annote_documents/${id}`, {
       method: "PATCH",
       body: JSON.stringify({ body: documentBody.value }),
     });
 
-    documentBody.value = updatedDoc.value?.data!.body!;
+    documentBody.value = apiResponse.value?.data!.body!;
   }
   
   if (id) {
-    const { data: fetchedDocument } = await useFetch<ApiResponse<AnnoteDocument>>(`/api/annote_documents/${id}`);
-    annoteDocument.value = fetchedDocument.value?.data!;
+    const { data: apiResponse } = await useFetch<ApiResponse<AnnoteDocument>>(`/api/annote_documents/${id}`);
+    annoteDocument.value = apiResponse.value?.data!;
     initialDocumentTitle.value = annoteDocument.value.title;
     documentTitle.value = annoteDocument.value.title;
     documentBody.value = annoteDocument.value.body;
