@@ -47,8 +47,8 @@
 import { ref } from "vue";
 import { useAuth } from "../composables/useAuth";
 
-const email = ref("Jdoe@gmail.com");
-const password = ref("Password");
+const email = ref("");
+const password = ref("");
 
 const { login, error } = useAuth();
 

@@ -1,7 +1,7 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 
-const me = ref(null);
+const me = ref(null); // This variable stores the current logged in user data
 const error = ref(null);
 
 export function useAuth() {
