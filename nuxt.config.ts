@@ -12,6 +12,9 @@ export default defineNuxtConfig({
     "@nuxt/icon",
     "@nuxtjs/supabase",
   ],
+  supabase: {
+    redirect: false,
+  },
   css: ["@/public/assets/css/global.css"],
   hub: {
     database: true,
@@ -30,6 +33,7 @@ export default defineNuxtConfig({
   dir: {
     pages: "app/pages",
     layouts: "app/layouts",
+    middleware: "app/middleware",
   },
   components: {
     dirs: [

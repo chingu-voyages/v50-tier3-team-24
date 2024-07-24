@@ -1,11 +1,12 @@
-export default defineNuxtRouteMiddleware((to, _from) => {
-  // Skip middleware for signup page
-  if (to.path === "/signup") {
+export default defineNuxtRouteMiddleware((to, from) => {
+  const user = useSupabaseUser();
+
+  // Allow access to login and signup pages
+  if (to.path === "/login" || to.path === "/signup") {
     return;
   }
 
-  const user = useSupabaseUser();
-
+  // Redirect to login if user is not authenticated
   if (!user.value) {
     return navigateTo("/login");
   }

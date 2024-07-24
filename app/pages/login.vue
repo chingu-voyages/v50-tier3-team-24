@@ -12,6 +12,7 @@
       <button type="submit">Login</button>
     </form>
     <p v-if="error">{{ error }}</p>
+    <p>Don't have an account? <NuxtLink to="/signup">Sign up here</NuxtLink></p>
   </div>
 </template>
 
