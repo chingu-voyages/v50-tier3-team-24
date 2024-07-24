@@ -40,7 +40,7 @@ export function useAuth() {
 
       if (insertError) throw insertError;
 
-      me.value = insertedData![0];
+      me.value = insertedData;
       router.push("/about");
     } catch (err: any) {
       error.value = err.message;
