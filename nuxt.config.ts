@@ -12,6 +12,9 @@ export default defineNuxtConfig({
     "@nuxt/icon",
     "@nuxtjs/supabase",
   ],
+  icon: {
+    provider: "iconify",
+  },
   // Prevents supabase from locking unauthenticated users to only the login page
   supabase: {
     redirect: false,

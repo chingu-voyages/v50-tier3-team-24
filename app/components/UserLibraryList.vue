@@ -1,5 +1,13 @@
 <script setup lang="ts">
-  const { data: annoteDocs } = await useFetch<ApiResponse<AnnoteDocument[]>>('/api/annote_documents');
+  const annoteDocs = ref<AnnoteDocument[] | null>(null);
+
+  onMounted(async () => {
+    const { data: fetchedDocument } = await $fetch<ApiResponse<AnnoteDocument[]>>('/api/annote_documents');
+    if (fetchedDocument) {
+      annoteDocs.value = fetchedDocument;
+    }
+   
+  });
 </script>
 
 <template>
@@ -27,24 +35,14 @@
       </div>
     </div>
     <ul>
-      <li class="border-t border-black pt-2 pb-2 pl-2" v-for="doc in annoteDocs?.data" :key="doc.document_id">
+      <li class="border-t border-black pt-2 pb-2 pl-2" v-for="doc in annoteDocs" :key="doc.document_id">
         <div class="flex justify-between">
           <div>
             <p class="truncatable-text">
               {{ doc.title }}
             </p>
           </div>
-          <div class="flex gap-x-2 pr-4">
-            <div>
-              <!-- TODO: fake-user is just a placeholder for now until we get users configured -->
-              <NuxtLink :to="`/fake-user/${doc.slug}`"> 
-                <Icon name="mdi:pencil-outline" color="black" />
-              </NuxtLink>
-            </div>
-            <div>
-              <Icon name="mdi:share-variant-outline" color="black" />
-            </div>
-          </div>
+          <ShareLinkButtons :linkUrl="`/fake-user/${doc.slug}?id=${doc.document_id}`" />
         </div>
       </li>
     </ul> 
