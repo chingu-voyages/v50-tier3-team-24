@@ -30,15 +30,21 @@ export function useAuth() {
         first_name,
         last_name,
         email,
-        created_at: new Date(),
-        updated_at: new Date(),
       };
 
-      const { data: insertedData, error: insertError } = await supabase
-        .from("users")
-        .insert(newUser);
+      const response = await fetch("/api/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newUser),
+      });
 
-      if (insertError) throw insertError;
+      if (!response.ok) {
+        throw new Error("Failed to create user");
+      }
+
+      const insertedData = await response.json();
 
       me.value = insertedData;
       router.push("/about");
