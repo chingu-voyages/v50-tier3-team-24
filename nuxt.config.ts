@@ -6,9 +6,18 @@ export default defineNuxtConfig({
   // https://nuxt.com/docs/getting-started/upgrade#testing-nuxt-4
   // Nuxt Modules
   // https://nuxt.com/modules
-  modules: ["@nuxthub/core", "@nuxtjs/tailwindcss", "@nuxt/icon"],
+  modules: [
+    "@nuxthub/core",
+    "@nuxtjs/tailwindcss",
+    "@nuxt/icon",
+    "@nuxtjs/supabase",
+  ],
   icon: {
     provider: "iconify",
+  },
+  // Prevents supabase from locking unauthenticated users to only the login page
+  supabase: {
+    redirect: false,
   },
   css: ["@/public/assets/css/global.css"],
   hub: {
@@ -28,6 +37,7 @@ export default defineNuxtConfig({
   dir: {
     pages: "app/pages",
     layouts: "app/layouts",
+    middleware: "app/middleware",
   },
   components: {
     dirs: [

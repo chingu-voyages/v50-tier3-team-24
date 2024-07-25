@@ -30,54 +30,20 @@ export class UserDbClient extends BaseDbClient {
     return data || null;
   }
 
-  public async signup(
-    email: string,
-    password: string,
-    username: string,
-    first_name: string,
-    last_name: string
-  ): Promise<User> {
-    const { data: authData, error: authError } = await this.client.auth.signUp({
-      email,
-      password,
-    });
-
-    if (authError) {
-      throw new Error(authError.message);
-    }
-
-    const newUser: User = {
-      user_id: authData.user?.id as string,
-      username,
-      first_name,
-      last_name,
-      email,
-      password,
-      created_at: new Date(),
-      updated_at: new Date(),
-    };
-
-    const { data: insertedData, error: insertError } = await this.client
-      .from(this.TABLE_NAME)
-      .insert(newUser);
-
-    if (insertError) {
-      throw new Error(insertError.message);
-    }
-
-    return insertedData![0];
-  }
-
-  public async login(email: string, password: string): Promise<any> {
+  public async login(email: string, password: string): Promise<User> {
     const { data, error } = await this.client.auth.signInWithPassword({
       email,
       password,
     });
 
-    if (error) {
-      throw new Error(error.message);
-    }
+    if (error) throw new Error(error.message);
 
-    return data;
+    if (!data.user) throw new Error("User not found");
+
+    const userData = await this.getUserById(data.user.id);
+
+    if (!userData) throw new Error("User data not found");
+
+    return userData;
   }
 }

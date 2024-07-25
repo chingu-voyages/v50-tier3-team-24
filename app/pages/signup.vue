@@ -1,62 +1,94 @@
 <template>
-  <div>
-    <h1>Sign Up</h1>
-    <form @submit.prevent="handleSignup">
-      <input v-model="username" type="text" placeholder="Username" required />
-      <input
-        v-model="first_name"
-        type="text"
-        placeholder="First Name"
-        required
-      />
-      <input v-model="last_name" type="text" placeholder="Last Name" required />
-      <input v-model="email" type="email" placeholder="Email" required />
-      <input
-        v-model="password"
-        type="password"
-        placeholder="Password"
-        required
-      />
-      <button type="submit">Sign Up</button>
-    </form>
-    <p v-if="error">{{ error }}</p>
+  <div class="flex items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
+    <div class="w-full max-w-md space-y-8">
+      <div>
+        <h2 class="mt-6 text-3xl font-extrabold text-center">
+          Create your account
+        </h2>
+      </div>
+      <form class="mt-8 space-y-6" @submit.prevent="handleSignup">
+        <div class="-space-y-px rounded-md shadow-sm">
+          <div>
+            <input
+              v-model="username"
+              type="text"
+              required
+              class="relative w-full px-3 py-2 border rounded-none rounded-t-md focus:z-10 sm:text-sm"
+              placeholder="Username"
+            />
+          </div>
+          <div>
+            <input
+              v-model="first_name"
+              type="text"
+              required
+              class="relative w-full px-3 py-2 border rounded-none focus:z-10 sm:text-sm"
+              placeholder="First Name"
+            />
+          </div>
+          <div>
+            <input
+              v-model="last_name"
+              type="text"
+              required
+              class="relative w-full px-3 py-2 border rounded-none focus:z-10 sm:text-sm"
+              placeholder="Last Name"
+            />
+          </div>
+          <div>
+            <input
+              v-model="email"
+              type="email"
+              required
+              class="relative w-full px-3 py-2 border rounded-none focus:z-10 sm:text-sm"
+              placeholder="Email address"
+            />
+          </div>
+          <div>
+            <input
+              v-model="password"
+              type="password"
+              required
+              class="relative w-full px-3 py-2 border rounded-none rounded-b-md focus:z-10 sm:text-sm"
+              placeholder="Password"
+            />
+          </div>
+        </div>
+
+        <div>
+          <button
+            type="submit"
+            class="w-full px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600"
+          >
+            Sign Up
+          </button>
+        </div>
+      </form>
+      <p v-if="error" class="mt-2 text-sm text-center text-red-600">
+        {{ error }}
+      </p>
+    </div>
   </div>
 </template>
 
 <script setup>
 import { ref } from "vue";
-import { useRouter } from "vue-router";
+import { useAuth } from "../composables/useAuth";
 
 const username = ref("");
 const first_name = ref("");
 const last_name = ref("");
 const email = ref("");
 const password = ref("");
-const error = ref(null);
-const router = useRouter();
+const { signup, error } = useAuth();
 
 const handleSignup = async () => {
-  error.value = null;
-
-  try {
-    const response = await $fetch("/api/signup", {
-      method: "POST",
-      body: {
-        username: username.value,
-        first_name: first_name.value,
-        last_name: last_name.value,
-        email: email.value,
-        password: password.value,
-      },
-    });
-
-    if (response.error) {
-      throw new Error(response.error);
-    }
-
-    router.push("/login");
-  } catch (err) {
-    error.value = err.message;
-  }
+  await signup(
+    email.value,
+    password.value,
+    username.value,
+    first_name.value,
+    last_name.value
+  );
 };
 </script>
