@@ -23,7 +23,9 @@
         </li>
 
         <li v-if="user">
-          <span class="mr-2">{{ user.email }}</span>
+          <span v-if="currentUser">
+            Welcome, {{ currentUser.data.username }}!
+          </span>
           <button @click="handleLogout" class="no-underline font-gloria">
             Logout
           </button>
@@ -42,7 +44,7 @@
 import { useAuth } from "../composables/useAuth";
 
 const user = useSupabaseUser();
-const { logout } = useAuth();
+const { logout, currentUser } = useAuth();
 
 const handleLogout = () => {
   logout();

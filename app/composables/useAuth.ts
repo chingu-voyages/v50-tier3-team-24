@@ -1,8 +1,8 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 
-const me = ref(null); // This variable stores the current logged in user data
 const error = ref(null);
+const currentUser = ref(null);
 
 export function useAuth() {
   const supabase = useSupabaseClient();
@@ -44,6 +44,8 @@ export function useAuth() {
         throw new Error("Failed to create user");
       }
 
+      currentUser.value = await getCurrentUser();
+
       router.push("/about");
     } catch (err: any) {
       error.value = err.message;
@@ -75,6 +77,8 @@ export function useAuth() {
         throw new Error("Failed to fetch user data");
       }
 
+      currentUser.value = await getCurrentUser();
+
       router.push("/about");
     } catch (err: any) {
       error.value = err.message;
@@ -83,17 +87,45 @@ export function useAuth() {
 
   async function logout() {
     const { error } = await supabase.auth.signOut();
+    currentUser.value = null;
     if (!error) {
-      me.value = null;
       router.push("/");
     }
   }
 
+  async function getCurrentUser() {
+    try {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (user) {
+        const response = await fetch(`/api/users/${user.id}`);
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch user data");
+        }
+
+        const userData = await response.json();
+        currentUser.value = userData;
+        return userData;
+      } else {
+        currentUser.value = null;
+        return null;
+      }
+    } catch (err: any) {
+      error.value = err.message;
+      currentUser.value = null;
+      return null;
+    }
+  }
+
   return {
-    me,
+    currentUser,
     error,
+    signup,
     login,
     logout,
-    signup,
+    getCurrentUser,
   };
 }
