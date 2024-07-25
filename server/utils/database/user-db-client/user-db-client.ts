@@ -29,4 +29,21 @@ export class UserDbClient extends BaseDbClient {
 
     return data || null;
   }
+
+  public async login(email: string, password: string): Promise<User> {
+    const { data, error } = await this.client.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error) throw new Error(error.message);
+
+    if (!data.user) throw new Error("User not found");
+
+    const userData = await this.getUserById(data.user.id);
+
+    if (!userData) throw new Error("User data not found");
+
+    return userData;
+  }
 }

@@ -44,9 +44,6 @@ export function useAuth() {
         throw new Error("Failed to create user");
       }
 
-      const insertedData = await response.json();
-
-      me.value = insertedData;
       router.push("/about");
     } catch (err: any) {
       error.value = err.message;
@@ -66,16 +63,17 @@ export function useAuth() {
 
       console.log("User UUID:", data.user.id); // Supabase's user auth ID
 
-      const { data: userData, error: userError } = await supabase
-        .from("users")
-        .select("*")
-        .eq("user_id", data.user.id)
-        .single();
+      const response = await fetch("/api/users/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId: data.user.id }),
+      });
 
-      me.value = userData;
-      console.log(me.value);
-
-      if (userError) throw userError;
+      if (!response.ok) {
+        throw new Error("Failed to fetch user data");
+      }
 
       router.push("/about");
     } catch (err: any) {
