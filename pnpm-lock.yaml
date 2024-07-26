@@ -14,9 +14,18 @@ importers:
       '@editorjs/header':
         specifier: ^2.8.7
         version: 2.8.7
+      '@editorjs/image':
+        specifier: ^2.9.2
+        version: 2.9.2
+      '@editorjs/inline-code':
+        specifier: ^1.5.1
+        version: 1.5.1
       '@editorjs/list':
         specifier: ^1.10.0
         version: 1.10.0
+      '@editorjs/marker':
+        specifier: ^1.4.0
+        version: 1.4.0
       '@editorjs/paragraph':
         specifier: ^2.11.6
         version: 2.11.6
@@ -345,6 +354,9 @@ packages:
   '@codexteam/icons@0.0.5':
     resolution: {integrity: sha512-s6H2KXhLz2rgbMZSkRm8dsMJvyUNZsEjxobBEg9ztdrb1B2H3pEzY6iTwI4XUPJWJ3c3qRKwV4TrO3J5jUdoQA==}
 
+  '@codexteam/icons@0.3.2':
+    resolution: {integrity: sha512-P1ep2fHoy0tv4wx85eic+uee5plDnZQ1Qa6gDfv7eHPkCXorMtVqJhzMb75o1izogh6G7380PqmFDXV3bW3Pig==}
+
   '@cspotcode/source-map-support@0.8.1':
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
     engines: {node: '>=12'}
@@ -367,8 +379,17 @@ packages:
   '@editorjs/header@2.8.7':
     resolution: {integrity: sha512-rfxzYFR/Jhaocj3Xxx8XjEjyzfPbBIVkcPZ9Uy3rEz1n3ewhV0V4zwuxCjVfFhLUVgQQExq43BxJnTNlLOzqDQ==}
 
+  '@editorjs/image@2.9.2':
+    resolution: {integrity: sha512-n09sMieGW8cksoeflpplzvbmFH2bdVzVTWbnidPWAHaeU467HRteoXU9yfGBB7+eeHZLnmCulQ2dr6ae+G2niw==}
+
+  '@editorjs/inline-code@1.5.1':
+    resolution: {integrity: sha512-XvKpqw9y1bOYgyuVUHGDuu7KlNWCYIXD5uU1Lpc4s4LJ8VN4TjWFGKJ3sS+LR7zzasWe8hu2ffR1JC6MHIS0EQ==}
+
   '@editorjs/list@1.10.0':
     resolution: {integrity: sha512-zXCHaNcIscpefnteBOS3x+98f/qBgEVsv+OvtKoTDZipMNqck2uVG+X2qMQr8xcwtJrj9ySX54lUac9FDlAHnA==}
+
+  '@editorjs/marker@1.4.0':
+    resolution: {integrity: sha512-5ipEXfL44jTTRzgNp/p/YjMO7jT08S5z4V8qA3FFJTfdhKgQyM3mvP1zpdYKw47ZZpVWMCncvk5Nto3BxihEtg==}
 
   '@editorjs/paragraph@2.11.6':
     resolution: {integrity: sha512-i9B50Ylvh+0ZzUGWIba09PfUXsA00Y//zFZMwqsyaXXKxMluSIJ6ADFJbbK0zaV9Ijx49Xocrlg+CEPRqATk9w==}
@@ -5267,6 +5288,8 @@ snapshots:
 
   '@codexteam/icons@0.0.5': {}
 
+  '@codexteam/icons@0.3.2': {}
+
   '@cspotcode/source-map-support@0.8.1':
     dependencies:
       '@jridgewell/trace-mapping': 0.3.9
@@ -5286,9 +5309,21 @@ snapshots:
       '@codexteam/icons': 0.0.5
       '@editorjs/editorjs': 2.30.2
 
+  '@editorjs/image@2.9.2':
+    dependencies:
+      '@codexteam/icons': 0.3.2
+
+  '@editorjs/inline-code@1.5.1':
+    dependencies:
+      '@codexteam/icons': 0.3.2
+
   '@editorjs/list@1.10.0':
     dependencies:
       '@codexteam/icons': 0.0.4
+
+  '@editorjs/marker@1.4.0':
+    dependencies:
+      '@codexteam/icons': 0.0.5
 
   '@editorjs/paragraph@2.11.6':
     dependencies:

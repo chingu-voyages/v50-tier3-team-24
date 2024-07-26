@@ -28,19 +28,52 @@ export default {
         const EditorJS = (await import("@editorjs/editorjs")).default;
         const Header = (await import("@editorjs/header")).default;
         const List = (await import("@editorjs/list")).default;
-        const Paragraph = (await import("@editorjs/paragraph")).default;
+        const Marker = (await import("@editorjs/marker")).default;
 
         this.editor = new EditorJS({
           holder: "editorjs",
           tools: {
-            header: Header,
+            header: {
+              class: Header,
+              inlineToolbar: true,
+            },
             list: List,
-            paragraph: Paragraph,
+            marker: {
+              class: Marker,
+              inlineToolbar: true,
+            },
           },
+          inlineToolbar: true,
           data: {
-            // You can provide initial data here
+            blocks: [
+              {
+                type: "header",
+                data: {
+                  text: "Welcome to Editor.js",
+                  level: 2,
+                },
+              },
+              {
+                type: "paragraph",
+                data: {
+                  text: "This is an example of initial content for the editor.",
+                },
+              },
+              {
+                type: "list",
+                data: {
+                  style: "unordered",
+                  items: ["First item", "Second item", "Third item"],
+                },
+              },
+            ],
+          },
+          onReady: () => {
+            console.log("Editor.js is ready to work!");
+            console.log("Inline toolbar:", this.editor.inlineToolbar);
           },
         });
+        console.log("Editor initialized:", this.editor);
       }
     },
   },
