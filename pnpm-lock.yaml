@@ -8,6 +8,18 @@ importers:
 
   .:
     dependencies:
+      '@editorjs/editorjs':
+        specifier: ^2.30.2
+        version: 2.30.2
+      '@editorjs/header':
+        specifier: ^2.8.7
+        version: 2.8.7
+      '@editorjs/list':
+        specifier: ^1.10.0
+        version: 1.10.0
+      '@editorjs/paragraph':
+        specifier: ^2.11.6
+        version: 2.11.6
       '@nuxt/eslint':
         specifier: ^0.3.13
         version: 0.3.13(eslint@9.5.0)(magicast@0.3.4)(rollup@4.18.0)(typescript@5.5.2)(vite@5.3.2(@types/node@20.14.9)(terser@5.31.1))
@@ -327,6 +339,12 @@ packages:
   '@cloudflare/workers-types@4.20240620.0':
     resolution: {integrity: sha512-CQD8YS6evRob7LChvIX3gE3zYo0KVgaLDOu1SwNP1BVIS2Sa0b+FC8S1e1hhrNN8/E4chYlVN+FDAgA4KRDUEQ==}
 
+  '@codexteam/icons@0.0.4':
+    resolution: {integrity: sha512-V8N/TY2TGyas4wLrPIFq7bcow68b3gu8DfDt1+rrHPtXxcexadKauRJL6eQgfG7Z0LCrN4boLRawR4S9gjIh/Q==}
+
+  '@codexteam/icons@0.0.5':
+    resolution: {integrity: sha512-s6H2KXhLz2rgbMZSkRm8dsMJvyUNZsEjxobBEg9ztdrb1B2H3pEzY6iTwI4XUPJWJ3c3qRKwV4TrO3J5jUdoQA==}
+
   '@cspotcode/source-map-support@0.8.1':
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
     engines: {node: '>=12'}
@@ -342,6 +360,18 @@ packages:
     engines: {node: ^14 || ^16 || >=18}
     peerDependencies:
       postcss-selector-parser: ^6.0.13
+
+  '@editorjs/editorjs@2.30.2':
+    resolution: {integrity: sha512-JjtUDs2/aHTEjNZzEf/2cugpIli1+aNeU8mloOd5USbVxv2vC02HTMpv7Vc1UyB7dIuc45JaYSJwgnBZp9duhA==}
+
+  '@editorjs/header@2.8.7':
+    resolution: {integrity: sha512-rfxzYFR/Jhaocj3Xxx8XjEjyzfPbBIVkcPZ9Uy3rEz1n3ewhV0V4zwuxCjVfFhLUVgQQExq43BxJnTNlLOzqDQ==}
+
+  '@editorjs/list@1.10.0':
+    resolution: {integrity: sha512-zXCHaNcIscpefnteBOS3x+98f/qBgEVsv+OvtKoTDZipMNqck2uVG+X2qMQr8xcwtJrj9ySX54lUac9FDlAHnA==}
+
+  '@editorjs/paragraph@2.11.6':
+    resolution: {integrity: sha512-i9B50Ylvh+0ZzUGWIba09PfUXsA00Y//zFZMwqsyaXXKxMluSIJ6ADFJbbK0zaV9Ijx49Xocrlg+CEPRqATk9w==}
 
   '@es-joy/jsdoccomment@0.43.1':
     resolution: {integrity: sha512-I238eDtOolvCuvtxrnqtlBaw0BwdQuYqK7eA6XIonicMdOOOb75mqdIzkGDUbS04+1Di007rgm9snFRNeVrOog==}
@@ -5233,6 +5263,10 @@ snapshots:
 
   '@cloudflare/workers-types@4.20240620.0': {}
 
+  '@codexteam/icons@0.0.4': {}
+
+  '@codexteam/icons@0.0.5': {}
+
   '@cspotcode/source-map-support@0.8.1':
     dependencies:
       '@jridgewell/trace-mapping': 0.3.9
@@ -5244,6 +5278,21 @@ snapshots:
   '@csstools/selector-specificity@3.1.1(postcss-selector-parser@6.1.0)':
     dependencies:
       postcss-selector-parser: 6.1.0
+
+  '@editorjs/editorjs@2.30.2': {}
+
+  '@editorjs/header@2.8.7':
+    dependencies:
+      '@codexteam/icons': 0.0.5
+      '@editorjs/editorjs': 2.30.2
+
+  '@editorjs/list@1.10.0':
+    dependencies:
+      '@codexteam/icons': 0.0.4
+
+  '@editorjs/paragraph@2.11.6':
+    dependencies:
+      '@codexteam/icons': 0.0.4
 
   '@es-joy/jsdoccomment@0.43.1':
     dependencies:
