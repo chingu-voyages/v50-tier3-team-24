@@ -1,0 +1,10 @@
+CREATE TABLE public.users (
+  user_id uuid,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+	updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  username TEXT,
+  first_name TEXT,
+  last_name TEXT,
+  email TEXT,
+  UNIQUE(email)
+)
