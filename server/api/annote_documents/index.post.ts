@@ -1,3 +1,4 @@
+import { serverSupabaseUser } from "#supabase/server";
 import { createSlugFromDocumentTitle } from "~/server/utils/slug/create-slug-from-document-title";
 import { createDocumentValidator } from "~/server/utils/validators/document/create-document-validator";
 import { AnnoteDocument } from "~/types/annote-document/annote-document";
@@ -9,6 +10,31 @@ import { ApiResponse } from "~~/types/api-response/api-response";
 // POST request body should also be validated at some point
 export default defineEventHandler<Promise<ApiResponse<AnnoteDocument>>>(
   async (event) => {
+    let user = null;
+
+    // TODO: There has to be a better way to guard this route
+    try {
+      user = await serverSupabaseUser(event);
+      if (!user) {
+        setResponseStatus(event, 401);
+        return {
+          status: "fail",
+          error: createError({
+            statusCode: 401,
+            statusMessage: "Unauthorized",
+          }),
+        };
+      }
+    } catch (error: any) {
+      return {
+        status: "fail",
+        error: createError({
+          statusCode: 401,
+          statusMessage: error.message,
+        }),
+      };
+    }
+
     const requestBody = await readBody<{
       title: string;
       blocks: EditorJsBlock[];
@@ -16,7 +42,6 @@ export default defineEventHandler<Promise<ApiResponse<AnnoteDocument>>>(
       source_url?: string;
     }>(event);
 
-    console.log(requestBody);
     // Validate the request body using   a yup validator schema
     try {
       await createDocumentValidator.validate(requestBody, {
@@ -44,6 +69,7 @@ export default defineEventHandler<Promise<ApiResponse<AnnoteDocument>>>(
         slug,
         description,
         source_url,
+        user_id: user.id,
       });
       setResponseStatus(event, 201);
 

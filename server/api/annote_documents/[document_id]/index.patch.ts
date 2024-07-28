@@ -1,3 +1,4 @@
+import { serverSupabaseUser } from "#supabase/server";
 import { AnnoteDocumentDbClient } from "~/server/utils/database/annote-document-db-client/annote-document-db-client";
 import { checkDocumentExists } from "~/server/utils/database/annote-document-db-client/check-document-exists";
 import { createSlugFromDocumentTitle } from "~/server/utils/slug/create-slug-from-document-title";
@@ -9,6 +10,17 @@ import { ApiResponse } from "~/types/api-response/api-response";
 export default defineEventHandler<Promise<ApiResponse<AnnoteDocument>>>(
   async (event) => {
     const document_id = getRouterParam(event, "document_id");
+    const user = await serverSupabaseUser(event);
+    if (!user) {
+      setResponseStatus(event, 401);
+      return {
+        status: "fail",
+        error: createError({
+          statusCode: 401,
+          statusMessage: "Unauthorized",
+        }),
+      };
+    }
 
     const requestBody = await readBody<{
       title: string;
@@ -32,7 +44,7 @@ export default defineEventHandler<Promise<ApiResponse<AnnoteDocument>>>(
     }
 
     // Check if the document exists. If not, return 404
-    if (!(await checkDocumentExists(document_id!))) {
+    if (!(await checkDocumentExists(user.id, document_id!))) {
       setResponseStatus(event, 404);
       return {
         status: "fail",
@@ -53,7 +65,8 @@ export default defineEventHandler<Promise<ApiResponse<AnnoteDocument>>>(
         const updatedDocument = await dbClient.updateDocumentTitleById(
           document_id!,
           title,
-          newSlug
+          newSlug,
+          user.id
         );
 
         return { status: "ok", data: updatedDocument };
