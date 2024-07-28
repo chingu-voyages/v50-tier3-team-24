@@ -22,8 +22,9 @@
           
           <div>
             <label for="documentBody">Article Text Body</label>
-            <textarea id="documentBody" required v-model="documentBody" class="w-full p-2 border border-gray-300 rounded font-verdana" placeholder="Body">
-            </textarea>
+            <ClientOnly>
+               <EditorComponent :onEditorReady="handleEditorReady" />
+            </ClientOnly>
           </div>
 
           <div>
@@ -39,24 +40,27 @@
 </template>
 
 <script lang="ts" setup>
-  import { useRouter } from 'nuxt/app';
+import { useRouter } from 'nuxt/app';
+import { ref } from 'vue';
+
   const router = useRouter();
 
   const documentTitle = ref("");
-  const documentBody = ref("");
   const sourceUrl = ref("");
   const description = ref("");
 
   const apiError = ref<string | null | undefined>(null);
+  const editorController = ref<CustomEditorJs | null>(null);
 
   // TODO: We should validate the input on the front end
   async function handleSubmit () {
-    try {
+    const outputData = await editorController.value?.save();  
+    try {  
       const { data: apiResponse } = await useFetch<ApiResponse<AnnoteDocument>>("/api/annote_documents", {
         method: "POST",
         body: {
           title: documentTitle.value,
-          body: documentBody.value,
+          blocks: outputData?.blocks,
           source_url: sourceUrl.value,
           description: description.value
         }
@@ -79,5 +83,9 @@
     } catch (err: any) {
       apiError.value = err.message;
     }
+  }
+
+  function handleEditorReady(editor: CustomEditorJs) {
+    editorController.value = editor;
   }
 </script>
