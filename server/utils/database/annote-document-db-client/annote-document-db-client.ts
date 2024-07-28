@@ -1,3 +1,4 @@
+import { EditorJsBlock } from "~/types/annote-document/editjs-block";
 import { AnnoteDocument } from "~~/types/annote-document/annote-document";
 import { BaseDbClient } from "../base-db-client";
 
@@ -6,7 +7,7 @@ export class AnnoteDocumentDbClient extends BaseDbClient {
 
   public async insertDocument(document: {
     title: string;
-    body: string;
+    blocks: EditorJsBlock[];
     slug: string;
     description?: string;
     source_url?: string;
@@ -57,13 +58,13 @@ export class AnnoteDocumentDbClient extends BaseDbClient {
     return data?.[0];
   }
 
-  public async updatedDocumentBodyById(
+  public async updateDocumentBlocksById(
     id: string,
-    body: string
+    blocks: EditorJsBlock[]
   ): Promise<AnnoteDocument> {
     const { data, error } = await this.client
       .from(this.TABLE_NAME)
-      .update({ body: body })
+      .update({ blocks: blocks })
       .eq("document_id", id)
       .select();
     if (error) throw new Error(error.message);

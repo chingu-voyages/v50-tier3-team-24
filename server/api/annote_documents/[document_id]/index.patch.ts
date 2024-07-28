@@ -3,13 +3,17 @@ import { checkDocumentExists } from "~/server/utils/database/annote-document-db-
 import { createSlugFromDocumentTitle } from "~/server/utils/slug/create-slug-from-document-title";
 import { updateDocumentValidator } from "~/server/utils/validators/document/update-document-validator";
 import { AnnoteDocument } from "~/types/annote-document/annote-document";
+import { EditorJsBlock } from "~/types/annote-document/editjs-block";
 import { ApiResponse } from "~/types/api-response/api-response";
 
 export default defineEventHandler<Promise<ApiResponse<AnnoteDocument>>>(
   async (event) => {
     const document_id = getRouterParam(event, "document_id");
 
-    const requestBody = await readBody<{ title: string; body: string }>(event);
+    const requestBody = await readBody<{
+      title: string;
+      blocks: EditorJsBlock[];
+    }>(event);
 
     // Validate the request body
     try {
@@ -39,7 +43,7 @@ export default defineEventHandler<Promise<ApiResponse<AnnoteDocument>>>(
       };
     }
 
-    const { title, body } = requestBody;
+    const { title, blocks } = requestBody;
 
     try {
       const dbClient = new AnnoteDocumentDbClient();
@@ -55,10 +59,10 @@ export default defineEventHandler<Promise<ApiResponse<AnnoteDocument>>>(
         return { status: "ok", data: updatedDocument };
       }
 
-      if (body) {
-        const updatedDocument = await dbClient.updatedDocumentBodyById(
+      if (blocks) {
+        const updatedDocument = await dbClient.updateDocumentBlocksById(
           document_id!,
-          body
+          blocks
         );
 
         return { status: "ok", data: updatedDocument };

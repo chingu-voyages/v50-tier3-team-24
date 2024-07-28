@@ -1,6 +1,7 @@
 import { createSlugFromDocumentTitle } from "~/server/utils/slug/create-slug-from-document-title";
 import { createDocumentValidator } from "~/server/utils/validators/document/create-document-validator";
 import { AnnoteDocument } from "~/types/annote-document/annote-document";
+import { EditorJsBlock } from "~/types/annote-document/editjs-block";
 import { AnnoteDocumentDbClient } from "~~/server/utils/database/annote-document-db-client/annote-document-db-client";
 import { ApiResponse } from "~~/types/api-response/api-response";
 
@@ -10,12 +11,13 @@ export default defineEventHandler<Promise<ApiResponse<AnnoteDocument>>>(
   async (event) => {
     const requestBody = await readBody<{
       title: string;
-      body: string;
+      blocks: EditorJsBlock[];
       description?: string;
       source_url?: string;
     }>(event);
 
-    // Validate the request body using a yup validator schema
+    console.log(requestBody);
+    // Validate the request body using   a yup validator schema
     try {
       await createDocumentValidator.validate(requestBody, {
         abortEarly: false,
@@ -31,14 +33,14 @@ export default defineEventHandler<Promise<ApiResponse<AnnoteDocument>>>(
       };
     }
 
-    const { title, body, description, source_url } = requestBody;
+    const { title, blocks, description, source_url } = requestBody;
 
     try {
       const slug = await createSlugFromDocumentTitle(title);
       const dbClient = new AnnoteDocumentDbClient();
       const insertedDocument = await dbClient.insertDocument({
         title,
-        body,
+        blocks,
         slug,
         description,
         source_url,
