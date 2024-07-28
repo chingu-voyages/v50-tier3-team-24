@@ -24,7 +24,7 @@
 
         <li v-if="user">
           <span v-if="currentUser">
-            Welcome, {{ currentUser.data.username }}!
+            Welcome, {{ currentUser.username }}!
           </span>
           <button @click="handleLogout" class="no-underline font-gloria">
             Logout
