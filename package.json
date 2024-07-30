@@ -13,6 +13,7 @@
     "typecheck": "nuxt typecheck"
   },
   "dependencies": {
+    "@codexteam/icons": "^0.3.2",
     "@editorjs/editorjs": "^2.30.2",
     "@editorjs/header": "^2.8.7",
     "@editorjs/image": "^2.9.2",

@@ -1,0 +1,19 @@
+.cdx-marker {
+  background: rgba(111, 245, 133, 0.29);
+}
+
+.pin {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  height: 15px;
+  width: 15px;
+  border-radius: 50%;
+  background-color: red;
+  font-size: 8px;
+}
+
+.marker-container {
+  position: absolute;
+}

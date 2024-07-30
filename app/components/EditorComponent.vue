@@ -13,7 +13,7 @@ import EditorJS from "@editorjs/editorjs";
 import Header from "@editorjs/header";
 import LinkTool from "@editorjs/link";
 import List from "@editorjs/list";
-import Marker from "@editorjs/marker";
+import AnnoteMarker from "../utils/annote-marker/annote-marker";
 
 import type { CustomEditorJs } from "types/custom-editorjs.ts/custom-editorjs";
 
@@ -40,8 +40,9 @@ const props: EditorComponentProps = defineProps<EditorComponentProps>();
         inlineToolbar: true,
       },
       marker: { 
-        class: Marker,
+        class: AnnoteMarker as any, // This is our custom marker tool
         inlineToolbar: true,
+        
       },
       linkTool: {
         class: LinkTool

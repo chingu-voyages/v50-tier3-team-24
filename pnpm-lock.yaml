@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@codexteam/icons':
+        specifier: ^0.3.2
+        version: 0.3.2
       '@editorjs/editorjs':
         specifier: ^2.30.2
         version: 2.30.2
