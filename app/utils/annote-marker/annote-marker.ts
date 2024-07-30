@@ -109,9 +109,6 @@ export default class AnnoteMarker {
 
   // Create toolbar button element
   public render() {
-    const input = document.createElement("input");
-    input.placeholder = this._config.placeholder || "Enter a term";
-
     // This is rendering the button on the pop-up tool box
     this._button = document.createElement("button");
     (this._button as any).type = "button";

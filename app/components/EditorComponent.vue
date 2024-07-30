@@ -46,7 +46,7 @@ const props: EditorComponentProps = defineProps<EditorComponentProps>();
       },
       linkTool: {
         class: LinkTool
-      }
+      },
     },
   }); 
   editor.isReady.then(() => { 
