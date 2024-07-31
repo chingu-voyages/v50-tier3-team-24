@@ -1,8 +1,12 @@
 <template>
   <div
-    class="bg-gray-100 border border-gray-300 rounded p-5 min-h-[300px] my-5"
+    class="flex bg-gray-100 border border-gray-300 rounded p-5 min-h-[300px] my-5"
   >
-    <div id="editorjs" class="bg-white rounded p-2.5 min-h-[250px]"></div>
+    <div id="editorjs" class="w-2/3 bg-white rounded p-2.5 min-h-[250px]"></div>
+    <div
+      id="sticky-notes"
+      class="w-1/3 bg-white rounded p-2.5 min-h-[250px] ml-4"
+    ></div>
   </div>
 </template>
 
@@ -29,6 +33,7 @@ export default {
         const Header = (await import("@editorjs/header")).default;
         const List = (await import("@editorjs/list")).default;
         const Marker = (await import("@editorjs/marker")).default;
+        const StickyNoteTool = (await import("./StickyNoteTool")).default;
 
         this.editor = new EditorJS({
           holder: "editorjs",
@@ -42,6 +47,7 @@ export default {
               class: Marker,
               inlineToolbar: true,
             },
+            stickyNote: StickyNoteTool,
           },
           inlineToolbar: true,
           data: {
@@ -73,9 +79,27 @@ export default {
             console.log("Inline toolbar:", this.editor.inlineToolbar);
           },
         });
+
+        this.stickyEditor = new EditorJS({
+          holder: "sticky-notes",
+          tools: {
+            stickyNote: StickyNoteTool,
+          },
+          // ... other configurations
+        });
         console.log("Editor initialized:", this.editor);
       }
     },
   },
 };
 </script>
+
+<style>
+.sticky-note {
+  background-color: #feff9c;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+</style>
