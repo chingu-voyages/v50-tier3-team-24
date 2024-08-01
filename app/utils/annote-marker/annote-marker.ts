@@ -83,14 +83,14 @@ export default class AnnoteMarker {
 
   // Create toolbar button element
   public render() {
-    let mainContainer = document.createElement("div");
+    const mainContainer = document.createElement("div");
     mainContainer.classList.add("main-container");
 
-    let buttonContainer = document.createElement("div");
+    const buttonContainer = document.createElement("div");
     buttonContainer.classList.add("button-container");
 
-    let pickerToolBarContainer = document.createElement("div");
-    pickerToolBarContainer.classList.add("picker-toolbar-container");
+    const colorPickerContainer = document.createElement("div");
+    colorPickerContainer.classList.add("picker-toolbar-container");
 
     // This is rendering the button on the pop-up tool box
     this._button = document.createElement("button");
@@ -101,9 +101,9 @@ export default class AnnoteMarker {
     if (!this.isTermActive()) {
       // Term active means that there is a highlighted section of text. If there is no highlighted section of text, then show the color picker when the user clicks the tool button.
       this._button.addEventListener("click", (event) => {
-        pickerToolBarContainer.classList.toggle("show");
+        colorPickerContainer.classList.toggle("show");
       });
-      pickerToolBarContainer.appendChild(this.renderColorPicker());
+      colorPickerContainer.appendChild(this.renderColorPicker());
     } else {
       // This is for the case when the term is already highlighted and the user wants to de-highlight it. It's hacky.
       // When the user clicks the tool button, it should de-highlight the term and not show the color picker.
@@ -112,12 +112,12 @@ export default class AnnoteMarker {
 
     buttonContainer.appendChild(this._button);
     mainContainer.appendChild(buttonContainer);
-    mainContainer.appendChild(pickerToolBarContainer);
+    mainContainer.appendChild(colorPickerContainer);
 
     return mainContainer;
   }
 
-  public handleColorPickerClicked(palletData: PalletData) {
+  private handleColorPalletClicked(palletData: PalletData) {
     if (!this._currentRange) {
       return;
     }
@@ -154,16 +154,16 @@ export default class AnnoteMarker {
    * @returns {HTMLElement} - The color picker element
    */
   private renderColorPicker() {
-    let colorPickerContainer = document.createElement("div");
+    const colorPickerContainer = document.createElement("div");
     colorPickerContainer.classList.add("color-picker-container");
 
     this._pallet.forEach((palletData) => {
-      let colorPicker = document.createElement("div");
+      const colorPicker = document.createElement("div");
       colorPicker.classList.add("color-picker-element");
       colorPicker.addEventListener("click", () => {
         colorPickerContainer.parentElement?.classList.toggle("show");
         this._api.toolbar.close();
-        this.handleColorPickerClicked(palletData);
+        this.handleColorPalletClicked(palletData);
       });
       colorPicker.style.backgroundColor = palletData.colorHex;
       colorPickerContainer.appendChild(colorPicker);
@@ -177,7 +177,7 @@ export default class AnnoteMarker {
    * @returns {number} - The next available pin number
    */
   private getNextAvailablePinNumber(): number {
-    let pinNumbers = this.getPinNumbers();
+    const pinNumbers = this.getPinNumbers();
     let nextPinNumber = 1;
     while (pinNumbers.includes(nextPinNumber)) {
       nextPinNumber++;
@@ -190,8 +190,8 @@ export default class AnnoteMarker {
    * @returns {number[]} - An array of all the pin numbers in the document
    */
   private getPinNumbers(): number[] {
-    let pins = document.getElementsByClassName(AnnoteMarker.CSS) as any;
-    let pinNumbers: number[] = [];
+    const pins = document.getElementsByClassName(AnnoteMarker.CSS) as any;
+    const pinNumbers: number[] = [];
     for (let i = 0; i < pins.length; i++) {
       pinNumbers.push(parseInt(pins[i].dataset.pin!));
     }
@@ -206,10 +206,10 @@ export default class AnnoteMarker {
     /**
      * Create a wrapper for highlighting
      */
-    let marker = document.createElement(this._tag);
+    const marker = document.createElement(this._tag);
 
     // This pin is the number enclosed by cirlce
-    let pin = document.createElement("div");
+    const pin = document.createElement("div");
 
     marker.style.background = palletData.rgba;
     marker.classList.add(AnnoteMarker.CSS);
@@ -255,10 +255,10 @@ export default class AnnoteMarker {
      */
     this._api.selection.expandToTag(termWrapper);
 
-    let sel = window.getSelection();
-    let range = sel?.getRangeAt(0);
+    const sel = window.getSelection();
+    const range = sel?.getRangeAt(0);
 
-    let unwrappedContent = range?.extractContents();
+    const unwrappedContent = range?.extractContents();
 
     //***  Code to remove the pin.
     const pin = unwrappedContent?.firstChild;
