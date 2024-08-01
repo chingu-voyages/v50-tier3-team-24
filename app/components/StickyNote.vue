@@ -1,12 +1,17 @@
 <template>
   <div
-    class="p-2 m-2 shadow-md h-60 w-60"
+    class="relative p-2 m-2 shadow-md h-60 w-60"
     :style="{ backgroundColor: bgColor }"
   >
+    <div
+      class="absolute top-0 left-0 px-2 py-1 text-xs text-black bg-white rounded-br"
+    >
+      {{ pinNumber }}
+    </div>
     <textarea
       v-model="modelValue"
       placeholder="Add your note here..."
-      class="w-full h-full text-sm bg-transparent border-none resize-none focus:outline-none"
+      class="w-full h-full pt-6 text-sm bg-transparent border-none resize-none focus:outline-none"
       @input="$emit('update:modelValue', $event.target.value)"
     ></textarea>
   </div>
@@ -16,7 +21,7 @@
 import { computed, defineComponent } from "vue";
 
 export default defineComponent({
-  props: ["modelValue", "color"],
+  props: ["modelValue", "color", "pinNumber"],
   emits: ["update:modelValue"],
   setup(props) {
     const bgColor = computed(() => {

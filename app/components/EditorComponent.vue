@@ -6,7 +6,11 @@
       <div id="editorjs" class="bg-white rounded p-2.5 min-h-[250px]"></div>
       <div class="flex flex-wrap">
         <div v-for="note in stickyNotes" :key="note.id">
-          <StickyNote v-model="note.text" :color="note.color" />
+          <StickyNote
+            v-model="note.text"
+            :color="note.color"
+            :pinNumber="note.id"
+          />
         </div>
       </div>
     </div>
