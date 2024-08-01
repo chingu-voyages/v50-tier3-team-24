@@ -121,9 +121,8 @@ export default class AnnoteMarker {
     if (!this._currentRange) {
       return;
     }
-    /**
-     * If start or end of selection is in the highlighted block
-     */
+
+    // If start or end of selection is in the highlighted block
     if (this._termWrapper) {
       this.unwrap(this._termWrapper);
     } else {
@@ -203,9 +202,7 @@ export default class AnnoteMarker {
    * This is the function responsible for highlighting the selected text and inserting a pin (the circle with the number)
    */
   private wrap(range: Range, palletData: PalletData) {
-    /**
-     * Create a wrapper for highlighting
-     */
+    // Create a wrapper for highlighting
     const marker = document.createElement(this._tag);
 
     // This pin is the number enclosed by cirlce
@@ -233,9 +230,7 @@ export default class AnnoteMarker {
     marker.appendChild(range.extractContents());
     range.insertNode(marker);
 
-    /**
-     * Expand (add) selection to highlighted block
-     */
+    // Expand (add) selection to highlighted block
     this._api.selection.expandToTag(marker);
   }
 
@@ -250,9 +245,7 @@ export default class AnnoteMarker {
    * @param {HTMLElement} termWrapper - term wrapper tag
    */
   private unwrap(termWrapper: any) {
-    /**
-     * Expand selection to all term-tag
-     */
+    // Expand selection to all term-tag
     this._api.selection.expandToTag(termWrapper);
 
     const sel = window.getSelection();
@@ -260,26 +253,19 @@ export default class AnnoteMarker {
 
     const unwrappedContent = range?.extractContents();
 
-    //***  Code to remove the pin.
+    // This removes the pin.
     const pin = unwrappedContent?.firstChild;
     if (pin) {
       unwrappedContent?.removeChild(pin);
     }
-    //
 
-    /**
-     * Remove empty term-tag
-     */
+    // Remove empty term-tag
     termWrapper.parentNode.removeChild(termWrapper);
 
-    /**
-     * Insert extracted content
-     */
+    // Insert extracted content
     range?.insertNode(unwrappedContent!);
 
-    /**
-     * Restore selection
-     */
+    // Restore selection
     sel?.removeAllRanges();
     sel?.addRange(range!);
   }
