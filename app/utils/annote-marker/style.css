@@ -1,0 +1,60 @@
+.pin {
+  display: inline-flex;
+  justify-content: center;
+  margin-right: 2px;
+  align-items: center;
+  color: white;
+  height: 15px;
+  width: 15px;
+  border-radius: 50%;
+  font-size: 8px;
+  position: relative;
+  bottom: 2px;
+}
+
+.marker-container {
+  position: absolute;
+}
+
+.colorPallet {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+}
+
+.picker-toolbar-container {
+  display: none;
+  position:fixed;
+  height: 40px;
+  width: 240px;
+  border-radius: 2px;
+  margin-top: 10px;
+  margin-left: -140px;
+  padding: 2px;
+  box-shadow: 0px 50px 100px -20px;
+  padding: 1%;
+}
+
+
+.color-picker-container {
+  display: flex;
+  justify-content: space-evenly;
+  padding: 2px;
+  z-index: 99;
+}
+
+.color-picker-element {
+  height: 12px;
+  width: 12px;
+  border-radius: 50%;
+}
+
+.hoverable {
+  :hover {
+    cursor: pointer !important;
+  }
+}
+
+.show {
+  display: block;
+}

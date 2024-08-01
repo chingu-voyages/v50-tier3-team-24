@@ -13,19 +13,29 @@
           </div>
         </NuxtLink>
       </header>
-      <main>
-        <p class="font-verdana">{{  annoteDocument?.body }}</p>
-      </main>
+      <ClientOnly>
+        <EditorComponent :onEditorReady="handleEditorReady" :readOnly="true" />
+      </ClientOnly>
     </div>
   </div>
 </template>
 <script setup lang="ts">
   const route = useRoute();  
   const annoteDocument = ref<AnnoteDocument | null>(null);
+  const editorController = ref<CustomEditorJs | null>(null);
 
   const documentId = route.query.id;
   if (documentId) {
     const { data: apiResponse } = await useFetch<ApiResponse<AnnoteDocument>>(`/api/annote_documents/${documentId}`);
     annoteDocument.value = apiResponse.value?.data!;
+  }
+
+  function handleEditorReady(editor: CustomEditorJs) {
+    editor.isReady.then(() => {
+      editorController.value = editor;
+      editorController.value.render({
+        blocks: annoteDocument.value?.blocks || [],
+      });
+    });
   }
 </script>

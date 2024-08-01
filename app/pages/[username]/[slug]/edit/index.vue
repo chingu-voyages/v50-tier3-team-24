@@ -9,8 +9,9 @@
             <Icon name="mdi:trash-can-outline" /> 
           </div>
         </div>
-        <textarea v-model="documentBody" @blur="handleDocumentBodyBlur" class="w-full p-2 border border-gray-300 rounded font-verdana mt-4" placeholder="Body">
-        </textarea>
+        <ClientOnly>
+          <EditorComponent :onEditorReady="handleEditorReady" />
+        </ClientOnly>
       </div>
     </div>
   </div>
@@ -19,7 +20,7 @@
 <script setup lang="ts">
   const annoteDocument = ref<AnnoteDocument | null>(null);
   const documentTitle = ref("");
-  const documentBody = ref("");
+  const editorController = ref<CustomEditorJs | null>(null);
 
   const initialDocumentTitle = ref(""); // The original title when the document loads. This will not change.
   const route = useRoute();
@@ -50,25 +51,33 @@
     });  
   }
 
+
   async function handleDocumentBodyBlur () {
     // This function handles when the user clicks out of the body textarea
     // It should send a patch request to the server to update the document body
     // The documentBody should be validated but I won't check for empty string here
 
-    const { data: apiResponse } = await useFetch<ApiResponse<AnnoteDocument>>(`/api/annote_documents/${id}`, {
-      method: "PATCH",
-      body: JSON.stringify({ body: documentBody.value }),
-    });
+    // const { data: apiResponse } = await useFetch<ApiResponse<AnnoteDocument>>(`/api/annote_documents/${id}`, {
+    //   method: "PATCH",
+    //   body: JSON.stringify({ body: documentBody.value }),
+    // });
 
-    documentBody.value = apiResponse.value?.data!.body!;
   }
-  
+
   if (id) {
     const { data: apiResponse } = await useFetch<ApiResponse<AnnoteDocument>>(`/api/annote_documents/${id}`);
     annoteDocument.value = apiResponse.value?.data!;
     initialDocumentTitle.value = annoteDocument.value.title;
     documentTitle.value = annoteDocument.value.title;
-    documentBody.value = annoteDocument.value.body;
+  }
+
+  function handleEditorReady(editor: CustomEditorJs) {
+    editorController.value = editor;
+    editor.isReady.then(() => {
+        editor.render({
+          blocks: annoteDocument.value?.blocks as any,
+        });
+      });
   }
 
 </script>

@@ -1,6 +1,9 @@
 <script setup lang="ts">
   const annoteDocs = ref<AnnoteDocument[] | null>(null);
-
+  const { getCurrentUser } = useAuth();
+  
+  const currentUser = await getCurrentUser();
+ 
   onMounted(async () => {
     const { data: fetchedDocument } = await $fetch<ApiResponse<AnnoteDocument[]>>('/api/annote_documents');
     if (fetchedDocument) {
@@ -40,9 +43,9 @@
           <div>
             <p class="truncatable-text">
               {{ doc.title }}
-            </p>
+            </p>  
           </div>
-          <ShareLinkButtons :linkUrl="`/fake-user/${doc.slug}?id=${doc.document_id}`" />
+          <ShareLinkButtons :linkUrl="`/${currentUser?.data.username}/${doc.slug}?id=${doc.document_id}`" />
         </div>
       </li>
     </ul> 

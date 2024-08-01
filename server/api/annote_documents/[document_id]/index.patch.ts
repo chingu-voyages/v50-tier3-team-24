@@ -1,15 +1,31 @@
+import { serverSupabaseUser } from "#supabase/server";
 import { AnnoteDocumentDbClient } from "~/server/utils/database/annote-document-db-client/annote-document-db-client";
 import { checkDocumentExists } from "~/server/utils/database/annote-document-db-client/check-document-exists";
 import { createSlugFromDocumentTitle } from "~/server/utils/slug/create-slug-from-document-title";
 import { updateDocumentValidator } from "~/server/utils/validators/document/update-document-validator";
 import { AnnoteDocument } from "~/types/annote-document/annote-document";
+import { EditorJsBlock } from "~/types/annote-document/editjs-block";
 import { ApiResponse } from "~/types/api-response/api-response";
 
 export default defineEventHandler<Promise<ApiResponse<AnnoteDocument>>>(
   async (event) => {
     const document_id = getRouterParam(event, "document_id");
+    const user = await serverSupabaseUser(event);
+    if (!user) {
+      setResponseStatus(event, 401);
+      return {
+        status: "fail",
+        error: createError({
+          statusCode: 401,
+          statusMessage: "Unauthorized",
+        }),
+      };
+    }
 
-    const requestBody = await readBody<{ title: string; body: string }>(event);
+    const requestBody = await readBody<{
+      title: string;
+      blocks: EditorJsBlock[];
+    }>(event);
 
     // Validate the request body
     try {
@@ -28,7 +44,7 @@ export default defineEventHandler<Promise<ApiResponse<AnnoteDocument>>>(
     }
 
     // Check if the document exists. If not, return 404
-    if (!(await checkDocumentExists(document_id!))) {
+    if (!(await checkDocumentExists(user.id, document_id!))) {
       setResponseStatus(event, 404);
       return {
         status: "fail",
@@ -39,7 +55,7 @@ export default defineEventHandler<Promise<ApiResponse<AnnoteDocument>>>(
       };
     }
 
-    const { title, body } = requestBody;
+    const { title, blocks } = requestBody;
 
     try {
       const dbClient = new AnnoteDocumentDbClient();
@@ -49,16 +65,17 @@ export default defineEventHandler<Promise<ApiResponse<AnnoteDocument>>>(
         const updatedDocument = await dbClient.updateDocumentTitleById(
           document_id!,
           title,
-          newSlug
+          newSlug,
+          user.id
         );
 
         return { status: "ok", data: updatedDocument };
       }
 
-      if (body) {
-        const updatedDocument = await dbClient.updatedDocumentBodyById(
+      if (blocks) {
+        const updatedDocument = await dbClient.updateDocumentBlocksById(
           document_id!,
-          body
+          blocks
         );
 
         return { status: "ok", data: updatedDocument };

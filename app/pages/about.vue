@@ -5,5 +5,5 @@ const { currentUser } = useAuth();
 </script>
 
 <template>
-  <div v-if="currentUser">Welcome, {{ currentUser.data.username }}!</div>
+  <div v-if="currentUser">Welcome, {{ currentUser.username }}!</div>
 </template>

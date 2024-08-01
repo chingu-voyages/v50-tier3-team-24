@@ -2,7 +2,7 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 
 const error = ref(null);
-const currentUser = ref(null);
+const currentUser = ref<User | null>(null);
 
 export function useAuth() {
   const supabase = useSupabaseClient();
@@ -44,7 +44,7 @@ export function useAuth() {
         throw new Error("Failed to create user");
       }
 
-      currentUser.value = await getCurrentUser();
+      currentUser.value = (await getCurrentUser())?.data!;
 
       router.push("/about");
     } catch (err: any) {
@@ -77,7 +77,7 @@ export function useAuth() {
         throw new Error("Failed to fetch user data");
       }
 
-      currentUser.value = await getCurrentUser();
+      currentUser.value = (await getCurrentUser())?.data!;
 
       router.push("/about");
     } catch (err: any) {
@@ -93,7 +93,7 @@ export function useAuth() {
     }
   }
 
-  async function getCurrentUser() {
+  async function getCurrentUser(): Promise<ApiResponse<User> | null> {
     try {
       const {
         data: { user },
@@ -106,8 +106,8 @@ export function useAuth() {
           throw new Error("Failed to fetch user data");
         }
 
-        const userData = await response.json();
-        currentUser.value = userData;
+        const userData: ApiResponse<User> = await response.json();
+        currentUser.value = userData.data!;
         return userData;
       } else {
         currentUser.value = null;

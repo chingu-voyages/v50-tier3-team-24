@@ -1,6 +1,8 @@
+import { serverSupabaseUser } from "#supabase/server";
 import { createSlugFromDocumentTitle } from "~/server/utils/slug/create-slug-from-document-title";
 import { createDocumentValidator } from "~/server/utils/validators/document/create-document-validator";
 import { AnnoteDocument } from "~/types/annote-document/annote-document";
+import { EditorJsBlock } from "~/types/annote-document/editjs-block";
 import { AnnoteDocumentDbClient } from "~~/server/utils/database/annote-document-db-client/annote-document-db-client";
 import { ApiResponse } from "~~/types/api-response/api-response";
 
@@ -8,14 +10,39 @@ import { ApiResponse } from "~~/types/api-response/api-response";
 // POST request body should also be validated at some point
 export default defineEventHandler<Promise<ApiResponse<AnnoteDocument>>>(
   async (event) => {
+    let user = null;
+
+    // TODO: There has to be a better way to guard this route
+    try {
+      user = await serverSupabaseUser(event);
+      if (!user) {
+        setResponseStatus(event, 401);
+        return {
+          status: "fail",
+          error: createError({
+            statusCode: 401,
+            statusMessage: "Unauthorized",
+          }),
+        };
+      }
+    } catch (error: any) {
+      return {
+        status: "fail",
+        error: createError({
+          statusCode: 401,
+          statusMessage: error.message,
+        }),
+      };
+    }
+
     const requestBody = await readBody<{
       title: string;
-      body: string;
+      blocks: EditorJsBlock[];
       description?: string;
       source_url?: string;
     }>(event);
 
-    // Validate the request body using a yup validator schema
+    // Validate the request body using   a yup validator schema
     try {
       await createDocumentValidator.validate(requestBody, {
         abortEarly: false,
@@ -31,17 +58,18 @@ export default defineEventHandler<Promise<ApiResponse<AnnoteDocument>>>(
       };
     }
 
-    const { title, body, description, source_url } = requestBody;
+    const { title, blocks, description, source_url } = requestBody;
 
     try {
       const slug = await createSlugFromDocumentTitle(title);
       const dbClient = new AnnoteDocumentDbClient();
       const insertedDocument = await dbClient.insertDocument({
         title,
-        body,
+        blocks,
         slug,
         description,
         source_url,
+        user_id: user.id,
       });
       setResponseStatus(event, 201);
 
