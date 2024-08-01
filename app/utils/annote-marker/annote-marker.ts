@@ -1,6 +1,6 @@
 import { IconDotCircle } from "@codexteam/icons";
 import "./style.css";
-export interface AnnoteMarkerConfig {
+interface AnnoteMarkerConfig {
   placeholder?: string;
   // TODO: We may want to implement these, or not.
   onMarkerCreate?: (data: string) => void;
