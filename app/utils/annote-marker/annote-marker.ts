@@ -24,7 +24,7 @@ export default class AnnoteMarker {
 
   private _unwrapping: boolean = false;
 
-  // This is for future reference for the colors we can use based on the figma design
+  // The colors we can use based on the figma design
   private readonly _pallet: PalletData[] = [
     {
       label: "blue",
