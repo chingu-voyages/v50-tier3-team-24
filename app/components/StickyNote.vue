@@ -1,5 +1,8 @@
 <template>
-  <div class="h-48 p-2 shadow-md w-60" :style="{ backgroundColor: bgColor }">
+  <div
+    class="p-2 m-2 shadow-md h-60 w-60"
+    :style="{ backgroundColor: bgColor }"
+  >
     <textarea
       v-model="modelValue"
       placeholder="Add your note here..."
@@ -17,7 +20,6 @@ export default defineComponent({
   emits: ["update:modelValue"],
   setup(props) {
     const bgColor = computed(() => {
-      // Map color name to actual color or use a default
       const colorMap = {
         blue: "#0084C3",
         pink: "#F1607D",

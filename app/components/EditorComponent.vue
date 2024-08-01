@@ -3,12 +3,11 @@
     <div
       class="flex bg-gray-100 border border-gray-300 rounded p-5 min-h-[300px] my-5"
     >
-      <div
-        id="editorjs"
-        class="bg-white rounded p-2.5 min-h-[250px] min-w-[1000px]"
-      ></div>
-      <div v-for="note in stickyNotes" :key="note.id">
-        <StickyNote v-model="note.text" :color="note.color" />
+      <div id="editorjs" class="bg-white rounded p-2.5 min-h-[250px]"></div>
+      <div class="flex flex-wrap">
+        <div v-for="note in stickyNotes" :key="note.id">
+          <StickyNote v-model="note.text" :color="note.color" />
+        </div>
       </div>
     </div>
   </ClientOnly>
