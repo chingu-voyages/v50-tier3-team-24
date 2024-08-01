@@ -1,10 +1,5 @@
 import { IconDotCircle } from "@codexteam/icons";
 import "./style.css";
-
-export interface AnnoteMarkerData {
-  text: string;
-}
-
 export interface AnnoteMarkerConfig {
   placeholder?: string;
   // TODO: We may want to implement these, or not.
@@ -25,8 +20,6 @@ export default class AnnoteMarker {
 
   private _currentRange: Range | null = null;
   private _termWrapper: any = null;
-
-  private _data: AnnoteMarkerData;
   private _config: AnnoteMarkerConfig;
 
   private _unwrapping: boolean = false;
@@ -70,26 +63,10 @@ export default class AnnoteMarker {
     },
   ];
 
-  private iconClasses: {
-    base: string;
-    active: string;
-  };
-
-  constructor({
-    data,
-    api,
-    readOnly,
-    config,
-  }: {
-    data: any;
-    api: Object;
-    readOnly: boolean;
-    config: AnnoteMarkerConfig;
-  }) {
+  constructor({ api, config }: { api: Object; config: AnnoteMarkerConfig }) {
     this._api = api;
     this._button = null;
-    this._tag = "MARK"; // THIS WAS MARK, set it to AMARK to avoid conflict with the default mark tag?
-    this._data = data;
+    this._tag = "MARK";
     this._config = config;
 
     // CSS Classes
@@ -97,26 +74,6 @@ export default class AnnoteMarker {
       base: this._api.styles.inlineToolButton,
       active: this._api.styles.inlineToolButtonActive,
     };
-  }
-  static get CSS() {
-    return "cdx-marker";
-  }
-
-  static get isReadOnlySupported() {
-    return true;
-  }
-
-  static get getPinCSS() {
-    return "pin";
-  }
-
-  private getPinNumbers(): number[] {
-    let pins = document.getElementsByClassName(AnnoteMarker.CSS) as any;
-    let pinNumbers: number[] = [];
-    for (let i = 0; i < pins.length; i++) {
-      pinNumbers.push(parseInt(pins[i].dataset.pin!));
-    }
-    return pinNumbers;
   }
 
   // Specifies tool as an inline toolbar tool
@@ -141,13 +98,15 @@ export default class AnnoteMarker {
     this._button.classList.add(this.iconClasses.base);
     this._button.innerHTML = this.toolboxIcon;
 
-    // If the term is active (already highlighted) then clicking the component button should de-highlight it and not show the color picker
     if (!this.isTermActive()) {
+      // Term active means that there is a highlighted section of text. If there is no highlighted section of text, then show the color picker when the user clicks the tool button.
       this._button.addEventListener("click", (event) => {
         pickerToolBarContainer.classList.toggle("show");
       });
       pickerToolBarContainer.appendChild(this.renderColorPicker());
     } else {
+      // This is for the case when the term is already highlighted and the user wants to de-highlight it. It's hacky.
+      // When the user clicks the tool button, it should de-highlight the term and not show the color picker.
       this._unwrapping = true;
     }
 
@@ -158,26 +117,7 @@ export default class AnnoteMarker {
     return mainContainer;
   }
 
-  private renderColorPicker() {
-    let colorPickerContainer = document.createElement("div");
-    colorPickerContainer.classList.add("color-picker-container");
-
-    this._pallet.forEach((palletData) => {
-      let colorPicker = document.createElement("div");
-      colorPicker.classList.add("color-picker-element");
-      colorPicker.addEventListener("click", () => {
-        colorPickerContainer.parentElement?.classList.toggle("show");
-        this._api.toolbar.close();
-        this.customSurround(palletData);
-      });
-      colorPicker.style.backgroundColor = palletData.colorHex;
-      colorPickerContainer.appendChild(colorPicker);
-    });
-
-    return colorPickerContainer;
-  }
-
-  public customSurround(palletData: PalletData) {
+  public handleColorPickerClicked(palletData: PalletData) {
     if (!this._currentRange) {
       return;
     }
@@ -192,8 +132,8 @@ export default class AnnoteMarker {
   }
 
   public surround(range: Range) {
-    // This method is automatically called by EditorJs instance. I have to re-write it to make it
-    // work with the custom color picker.
+    // This method is required and automatically called by EditorJs immediately after the render method.
+    // The range parameter is automatically passed down by EditorJs.
     this._currentRange = range;
 
     this._termWrapper = this._api.selection.findParentTag(
@@ -201,10 +141,35 @@ export default class AnnoteMarker {
       AnnoteMarker.CSS
     );
 
+    // this._unwrapping is hacky, and mainly means that the user is de-highlighting the section of text (removing the marker)
+    // I have this if-block here just to stop weird behavior with the toolbar not disappearing or working properly.
     if (this._termWrapper && this._unwrapping) {
       this.unwrap(this._termWrapper);
       this._unwrapping = false;
     }
+  }
+
+  /**
+   *
+   * @returns {HTMLElement} - The color picker element
+   */
+  private renderColorPicker() {
+    let colorPickerContainer = document.createElement("div");
+    colorPickerContainer.classList.add("color-picker-container");
+
+    this._pallet.forEach((palletData) => {
+      let colorPicker = document.createElement("div");
+      colorPicker.classList.add("color-picker-element");
+      colorPicker.addEventListener("click", () => {
+        colorPickerContainer.parentElement?.classList.toggle("show");
+        this._api.toolbar.close();
+        this.handleColorPickerClicked(palletData);
+      });
+      colorPicker.style.backgroundColor = palletData.colorHex;
+      colorPickerContainer.appendChild(colorPicker);
+    });
+
+    return colorPickerContainer;
   }
 
   /**
@@ -220,6 +185,23 @@ export default class AnnoteMarker {
     return nextPinNumber;
   }
 
+  /**
+   *
+   * @returns {number[]} - An array of all the pin numbers in the document
+   */
+  private getPinNumbers(): number[] {
+    let pins = document.getElementsByClassName(AnnoteMarker.CSS) as any;
+    let pinNumbers: number[] = [];
+    for (let i = 0; i < pins.length; i++) {
+      pinNumbers.push(parseInt(pins[i].dataset.pin!));
+    }
+    return pinNumbers;
+  }
+
+  /**
+   *
+   * This is the function responsible for highlighting the selected text and inserting a pin (the circle with the number)
+   */
   private wrap(range: Range, palletData: PalletData) {
     /**
      * Create a wrapper for highlighting
@@ -257,12 +239,17 @@ export default class AnnoteMarker {
     this._api.selection.expandToTag(marker);
   }
 
+  private iconClasses: {
+    base: string;
+    active: string;
+  };
+
   /**
-   * Unwrap term-tag
+   * Unwrap term-tag - de-highlight and remove the pin, essentially
    *
    * @param {HTMLElement} termWrapper - term wrapper tag
    */
-  unwrap(termWrapper: any) {
+  private unwrap(termWrapper: any) {
     /**
      * Expand selection to all term-tag
      */
@@ -297,6 +284,7 @@ export default class AnnoteMarker {
     sel?.addRange(range!);
   }
 
+  // This returns the icon for the tool button
   get toolboxIcon(): string {
     return IconDotCircle;
   }
@@ -328,7 +316,7 @@ export default class AnnoteMarker {
   }
 
   /**
-   * Sanitizer rule
+   * Sanitizer rule. EditorJS will filter out attributes on tags that aren't in these santize rules.
    * @return {{mark: {class: string}}}
    */
   static get sanitize() {
@@ -343,5 +331,17 @@ export default class AnnoteMarker {
         style: true,
       },
     };
+  }
+
+  static get CSS() {
+    return "cdx-marker";
+  }
+
+  static get isReadOnlySupported() {
+    return true;
+  }
+
+  static get getPinCSS() {
+    return "pin";
   }
 }
