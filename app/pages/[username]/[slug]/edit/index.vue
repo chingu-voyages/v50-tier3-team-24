@@ -72,7 +72,6 @@
   }
 
   function handleEditorReady(editor: CustomEditorJs) {
-    console.log("Editor is ready");
     editorController.value = editor;
     editor.isReady.then(() => {
         editor.render({

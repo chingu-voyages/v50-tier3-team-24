@@ -42,7 +42,6 @@ const props: EditorComponentProps = defineProps<EditorComponentProps>();
       marker: { 
         class: AnnoteMarker as any, // This is our custom marker tool
         inlineToolbar: true,
-        
       },
       linkTool: {
         class: LinkTool
