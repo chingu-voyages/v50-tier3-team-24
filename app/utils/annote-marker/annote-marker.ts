@@ -1,10 +1,13 @@
 import { IconDotCircle } from "@codexteam/icons";
+
 import "./style.css";
 interface AnnoteMarkerConfig {
   placeholder?: string;
   // TODO: We may want to implement these, or not.
   onMarkerCreate?: (data: string) => void;
   onMarkerRemove?: (data: string) => void;
+  onMarkerInserted?: (data: any) => void;
+  onMarkerDeleted?: (data: any) => void;
 }
 
 interface PalletData {
@@ -232,6 +235,14 @@ export default class AnnoteMarker {
 
     // Expand (add) selection to highlighted block
     this._api.selection.expandToTag(marker);
+
+    if (this._config.onMarkerInserted) {
+      this._config.onMarkerInserted({
+        id: pinNumber,
+        color: palletData.label,
+        text: marker.textContent,
+      });
+    }
   }
 
   private iconClasses: {
@@ -268,6 +279,12 @@ export default class AnnoteMarker {
     // Restore selection
     sel?.removeAllRanges();
     sel?.addRange(range!);
+
+    if (this._config.onMarkerDeleted) {
+      this._config.onMarkerDeleted({
+        id: termWrapper.dataset.pin,
+      });
+    }
   }
 
   // This returns the icon for the tool button
