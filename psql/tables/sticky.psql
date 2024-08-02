@@ -1,0 +1,11 @@
+CREATE TABLE public.sticky (
+  sticky_id uuid DEFAULT gen_random_uuid(),
+  document_id uuid,
+  title TEXT,
+  body TEXT,
+  anchor INT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+	updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  CONSTRAINT pk_sticky PRIMARY KEY(sticky_id),
+  CONSTRAINT fk_document FOREIGN KEY(document_id) REFERENCES annote_document(document_id)
+);  
