@@ -1,6 +1,7 @@
 CREATE TABLE public.sticky (
   sticky_id uuid DEFAULT gen_random_uuid(),
   document_id uuid,
+  color TEXT,
   title TEXT,
   body TEXT,
   anchor INT,
