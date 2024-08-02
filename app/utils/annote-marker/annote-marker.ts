@@ -1,5 +1,9 @@
 import { IconDotCircle } from "@codexteam/icons";
 
+import {
+  COLOR_PALLET,
+  type ColorPallet,
+} from "types/color-pallet/color-pallet";
 import "./style.css";
 interface AnnoteMarkerConfig {
   placeholder?: string;
@@ -8,12 +12,6 @@ interface AnnoteMarkerConfig {
   onMarkerRemove?: (data: string) => void;
   onMarkerInserted?: (data: any) => void;
   onMarkerDeleted?: (data: any) => void;
-}
-
-interface PalletData {
-  label: string;
-  colorHex: string;
-  rgba: string;
 }
 
 export default class AnnoteMarker {
@@ -28,43 +26,6 @@ export default class AnnoteMarker {
   private _unwrapping: boolean = false;
 
   // The colors we can use based on the figma design
-  private readonly _pallet: PalletData[] = [
-    {
-      label: "blue",
-      colorHex: "#0084C3",
-      rgba: "rgba(0, 132, 195, 0.29)",
-    },
-    {
-      label: "pink",
-      colorHex: "#F1607D",
-      rgba: "rgba(241, 96, 125, 0.29)",
-    },
-    {
-      label: "red",
-      colorHex: "#F64C00",
-      rgba: "rgba(246, 76, 0, 0.29)",
-    },
-    {
-      label: "gold",
-      colorHex: "#CEA000",
-      rgba: "rgba(206, 160, 0, 0.29)",
-    },
-    {
-      label: "green",
-      colorHex: "#02A856",
-      rgba: "rgba(2, 168, 86, 0.29)",
-    },
-    {
-      label: "teal",
-      colorHex: "#03A58D",
-      rgba: "rgba(3, 165, 141, 0.29)",
-    },
-    {
-      label: "purple",
-      colorHex: "#821EB1",
-      rgba: "	rgba(130, 30, 177, 0.29)",
-    },
-  ];
 
   constructor({ api, config }: { api: Object; config: AnnoteMarkerConfig }) {
     this._api = api;
@@ -120,7 +81,7 @@ export default class AnnoteMarker {
     return mainContainer;
   }
 
-  private handleColorPalletClicked(palletData: PalletData) {
+  private handleColorPalletClicked(palletData: ColorPallet) {
     if (!this._currentRange) {
       return;
     }
@@ -159,7 +120,7 @@ export default class AnnoteMarker {
     const colorPickerContainer = document.createElement("div");
     colorPickerContainer.classList.add("color-picker-container");
 
-    this._pallet.forEach((palletData) => {
+    COLOR_PALLET.forEach((palletData) => {
       const colorPicker = document.createElement("div");
       colorPicker.classList.add("color-picker-element");
       colorPicker.addEventListener("click", () => {
@@ -204,7 +165,7 @@ export default class AnnoteMarker {
    *
    * This is the function responsible for highlighting the selected text and inserting a pin (the circle with the number)
    */
-  private wrap(range: Range, palletData: PalletData) {
+  private wrap(range: Range, palletData: ColorPallet) {
     // Create a wrapper for highlighting
     const marker = document.createElement(this._tag);
 
