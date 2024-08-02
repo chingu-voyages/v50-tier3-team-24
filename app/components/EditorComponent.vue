@@ -9,7 +9,6 @@ import EditorJS from "@editorjs/editorjs";
 import Header from "@editorjs/header";
 import LinkTool from "@editorjs/link";
 import List from "@editorjs/list";
-import { ref } from "vue";
 import AnnoteMarker from "../utils/annote-marker/annote-marker";
 
 import type { CustomEditorJs } from "types/custom-editorjs.ts/custom-editorjs";
