@@ -1,12 +1,8 @@
 import { IconDotCircle } from "@codexteam/icons";
 
 import { COLOR_PALLET_MAP } from "../../../types/definitions/color-pallet-map/color-pallet-map";
+import type { AnnoteMarkerConfig } from "./definitions/types";
 import "./style.css";
-interface AnnoteMarkerConfig {
-  placeholder?: string;
-  onMarkerInserted?: (data: any) => void;
-  onMarkerDeleted?: (data: any) => void;
-}
 
 export default class AnnoteMarker {
   private _api: { [key in string]: any };
@@ -193,8 +189,8 @@ export default class AnnoteMarker {
 
     if (this._config.onMarkerInserted) {
       this._config.onMarkerInserted({
-        id: pinNumber,
-        color: palletData.label,
+        pinNumber: pinNumber,
+        color: palletData.colorHex,
         text: marker.textContent,
       });
     }
