@@ -1,15 +1,9 @@
 import { IconDotCircle } from "@codexteam/icons";
 
-import {
-  COLOR_PALLET,
-  type ColorPallet,
-} from "types/color-pallet/color-pallet";
+import { COLOR_PALLET_MAP } from "../../../types/definitions/color-pallet-map/color-pallet-map";
 import "./style.css";
 interface AnnoteMarkerConfig {
   placeholder?: string;
-  // TODO: We may want to implement these, or not.
-  onMarkerCreate?: (data: string) => void;
-  onMarkerRemove?: (data: string) => void;
   onMarkerInserted?: (data: any) => void;
   onMarkerDeleted?: (data: any) => void;
 }
@@ -120,7 +114,7 @@ export default class AnnoteMarker {
     const colorPickerContainer = document.createElement("div");
     colorPickerContainer.classList.add("color-picker-container");
 
-    COLOR_PALLET.forEach((palletData) => {
+    COLOR_PALLET_MAP.forEach((palletData) => {
       const colorPicker = document.createElement("div");
       colorPicker.classList.add("color-picker-element");
       colorPicker.addEventListener("click", () => {
