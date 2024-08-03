@@ -1,11 +1,12 @@
 CREATE TABLE public.sticky (
-  sticky_id uuid DEFAULT gen_random_uuid(),
+  sticky_id uuid,
   document_id uuid,
   user_id uuid,
   color TEXT,
   title TEXT,
   body TEXT,
   anchor INT,
+  author TEXT,
   source_url TEXT default NULL,
   video_title TEXT default NULL,
   video_description TEXT default NULL,

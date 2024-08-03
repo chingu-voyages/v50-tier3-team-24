@@ -10,6 +10,7 @@ CREATE TABLE public.annote_document (
 		source_url TEXT,
 		image_url TEXT,
 		visibility visibility DEFAULT 'private',
+		author TEXT,
 		PRIMARY KEY (document_id)
 		CONSTRAINT fk_user
     	FOREIGN KEY(user_id) 
