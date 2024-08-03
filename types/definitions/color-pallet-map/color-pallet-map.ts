@@ -35,3 +35,9 @@ export const COLOR_PALLET_MAP: ColorPallet[] = [
     rgba: "	rgba(130, 30, 177, 0.29)",
   },
 ];
+
+/** Return the RGBA pastel color for a specific hex */
+export function getRgbByHexColor(hex: string): string {
+  const color = COLOR_PALLET_MAP.find((color) => color.colorHex === hex);
+  return color ? color.rgba : "";
+}

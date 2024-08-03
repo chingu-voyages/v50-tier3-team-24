@@ -1,4 +1,5 @@
 export interface StickyCreateActionData {
+  sticky_id: string;
   document_id: string;
   title: string;
   body: string;

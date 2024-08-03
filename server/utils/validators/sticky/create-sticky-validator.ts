@@ -8,4 +8,7 @@ export const createStickyValidator = object<StickyCreateActionData>({
   color: string().required(),
   anchor: string().required(),
   sticky_type: string().required(),
+  sticky_id: string()
+    .required()
+    .length(36, "Sticky ID must be uuid and 36 characters long."),
 });

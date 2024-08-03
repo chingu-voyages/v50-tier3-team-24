@@ -10,5 +10,6 @@ export interface AnnoteDocument {
   updated_at: Date;
   source_url?: string;
   image_url?: string;
+  author?: string;
   visibility: "private" | "public";
 }

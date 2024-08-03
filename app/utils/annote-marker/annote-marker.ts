@@ -170,6 +170,9 @@ export default class AnnoteMarker {
     marker.dataset.pin = pinNumber.toString();
     pin.innerHTML = pinNumber.toString();
 
+    const newUuid = this.generateUuid();
+    marker.dataset.uuid = newUuid;
+
     pin.classList.add(AnnoteMarker.getPinCSS);
     pin.style.backgroundColor = palletData.colorHex;
 
@@ -192,6 +195,7 @@ export default class AnnoteMarker {
         pinNumber: pinNumber,
         color: palletData.colorHex,
         text: marker.textContent,
+        uuid: newUuid,
       });
     }
   }
@@ -201,6 +205,9 @@ export default class AnnoteMarker {
     active: string;
   };
 
+  private generateUuid(): string {
+    return crypto.randomUUID();
+  }
   /**
    * Unwrap term-tag - de-highlight and remove the pin, essentially
    *
@@ -233,7 +240,8 @@ export default class AnnoteMarker {
 
     if (this._config.onMarkerDeleted) {
       this._config.onMarkerDeleted({
-        id: termWrapper.dataset.pin,
+        pinNumber: termWrapper.dataset.pin,
+        uuid: termWrapper.dataset.uuid,
       });
     }
   }
@@ -278,6 +286,7 @@ export default class AnnoteMarker {
       mark: {
         class: AnnoteMarker.CSS,
         "data-pin": true,
+        "data-uuid": true,
         style: true,
       },
       div: {

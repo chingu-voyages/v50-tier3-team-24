@@ -1,5 +1,6 @@
 // This is just a base. Use Sticky, VideoSticky, and LinkSticky instead.
 export interface BaseSticky {
+  author?: string;
   sticky_id: string;
   document_id: string;
   user_id: string;

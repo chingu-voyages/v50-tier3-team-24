@@ -3,7 +3,7 @@ import type { BaseSticky } from "./base-sticky/base-sticky";
 export interface Sticky extends BaseSticky {}
 
 interface StickyWithSourceUrl extends BaseSticky {
-  source_url: string;
+  source_url?: string;
 }
 export interface VideoSticky extends StickyWithSourceUrl {
   video_title: string;
