@@ -38,7 +38,7 @@ export default defineEventHandler<Promise<ApiResponse<AnnoteDocument>>>(
         status: "fail",
         error: createError({
           statusCode: 400,
-          statusMessage: JSON.stringify(error),
+          statusMessage: error.message,
         }),
       };
     }
