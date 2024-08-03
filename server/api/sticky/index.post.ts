@@ -32,10 +32,12 @@ export default defineEventHandler(async (event) => {
     };
   }
 
-  const { document_id, title, body, color, anchor, sticky_type } = requestBody;
+  const { document_id, title, body, color, anchor, sticky_type, sticky_id } =
+    requestBody;
   try {
     const client = new StickyDbClient();
     const stickyData = await client.insertSticky(user.id, {
+      sticky_id,
       document_id,
       title,
       body,
