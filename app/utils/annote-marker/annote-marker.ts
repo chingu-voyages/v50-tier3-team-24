@@ -45,6 +45,7 @@ export default class AnnoteMarker {
 
     const colorPickerContainer = document.createElement("div");
     colorPickerContainer.classList.add("picker-toolbar-container");
+    colorPickerContainer.style.backgroundColor = "white";
 
     // This is rendering the button on the pop-up tool box
     this._button = document.createElement("button");
@@ -194,7 +195,7 @@ export default class AnnoteMarker {
       this._config.onMarkerInserted({
         pinNumber: pinNumber,
         color: palletData.colorHex,
-        text: marker.textContent,
+        text: marker.textContent!.substring(1),
         uuid: newUuid,
       });
     }
