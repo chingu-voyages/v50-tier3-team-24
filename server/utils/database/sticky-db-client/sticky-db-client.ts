@@ -23,6 +23,21 @@ export class StickyDbClient extends BaseDbClient {
     return data?.[0] || null;
   }
 
+  public async updateStickyById(
+    user_id: string,
+    sticky_id: string,
+    stickyData: Partial<Sticky | VideoSticky | LinkSticky>
+  ): Promise<Sticky | VideoSticky | LinkSticky> {
+    const { error, data } = await this.client
+      .from(this.TABLE_NAME)
+      .update(stickyData)
+      .match({ sticky_id, user_id })
+      .select();
+
+    if (error) throw new Error(error.message);
+    return data?.[0];
+  }
+
   public async getAllStickiesByDocumentId(
     user_id: string,
     document_id: string
@@ -30,8 +45,7 @@ export class StickyDbClient extends BaseDbClient {
     const { data, error } = await this.client
       .from(this.TABLE_NAME)
       .select("*")
-      .eq("document_id", document_id)
-      .eq("user_id", user_id);
+      .eq("document_id", document_id);
 
     if (error) throw new Error(error.message);
 
