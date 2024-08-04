@@ -45,7 +45,7 @@
 
   const { id } = route.query;
   const { username } = route.params;
-  console.log("username url param", username, "| currentUser ", currentUser?.data?.username)
+
   if (id) {
     const { data: apiResponse } = await useFetch<ApiResponse<AnnoteDocument>>(`/api/annote_documents/${id}`);
     annoteDocument.value = apiResponse.value?.data!;

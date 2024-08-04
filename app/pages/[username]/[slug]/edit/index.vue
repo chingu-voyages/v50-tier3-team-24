@@ -175,7 +175,6 @@ function handleCloseOutSticky () {
 }
 
 async function handleDeleteSticky (sticky_id: string) {
-  console.log("hi")
   await useFetch<ApiResponse<Sticky>>(
     `/api/sticky/${sticky_id}`,
     {
