@@ -32,7 +32,7 @@ export const COLOR_PALLET_MAP: ColorPallet[] = [
   {
     label: "purple",
     colorHex: "#821EB1",
-    rgba: "	rgba(130, 30, 177, 0.29)",
+    rgba: "rgba(130, 30, 177, 0.29)",
   },
 ];
 
