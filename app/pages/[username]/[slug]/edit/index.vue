@@ -99,15 +99,7 @@ async function handleDocumentTitleBlur() {
       id: document_id,
     },
   });
-}
-async function handleDocumentBodyBlur() {
-  // This function handles when the user clicks out of the body textarea
-  // It should send a patch request to the server to update the document body
-  // The documentBody should be validated but I won't check for empty string here
-  // const { data: apiResponse } = await useFetch<ApiResponse<AnnoteDocument>>(`/api/annote_documents/${id}`, {
-  //   method: "PATCH",
-  //   body: JSON.stringify({ body: documentBody.value }),
-  // });
+
 }
 
 async function patchAnnoteDocumentBlocks(): Promise<AnnoteDocument> {
@@ -122,11 +114,6 @@ async function patchAnnoteDocumentBlocks(): Promise<AnnoteDocument> {
   );
   return apiResponse.value?.data!;
 }
-
-// async function fetchStickies (): Promise<Sticky[]> {
-//   const { data: apiResponse } = await useFetch<ApiResponse<Sticky[]>>(`/api/annote_documents/${id}/sticky`);
-//   return apiResponse.value?.data!;
-// }
 
 if (id) {
   const { data: apiResponse } = await useFetch<ApiResponse<AnnoteDocument>>(
