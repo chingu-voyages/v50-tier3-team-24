@@ -50,6 +50,9 @@ importers:
       '@supabase/supabase-js':
         specifier: ^2.44.4
         version: 2.44.4
+      click-outside-vue3:
+        specifier: ^4.0.1
+        version: 4.0.1
       h3:
         specifier: ^1.12.0
         version: 1.12.0
@@ -2054,6 +2057,10 @@ packages:
 
   clear@0.1.0:
     resolution: {integrity: sha512-qMjRnoL+JDPJHeLePZJuao6+8orzHMGP04A8CdwCNsKhRbOnKRjefxONR7bwILT3MHecxKBjHkKL/tkZ8r4Uzw==}
+
+  click-outside-vue3@4.0.1:
+    resolution: {integrity: sha512-sbplNecrup5oGqA3o4bo8XmvHRT6q9fvw21Z67aDbTqB9M6LF7CuYLTlLvNtOgKU6W3zst5H5zJuEh4auqA34g==}
+    engines: {node: '>=6'}
 
   clipboardy@4.0.0:
     resolution: {integrity: sha512-5mOlNS0mhX0707P2I0aZ2V/cmHUEO/fL7VFLqszkhUsxt7RwnmrInf/eEQKlf5GzvYeHIjT+Ov1HRfNmymlG0w==}
@@ -7363,6 +7370,8 @@ snapshots:
   clean-stack@2.2.0: {}
 
   clear@0.1.0: {}
+
+  click-outside-vue3@4.0.1: {}
 
   clipboardy@4.0.0:
     dependencies:
