@@ -1,52 +1,51 @@
 <template>
   <div>
-    <div>
+    <div class="flex">
+      <input
+        type="text"
+        v-model="documentTitle"
+        @blur="handleDocumentTitleBlur"
+        class="w-full p-2 border border-gray-300 rounded font-verdana"
+        placeholder="Title"
+      />
+      <div class="flex items-center gap-2 ml-2">
+        <Icon name="mdi:check" />
+        <Icon name="mdi:trash-can-outline" />
+      </div>
+    </div>
+    <div class="flex bg-gray-100 border border-gray-300 rounded p-5 min-h-[300px] my-5">
+      <ClientOnly>
+        <EditorComponent :onEditorReady="handleEditorReady" :onMarkerInserted="handleMarkerInserted" />
+      </ClientOnly>
       <div>
+        <Transition>
+          <div v-if="isInsertingNewAnnotation" id="new-sticky-container p-2">
+            <!-- This is for new annotation stickes -->
+            <StickyNote 
+              :isNew="isInsertingNewAnnotation" 
+              :color="newStickyData?.color!" 
+              :pinNumber="newStickyData?.pinNumber!" 
+              :documentId="newStickyData?.documentId!" 
+              :title="newStickyData?.title"
+              :onUpdateCreate="handleUpdateCreateSticky"
+              :onCancel="handleCloseOutSticky"
+              :uuid="newStickyData?.uuid"
+            />
+          </div>
+        </Transition>
         <div class="flex">
-          <input
-            type="text"
-            v-model="documentTitle"
-            @blur="handleDocumentTitleBlur"
-            class="w-full p-2 border border-gray-300 rounded font-verdana"
-            placeholder="Title"
+          <StickyNote 
+            v-for="sticky in stickies" :key="sticky.sticky_id"
+            :stickyData="sticky" 
+            :color="sticky.color" 
+            :pinNumber="sticky.anchor" 
+            :documentId="sticky.document_id" 
+            :readonly="true"
+            :onDelete="handleDeleteSticky"
+            :uuid="sticky.sticky_id"
+            :canEdit="true"
+            :onUpdateCreate="handleUpdateCreateSticky"
           />
-          <div class="flex items-center gap-2 ml-2">
-            <Icon name="mdi:check" />
-            <Icon name="mdi:trash-can-outline" />
-          </div>
-        </div>
-        <div class="flex bg-gray-100 border border-gray-300 rounded p-5 min-h-[300px] my-5">
-          <ClientOnly>
-            <EditorComponent :onEditorReady="handleEditorReady" :onMarkerInserted="handleMarkerInserted" />
-          </ClientOnly>
-          <div>
-            <Transition>
-              <div v-if="isInsertingNewAnnotation" id="new-sticky-container p-2">
-                <!-- This is for new annotation stickes -->
-                <StickyNote 
-                  :isNew="isInsertingNewAnnotation" 
-                  :color="newStickyData?.color" 
-                  :pinNumber="newStickyData?.pinNumber" 
-                  :documentId="newStickyData?.documentId" 
-                  :title="newStickyData?.title"
-                  :onUpdateCreate="handleUpdateCreateSticky"
-                  :onCancel="handleCloseOutSticky"
-                />
-              </div>
-            </Transition>
-            <div class="flex">
-              <StickyNote 
-                v-for="sticky in stickies" :key="sticky.sticky_id"
-                :stickyData="sticky" 
-                :color="sticky.color" 
-                :pinNumber="sticky.anchor" 
-                :documentId="sticky.document_id" 
-                :readonly="true"
-                :onDelete="handleDeleteSticky"
-              />
-            </div>
-           
-          </div>
         </div>
       </div>
     </div>
@@ -54,10 +53,11 @@
 </template>
 
 <script setup lang="ts">
-import type { Sticky } from 'types/sticky/sticky-types';
-import type { ActionType } from '../../../../../types/sticky/action-type/action-type';
-import type { StickyCreateActionData } from '../../../../../types/sticky/sticky-create-action-data/sticky-create-action-data';
+import type { ActionType } from '~/types/sticky/action-type/action-type';
+import type { StickyCreateActionData, StickyUpdateActionData } from '~/types/sticky/sticky-action-data/sticky-action-data';
+import type { LinkSticky, Sticky, VideoSticky } from '~/types/sticky/sticky-types';
 import type { AnnoteOnMarkerInsertedData } from '../../../../utils/annote-marker/definitions/types';
+
 const annoteDocument = ref<AnnoteDocument | null>(null);
 const documentTitle = ref("");
 const editorController = ref<CustomEditorJs | null>(null);
@@ -66,9 +66,10 @@ const initialDocumentTitle = ref(""); // The original title when the document lo
 const route = useRoute();
 
 const isInsertingNewAnnotation = ref(false);
-const newStickyData = ref<{ pinNumber: number; color: string; title: string, documentId: string } | null>(null);
+const newStickyData = ref<{ pinNumber: number; color: string; title: string, documentId: string, uuid: string } | null>(null);
 
 const stickies = ref<Sticky[]>([]);
+const { fetchStickies } = useSticky();
 
 const { id } = route.query;
 
@@ -122,10 +123,10 @@ async function patchAnnoteDocumentBlocks(): Promise<AnnoteDocument> {
   return apiResponse.value?.data!;
 }
 
-async function fetchStickies (): Promise<Sticky[]> {
-  const { data: apiResponse } = await useFetch<ApiResponse<Sticky[]>>(`/api/annote_documents/${id}/sticky`);
-  return apiResponse.value?.data!;
-}
+// async function fetchStickies (): Promise<Sticky[]> {
+//   const { data: apiResponse } = await useFetch<ApiResponse<Sticky[]>>(`/api/annote_documents/${id}/sticky`);
+//   return apiResponse.value?.data!;
+// }
 
 if (id) {
   const { data: apiResponse } = await useFetch<ApiResponse<AnnoteDocument>>(
@@ -135,7 +136,7 @@ if (id) {
   initialDocumentTitle.value = annoteDocument.value.title;
   documentTitle.value = annoteDocument.value.title;
 
-  stickies.value = await fetchStickies();
+  stickies.value = await fetchStickies(id);
 }
 
 function handleMarkerInserted (data?: AnnoteOnMarkerInsertedData) {
@@ -144,8 +145,8 @@ function handleMarkerInserted (data?: AnnoteOnMarkerInsertedData) {
     return;
   }
   isInsertingNewAnnotation.value = true;
-  const { pinNumber, color, text } = data!;
-  newStickyData.value = { pinNumber, color, title: text || "", documentId: annoteDocument.value?.document_id! };
+  const { pinNumber, color, text, uuid } = data!;
+  newStickyData.value = { pinNumber, color, title: text || "", documentId: annoteDocument.value?.document_id!, uuid };
 }
 
 function handleEditorReady(editor: CustomEditorJs) {
@@ -157,29 +158,24 @@ function handleEditorReady(editor: CustomEditorJs) {
   });
 }
 
-async function handleUpdateCreateSticky(action: ActionType, values: StickyCreateActionData) {
-  if (action === "create") {
-    // This method needs to also patch the annote document
-    // Create a new sticky note
-    const { document_id, title, body, anchor, color, sticky_type } = values;
-    await useFetch<ApiResponse<Sticky>>(
-      `/api/sticky`,
-      {
-        method: "POST",
-        body: {
-          document_id,
-          title,
-          body,
-          color,
-          anchor,
-          sticky_type,
-        },
-      }
-    );
-    annoteDocument.value = await patchAnnoteDocumentBlocks();
-    stickies.value = await fetchStickies();
-    console.log("163", stickies.value);
-  }
+async function handleUpdateCreateSticky(action: ActionType, values: StickyCreateActionData | StickyUpdateActionData): Promise<void> {
+  const { sticky_id } = (values as StickyCreateActionData);
+  const { document_id, title, body, anchor, color, sticky_type, source_url } = values;
+  const httpBody = { document_id, title, body, color, anchor, sticky_type, sticky_id, source_url };
+  const endPoint = action === "create" ? "/api/sticky" : `/api/sticky/${sticky_id}`;
+
+  // This method needs to also patch the annote document
+  // Create a new sticky note
+  await useFetch<ApiResponse<Sticky | VideoSticky | LinkSticky>>(
+    endPoint,
+    {
+      method: action === "create" ? "POST" : "PATCH",
+      body: httpBody
+    }
+  );
+  annoteDocument.value = await patchAnnoteDocumentBlocks();
+  stickies.value = await fetchStickies(id);
+  console.log("163", stickies.value);
 
   isInsertingNewAnnotation.value = false;
   newStickyData.value = null;
@@ -203,7 +199,7 @@ async function handleDeleteSticky (sticky_id: string) {
     }
   );
   annoteDocument.value = await patchAnnoteDocumentBlocks();
-  stickies.value = await fetchStickies();
+  stickies.value = await fetchStickies(id);
 }
 </script>
 
