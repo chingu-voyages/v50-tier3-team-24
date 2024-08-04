@@ -1,7 +1,7 @@
 import { serverSupabaseUser } from "#supabase/server";
 import { StickyDbClient } from "~/server/utils/database/sticky-db-client/sticky-db-client";
 import { createStickyValidator } from "~/server/utils/validators/sticky/create-sticky-validator";
-import { StickyCreateActionData } from "~/types/sticky/sticky-create-action-data/sticky-create-action-data";
+import type { StickyCreateActionData } from "~/types/sticky/sticky-create-action-data/sticky-create-action-data";
 
 export default defineEventHandler(async (event) => {
   const user = await serverSupabaseUser(event);

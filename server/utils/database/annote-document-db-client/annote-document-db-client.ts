@@ -1,5 +1,5 @@
-import { EditorJsBlock } from "~/types/annote-document/editjs-block";
-import { AnnoteDocument } from "~~/types/annote-document/annote-document";
+import type { AnnoteDocument } from "~/types/annote-document/annote-document";
+import type { EditorJsBlock } from "~/types/annote-document/editjs-block";
 import { BaseDbClient } from "../base-db-client";
 
 export class AnnoteDocumentDbClient extends BaseDbClient {

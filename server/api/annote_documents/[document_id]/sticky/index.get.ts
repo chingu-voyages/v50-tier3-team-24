@@ -1,7 +1,7 @@
 import { serverSupabaseUser } from "#supabase/server";
 import { StickyDbClient } from "~/server/utils/database/sticky-db-client/sticky-db-client";
-import { ApiResponse } from "~/types/api-response/api-response";
-import { Sticky } from "~/types/sticky/sticky-types";
+import type { ApiResponse } from "~/types/api-response/api-response";
+import type { Sticky } from "~/types/sticky/sticky-types";
 
 export default defineEventHandler<Promise<ApiResponse<Sticky[]>>>(
   async (event) => {

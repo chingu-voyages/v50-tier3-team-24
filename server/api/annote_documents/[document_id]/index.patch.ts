@@ -3,9 +3,9 @@ import { AnnoteDocumentDbClient } from "~/server/utils/database/annote-document-
 import { checkDocumentExists } from "~/server/utils/database/annote-document-db-client/check-document-exists";
 import { createSlugFromDocumentTitle } from "~/server/utils/slug/create-slug-from-document-title";
 import { updateDocumentValidator } from "~/server/utils/validators/document/update-document-validator";
-import { AnnoteDocument } from "~/types/annote-document/annote-document";
-import { EditorJsBlock } from "~/types/annote-document/editjs-block";
-import { ApiResponse } from "~/types/api-response/api-response";
+import type { AnnoteDocument } from "~/types/annote-document/annote-document";
+import type { EditorJsBlock } from "~/types/annote-document/editjs-block";
+import type { ApiResponse } from "~/types/api-response/api-response";
 
 export default defineEventHandler<Promise<ApiResponse<AnnoteDocument>>>(
   async (event) => {

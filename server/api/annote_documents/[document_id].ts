@@ -1,7 +1,7 @@
 import { serverSupabaseUser } from "#supabase/server";
-import { AnnoteDocumentDbClient } from "~~/server/utils/database/annote-document-db-client/annote-document-db-client";
-import { AnnoteDocument } from "~~/types/annote-document/annote-document";
-import { ApiResponse } from "~~/types/api-response/api-response";
+import { AnnoteDocumentDbClient } from "~/server/utils/database/annote-document-db-client/annote-document-db-client";
+import type { AnnoteDocument } from "~/types/annote-document/annote-document";
+import type { ApiResponse } from "~/types/api-response/api-response";
 
 export default defineEventHandler<Promise<ApiResponse<AnnoteDocument>>>(
   async (event) => {

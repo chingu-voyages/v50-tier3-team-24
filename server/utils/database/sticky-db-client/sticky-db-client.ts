@@ -1,4 +1,8 @@
-import { LinkSticky, Sticky, VideoSticky } from "~/types/sticky/sticky-types";
+import type {
+  LinkSticky,
+  Sticky,
+  VideoSticky,
+} from "~/types/sticky/sticky-types";
 import { BaseDbClient } from "../base-db-client";
 
 export class StickyDbClient extends BaseDbClient {

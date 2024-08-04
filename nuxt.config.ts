@@ -11,6 +11,7 @@ export default defineNuxtConfig({
     "@nuxtjs/tailwindcss",
     "@nuxt/icon",
     "@nuxtjs/supabase",
+    "@nuxt/eslint",
   ],
   icon: {
     provider: "iconify",

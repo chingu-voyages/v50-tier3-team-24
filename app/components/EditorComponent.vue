@@ -11,8 +11,8 @@ import LinkTool from "@editorjs/link";
 import List from "@editorjs/list";
 import AnnoteMarker from "../utils/annote-marker/annote-marker";
 
-import type { CustomEditorJs } from "types/custom-editorjs.ts/custom-editorjs";
-import type { AnnoteOnMarkerInsertedData } from "../utils/annote-marker/definitions/types";
+import type { CustomEditorJs } from "~/types/custom-editorjs.ts/custom-editorjs";
+import type { AnnoteOnMarkerInsertedData, AnnotteOnMarkerDeletedData } from "../utils/annote-marker/definitions/types";
 
 interface EditorComponentProps {
   onEditorReady: (editor: CustomEditorJs) => void;
@@ -44,6 +44,9 @@ const editor = new EditorJS({
       config: {
         onMarkerInserted: (markerData: AnnoteOnMarkerInsertedData) => {
           props.onMarkerInserted?.(markerData);
+        },
+        onMarkerDeleted: (markerData: AnnotteOnMarkerDeletedData) => {
+          console.log("Marker deleted", markerData); 
         }
       },
     },

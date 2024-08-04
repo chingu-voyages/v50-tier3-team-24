@@ -1,6 +1,6 @@
 import { IconDotCircle } from "@codexteam/icons";
 
-import { COLOR_PALLET_MAP } from "../../../types/definitions/color-pallet-map/color-pallet-map";
+import { COLOR_PALLET_MAP } from "~/types/definitions/color-pallet-map/color-pallet-map";
 import type { AnnoteMarkerConfig } from "./definitions/types";
 import "./style.css";
 

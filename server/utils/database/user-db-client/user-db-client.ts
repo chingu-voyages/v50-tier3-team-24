@@ -1,4 +1,4 @@
-import { User } from "~~/types/user/user";
+import type { User } from "~/types/user/user";
 import { BaseDbClient } from "../base-db-client";
 
 export class UserDbClient extends BaseDbClient {

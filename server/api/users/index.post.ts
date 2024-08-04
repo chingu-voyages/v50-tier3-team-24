@@ -1,6 +1,6 @@
 import { UserDbClient } from "~/server/utils/database/user-db-client/user-db-client";
-import { ApiResponse } from "~/types/api-response/api-response";
-import { User } from "~/types/user/user";
+import type { ApiResponse } from "~/types/api-response/api-response";
+import type { User } from "~/types/user/user";
 
 export default defineEventHandler<Promise<ApiResponse>>(async (event) => {
   const requestBody = await readBody<Partial<User>>(event);
