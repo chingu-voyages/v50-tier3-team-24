@@ -8,7 +8,7 @@ export class StickyDbClient extends BaseDbClient {
 
   public async insertSticky(
     user_id: string,
-    stickyData: Partial<Sticky>
+    stickyData: Partial<Sticky | LinkSticky | VideoSticky>
   ): Promise<Sticky | VideoSticky | LinkSticky | null> {
     const { error, data } = await this.client
       .from(this.TABLE_NAME)

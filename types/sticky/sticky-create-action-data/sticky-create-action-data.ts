@@ -6,4 +6,5 @@ export interface StickyCreateActionData {
   color: string;
   anchor: number;
   sticky_type: "sticky" | "video" | "link";
+  source_url?: string;
 }
