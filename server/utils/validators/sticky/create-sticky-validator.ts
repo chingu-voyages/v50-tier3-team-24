@@ -1,5 +1,5 @@
 import { object, string } from "yup";
-import type { StickyCreateActionData } from "~/types/sticky/sticky-create-action-data/sticky-create-action-data";
+import type { StickyCreateActionData } from "~/types/sticky/sticky-action-data/sticky-action-data";
 
 export const createStickyValidator = object<StickyCreateActionData>({
   document_id: string().required(),
