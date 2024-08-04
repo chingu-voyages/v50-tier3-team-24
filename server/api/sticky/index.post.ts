@@ -1,7 +1,7 @@
 import { serverSupabaseUser } from "#supabase/server";
 import { StickyDbClient } from "~/server/utils/database/sticky-db-client/sticky-db-client";
 import { createStickyValidator } from "~/server/utils/validators/sticky/create-sticky-validator";
-import type { StickyCreateActionData } from "~/types/sticky/sticky-create-action-data/sticky-create-action-data";
+import type { StickyCreateActionData } from "~/types/sticky/sticky-action-data/sticky-action-data";
 
 export default defineEventHandler(async (event) => {
   const user = await serverSupabaseUser(event);
@@ -20,7 +20,9 @@ export default defineEventHandler(async (event) => {
 
   // Validate the requestbody
   try {
-    await createStickyValidator.validate(requestBody, { abortEarly: false });
+    await createStickyValidator.validate(requestBody, {
+      abortEarly: false,
+    });
   } catch (error: any) {
     setResponseStatus(event, 400);
     return {
@@ -32,29 +34,9 @@ export default defineEventHandler(async (event) => {
     };
   }
 
-  const {
-    document_id,
-    title,
-    body,
-    color,
-    anchor,
-    sticky_type,
-    sticky_id,
-    source_url,
-  } = requestBody;
   try {
     const client = new StickyDbClient();
-    const stickyData = await client.insertSticky(user.id, {
-      sticky_id,
-      document_id,
-      title,
-      body,
-      color,
-      anchor,
-      sticky_type,
-      source_url,
-    });
-
+    const stickyData = await client.insertSticky(user.id, requestBody);
     return {
       status: "ok",
       data: stickyData,
