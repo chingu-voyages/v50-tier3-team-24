@@ -164,8 +164,6 @@ async function handleUpdateCreateSticky(action: ActionType, values: StickyCreate
   const httpBody = { document_id, title, body, color, anchor, sticky_type, sticky_id, source_url };
   const endPoint = action === "create" ? "/api/sticky" : `/api/sticky/${sticky_id}`;
 
-  // This method needs to also patch the annote document
-  // Create a new sticky note
   await useFetch<ApiResponse<Sticky | VideoSticky | LinkSticky>>(
     endPoint,
     {
@@ -175,8 +173,6 @@ async function handleUpdateCreateSticky(action: ActionType, values: StickyCreate
   );
   annoteDocument.value = await patchAnnoteDocumentBlocks();
   stickies.value = await fetchStickies(id);
-  console.log("163", stickies.value);
-
   isInsertingNewAnnotation.value = false;
   newStickyData.value = null;
 }
@@ -184,6 +180,7 @@ async function handleUpdateCreateSticky(action: ActionType, values: StickyCreate
 function handleCloseOutSticky () {
   isInsertingNewAnnotation.value = false;
   newStickyData.value = null;
+  
   // This should re-render the editor to the last fetched-from-API state, undoing the new marker. TODO: It's hacky
   editorController.value?.render({
     blocks: annoteDocument.value?.blocks as any,
