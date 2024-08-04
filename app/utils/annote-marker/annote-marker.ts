@@ -171,7 +171,7 @@ export default class AnnoteMarker {
     marker.dataset.pin = pinNumber.toString();
     pin.innerHTML = pinNumber.toString();
 
-    const newUuid = this.generateUuid();
+    const newUuid = crypto.randomUUID();
     marker.dataset.uuid = newUuid;
 
     pin.classList.add(AnnoteMarker.getPinCSS);
@@ -206,9 +206,6 @@ export default class AnnoteMarker {
     active: string;
   };
 
-  private generateUuid(): string {
-    return crypto.randomUUID();
-  }
   /**
    * Unwrap term-tag - de-highlight and remove the pin, essentially
    *
