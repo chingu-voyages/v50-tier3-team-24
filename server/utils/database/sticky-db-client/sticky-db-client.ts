@@ -45,7 +45,8 @@ export class StickyDbClient extends BaseDbClient {
     const { data, error } = await this.client
       .from(this.TABLE_NAME)
       .select("*")
-      .eq("document_id", document_id);
+      .eq("document_id", document_id)
+      .order("created_at", { ascending: true });
 
     if (error) throw new Error(error.message);
 

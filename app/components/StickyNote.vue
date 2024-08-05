@@ -11,7 +11,7 @@
         {{ pinNumber }}
       </div>
       <div>
-        <p v-if="readOnly"  class="text-lg font-cabin leading-5 mr-2" :style="{ color: color, height: 'auto' }">{{ title }}</p>
+        <p v-if="readOnly" class="text-lg font-cabin leading-5 mr-2" :style="{ color: color, height: 'auto' }">{{ title }}</p>
         <textarea
           v-else
           v-model="title"
@@ -58,7 +58,7 @@
     </div>
     <div>
       <div>
-        <p v-if="readOnly" class="text-lg font-cabin overflow-y-auto max-h-36">{{ body }}</p>
+        <p v-if="readOnly" class="text-lg font-cabin overflow-y-auto read-only-body">{{ body }}</p>
         <textarea
           v-else
           v-model="body"
@@ -157,8 +157,13 @@ function toggleReadOnly () {
   button:disabled {
     cursor: not-allowed;
   }
+
   .source-url {
-    max-width: 50%;
-    overflow-x: hidden;
+    max-height: 20px;
+    max-width: 130px;
+    overflow: hidden;
+  }
+  .read-only-body {
+    max-height: 90px; 
   }
 </style>
