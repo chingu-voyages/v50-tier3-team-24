@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "nuxt dev",
     "build": "nuxt build",
-    "start": "node dist/server/index.mjs",
+    "start": "node .output/server/index.mjs",
     "preview": "nuxt preview",
     "deploy": "nuxthub deploy",
     "postinstall": "nuxt prepare",
@@ -38,5 +38,8 @@
     "@nuxtjs/tailwindcss": "^6.12.1",
     "vue-tsc": "^2.0.22",
     "wrangler": "^3.62.0"
+  },
+  "engines": {
+    "node": "20.x"
   }
 }
