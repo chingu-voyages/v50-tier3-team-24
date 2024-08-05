@@ -28,6 +28,9 @@ export default defineNuxtConfig({
     cache: true,
   },
   nitro: {
+    prerender: {
+      autoSubfolderIndex: false,
+    },
     experimental: {
       // Enable Server API documentation within NuxtHub
       openAPI: true,
