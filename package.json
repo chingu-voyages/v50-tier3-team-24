@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "nuxt dev",
     "build": "nuxt build",
-    "start": "node .output/server/server.mjs",
+    "start": "node .nuxt/dist/server/server.mjs",
     "preview": "nuxt preview",
     "deploy": "nuxthub deploy",
     "postinstall": "nuxt prepare",
