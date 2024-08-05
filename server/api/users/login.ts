@@ -1,5 +1,5 @@
 import { defineEventHandler, readBody } from "h3";
-import { UserDbClient } from "~~/server/utils/database/user-db-client/user-db-client";
+import { UserDbClient } from "~/server/utils/database/user-db-client/user-db-client";
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event);

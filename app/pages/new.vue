@@ -75,8 +75,6 @@ import { ref } from 'vue';
       /* If the request is successful, a new document should have been created and returned
        we should redirect the user to the document page */
       const { slug, document_id } = apiResponse.value?.data!;
-
-      console.log(slug, document_id);
     
       await router.push(`/library/${slug}/edit?id=${document_id}`);
       

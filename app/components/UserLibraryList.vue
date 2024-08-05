@@ -45,7 +45,7 @@
               {{ doc.title }}
             </p>  
           </div>
-          <ShareLinkButtons :linkUrl="`/${currentUser?.data.username}/${doc.slug}?id=${doc.document_id}`" />
+          <ShareLinkButtons :linkUrl="`/${currentUser?.data?.username}/${doc.slug}?id=${doc.document_id}`" />
         </div>
       </li>
     </ul> 

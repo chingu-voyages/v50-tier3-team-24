@@ -1,6 +1,6 @@
-import { UserDbClient } from "~~/server/utils/database/user-db-client/user-db-client";
-import { ApiResponse } from "~~/types/api-response/api-response";
-import { User } from "~~/types/user/user";
+import { UserDbClient } from "~/server/utils/database/user-db-client/user-db-client";
+import type { ApiResponse } from "~/types/api-response/api-response";
+import type { User } from "~/types/user/user";
 
 export default defineEventHandler<Promise<ApiResponse<User>>>(async (event) => {
   // `/api/users/:user_id`; GET a user by ID

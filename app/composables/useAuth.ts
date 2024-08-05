@@ -63,8 +63,6 @@ export function useAuth() {
 
       if (loginError) throw loginError;
 
-      console.log("User UUID:", data.user.id); // Supabase's user auth ID
-
       const response = await fetch("/api/users/login", {
         method: "POST",
         headers: {

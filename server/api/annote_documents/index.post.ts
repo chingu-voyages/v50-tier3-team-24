@@ -1,10 +1,10 @@
 import { serverSupabaseUser } from "#supabase/server";
+import { AnnoteDocumentDbClient } from "~/server/utils/database/annote-document-db-client/annote-document-db-client";
 import { createSlugFromDocumentTitle } from "~/server/utils/slug/create-slug-from-document-title";
 import { createDocumentValidator } from "~/server/utils/validators/document/create-document-validator";
-import { AnnoteDocument } from "~/types/annote-document/annote-document";
-import { EditorJsBlock } from "~/types/annote-document/editjs-block";
-import { AnnoteDocumentDbClient } from "~~/server/utils/database/annote-document-db-client/annote-document-db-client";
-import { ApiResponse } from "~~/types/api-response/api-response";
+import type { AnnoteDocument } from "~/types/annote-document/annote-document";
+import type { EditorJsBlock } from "~/types/annote-document/editjs-block";
+import type { ApiResponse } from "~/types/api-response/api-response";
 
 // This is a placeholder right now for phase 1 - API should accept a post request and insert a annote_document into the table
 // POST request body should also be validated at some point

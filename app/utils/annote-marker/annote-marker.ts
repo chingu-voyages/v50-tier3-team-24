@@ -1,17 +1,8 @@
 import { IconDotCircle } from "@codexteam/icons";
-import "./style.css";
-interface AnnoteMarkerConfig {
-  placeholder?: string;
-  // TODO: We may want to implement these, or not.
-  onMarkerCreate?: (data: string) => void;
-  onMarkerRemove?: (data: string) => void;
-}
 
-interface PalletData {
-  label: string;
-  colorHex: string;
-  rgba: string;
-}
+import { COLOR_PALLET_MAP } from "~/types/definitions/color-pallet-map/color-pallet-map";
+import type { AnnoteMarkerConfig } from "./definitions/types";
+import "./style.css";
 
 export default class AnnoteMarker {
   private _api: { [key in string]: any };
@@ -25,43 +16,6 @@ export default class AnnoteMarker {
   private _unwrapping: boolean = false;
 
   // The colors we can use based on the figma design
-  private readonly _pallet: PalletData[] = [
-    {
-      label: "blue",
-      colorHex: "#0084C3",
-      rgba: "rgba(0, 132, 195, 0.29)",
-    },
-    {
-      label: "pink",
-      colorHex: "#F1607D",
-      rgba: "rgba(241, 96, 125, 0.29)",
-    },
-    {
-      label: "red",
-      colorHex: "#F64C00",
-      rgba: "rgba(246, 76, 0, 0.29)",
-    },
-    {
-      label: "gold",
-      colorHex: "#CEA000",
-      rgba: "rgba(206, 160, 0, 0.29)",
-    },
-    {
-      label: "green",
-      colorHex: "#02A856",
-      rgba: "rgba(2, 168, 86, 0.29)",
-    },
-    {
-      label: "teal",
-      colorHex: "#03A58D",
-      rgba: "rgba(3, 165, 141, 0.29)",
-    },
-    {
-      label: "purple",
-      colorHex: "#821EB1",
-      rgba: "	rgba(130, 30, 177, 0.29)",
-    },
-  ];
 
   constructor({ api, config }: { api: Object; config: AnnoteMarkerConfig }) {
     this._api = api;
@@ -91,6 +45,7 @@ export default class AnnoteMarker {
 
     const colorPickerContainer = document.createElement("div");
     colorPickerContainer.classList.add("picker-toolbar-container");
+    colorPickerContainer.style.backgroundColor = "white";
 
     // This is rendering the button on the pop-up tool box
     this._button = document.createElement("button");
@@ -117,7 +72,7 @@ export default class AnnoteMarker {
     return mainContainer;
   }
 
-  private handleColorPalletClicked(palletData: PalletData) {
+  private handleColorPalletClicked(palletData: ColorPallet) {
     if (!this._currentRange) {
       return;
     }
@@ -156,7 +111,7 @@ export default class AnnoteMarker {
     const colorPickerContainer = document.createElement("div");
     colorPickerContainer.classList.add("color-picker-container");
 
-    this._pallet.forEach((palletData) => {
+    COLOR_PALLET_MAP.forEach((palletData) => {
       const colorPicker = document.createElement("div");
       colorPicker.classList.add("color-picker-element");
       colorPicker.addEventListener("click", () => {
@@ -201,7 +156,7 @@ export default class AnnoteMarker {
    *
    * This is the function responsible for highlighting the selected text and inserting a pin (the circle with the number)
    */
-  private wrap(range: Range, palletData: PalletData) {
+  private wrap(range: Range, palletData: ColorPallet) {
     // Create a wrapper for highlighting
     const marker = document.createElement(this._tag);
 
@@ -215,6 +170,9 @@ export default class AnnoteMarker {
 
     marker.dataset.pin = pinNumber.toString();
     pin.innerHTML = pinNumber.toString();
+
+    const newUuid = crypto.randomUUID();
+    marker.dataset.uuid = newUuid;
 
     pin.classList.add(AnnoteMarker.getPinCSS);
     pin.style.backgroundColor = palletData.colorHex;
@@ -232,6 +190,15 @@ export default class AnnoteMarker {
 
     // Expand (add) selection to highlighted block
     this._api.selection.expandToTag(marker);
+
+    if (this._config.onMarkerInserted) {
+      this._config.onMarkerInserted({
+        pinNumber: pinNumber,
+        color: palletData.colorHex,
+        text: marker.textContent!.substring(1),
+        uuid: newUuid,
+      });
+    }
   }
 
   private iconClasses: {
@@ -268,6 +235,13 @@ export default class AnnoteMarker {
     // Restore selection
     sel?.removeAllRanges();
     sel?.addRange(range!);
+
+    if (this._config.onMarkerDeleted) {
+      this._config.onMarkerDeleted({
+        pinNumber: termWrapper.dataset.pin,
+        uuid: termWrapper.dataset.uuid,
+      });
+    }
   }
 
   // This returns the icon for the tool button
@@ -310,6 +284,7 @@ export default class AnnoteMarker {
       mark: {
         class: AnnoteMarker.CSS,
         "data-pin": true,
+        "data-uuid": true,
         style: true,
       },
       div: {

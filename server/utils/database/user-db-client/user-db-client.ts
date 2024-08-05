@@ -1,8 +1,10 @@
-import { User } from "~~/types/user/user";
+import type { User } from "~/types/user/user";
 import { BaseDbClient } from "../base-db-client";
 
 export class UserDbClient extends BaseDbClient {
-  private readonly TABLE_NAME = "users";
+  constructor() {
+    super("users");
+  }
 
   public async insertUser(user: Partial<User>): Promise<void> {
     const { error } = await this.client.from(this.TABLE_NAME).insert(user);
@@ -47,3 +49,5 @@ export class UserDbClient extends BaseDbClient {
     return userData;
   }
 }
+
+const client = new UserDbClient();

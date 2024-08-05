@@ -1,9 +1,11 @@
-import { EditorJsBlock } from "~/types/annote-document/editjs-block";
-import { AnnoteDocument } from "~~/types/annote-document/annote-document";
+import type { AnnoteDocument } from "~/types/annote-document/annote-document";
+import type { EditorJsBlock } from "~/types/annote-document/editjs-block";
 import { BaseDbClient } from "../base-db-client";
 
 export class AnnoteDocumentDbClient extends BaseDbClient {
-  private readonly TABLE_NAME = "annote_document";
+  constructor() {
+    super("annote_document");
+  }
 
   public async insertDocument(document: {
     title: string;
@@ -43,7 +45,7 @@ export class AnnoteDocumentDbClient extends BaseDbClient {
     const { data, error } = await this.client
       .from(this.TABLE_NAME)
       .select("*")
-      .match({ document_id: document_id, user_id: user_id });
+      .match({ document_id: document_id });
 
     if (error) throw new Error(error.message);
 
