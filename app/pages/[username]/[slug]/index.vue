@@ -5,7 +5,7 @@
         <header>
           <div class="flex gap-2">
             <h1 class="font-verdana font-bold text-3xl text-justify">{{ annoteDocument?.title }}</h1>
-            <ShareLinkButtons v-if="currentUser?.data?.username === username" :link-url="`${currentUser?.data?.username}/library/${annoteDocument?.slug}/edit?id=${annoteDocument?.document_id}`" />
+            <ShareLinkButtons v-if="currentUser?.data?.username === username" :link-url="`${annoteDocument?.slug}/edit?id=${annoteDocument?.document_id}`" />
           </div>
           <NuxtLink :to="annoteDocument?.source_url" target="_blank">
             <div class="flex gap-2 mt-2 mb-2">
