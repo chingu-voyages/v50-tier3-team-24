@@ -61,4 +61,15 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
+  typescript: {
+    tsConfig: {
+      compilerOptions: {
+        baseUrl: ".",
+        paths: {
+          "~/types/*": ["./types/*"],
+          "~/server/*": ["./server/*"],
+        },
+      },
+    },
+  },
 });
