@@ -6,7 +6,6 @@ export default defineNuxtConfig({
   // https://nuxt.com/docs/getting-started/upgrade#testing-nuxt-4
   // Nuxt Modules
   // https://nuxt.com/modules
-  ssr: false,
   modules: [
     "@nuxthub/core",
     "@nuxtjs/tailwindcss",
