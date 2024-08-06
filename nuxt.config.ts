@@ -35,7 +35,7 @@ export default defineNuxtConfig({
       // Enable Server API documentation within NuxtHub
       openAPI: true,
     },
-    preset: "digital-ocean",
+    preset: "node-server",
   },
   // Development
   devtools: { enabled: true },
