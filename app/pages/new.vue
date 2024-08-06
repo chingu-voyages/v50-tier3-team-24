@@ -40,7 +40,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useRouter } from 'nuxt/app';
+import { useRouter } from '#imports';
 import { ref } from 'vue';
 
   const router = useRouter();
