@@ -10,7 +10,10 @@
 
       <div class="flex items-center space-x-6 text-xl">
         <li>
-          <NuxtLink to="/about" class="flex items-center no-underline">
+          <NuxtLink
+            to="/about"
+            class="flex items-center no-underline homeBtnColor"
+          >
             <img
               :src="homeIcon"
               alt="Icon"
@@ -19,7 +22,10 @@
           >
         </li>
         <li>
-          <NuxtLink to="/library" class="flex items-center no-underline">
+          <NuxtLink
+            to="/library"
+            class="flex items-center no-underline libraryBtnColor"
+          >
             <img
               :src="bookIcon"
               alt="Icon"
@@ -28,7 +34,10 @@
           >
         </li>
         <li>
-          <NuxtLink to="/new" class="flex items-center no-underline">
+          <NuxtLink
+            to="/new"
+            class="flex items-center no-underline newBtnColor"
+          >
             <img
               :src="addCircleIcon"
               alt="Icon"
@@ -40,7 +49,10 @@
         <li v-if="user">
           <!-- <span v-if="currentUser"> Welcome, {{ currentUser.username }}! </span> -->
 
-          <button @click="handleLogout" class="flex items-center no-underline">
+          <button
+            @click="handleLogout"
+            class="flex items-center no-underline accountBtnColor"
+          >
             <img :src="accountIcon" alt="Icon" class="w-8 h-8 mr-2" />
             Logout
           </button>
@@ -70,3 +82,18 @@ const handleLogout = () => {
   logout();
 };
 </script>
+
+<style scoped>
+.homeBtnColor {
+  color: #821eb1;
+}
+.libraryBtnColor {
+  color: #e3b205;
+}
+.newBtnColor {
+  color: #03a58d;
+}
+.accountBtnColor {
+  color: #f1607d;
+}
+</style>
