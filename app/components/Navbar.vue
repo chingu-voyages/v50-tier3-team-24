@@ -8,7 +8,7 @@
         </NuxtLink>
       </li>
 
-      <div class="flex items-center space-x-6 text-xl">
+      <div class="flex items-center space-x-6 text-md">
         <li>
           <NuxtLink
             to="/about"
