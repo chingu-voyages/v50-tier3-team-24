@@ -46,16 +46,28 @@
           >
         </li>
 
-        <li v-if="user">
-          <!-- <span v-if="currentUser"> Welcome, {{ currentUser.username }}! </span> -->
-
+        <li v-if="user" class="relative">
           <button
-            @click="handleLogout"
+            @click="toggleDropdown"
             class="flex items-center no-underline accountBtnColor"
           >
             <img :src="accountIcon" alt="Icon" class="w-8 h-8 mr-2" />
-            Logout
+            Account
           </button>
+          <div
+            v-if="isDropdownOpen"
+            class="absolute right-0 z-10 w-48 py-1 mt-2 bg-white rounded-md shadow-lg"
+          >
+            <p class="px-4 py-2 text-sm accountBtnColor">
+              {{ currentUser.username }}
+            </p>
+            <button
+              @click="handleLogout"
+              class="block w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-100"
+            >
+              Logout
+            </button>
+          </div>
         </li>
         <li v-else>
           <NuxtLink to="/login" class="flex items-center no-underline"
@@ -73,13 +85,19 @@ import addCircleIcon from "@/public/assets/icons/add_circle.svg";
 import documentIcon from "@/public/assets/icons/edit_document.svg";
 import homeIcon from "@/public/assets/icons/help_clinic.svg";
 import bookIcon from "@/public/assets/icons/library_books.svg";
+import { ref } from "vue";
 import { useAuth } from "../composables/useAuth";
 
 const user = useSupabaseUser();
 const { logout, currentUser } = useAuth();
+const isDropdownOpen = ref(false);
 
 const handleLogout = () => {
   logout();
+};
+
+const toggleDropdown = () => {
+  isDropdownOpen.value = !isDropdownOpen.value;
 };
 </script>
 
