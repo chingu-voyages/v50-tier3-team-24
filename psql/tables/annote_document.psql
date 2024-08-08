@@ -11,7 +11,7 @@ CREATE TABLE public.annote_document (
 		image_url TEXT,
 		visibility visibility DEFAULT 'private',
 		author TEXT,
-		PRIMARY KEY (document_id)
+		PRIMARY KEY (document_id),
 		CONSTRAINT fk_user
     	FOREIGN KEY(user_id) 
         REFERENCES users(user_id)

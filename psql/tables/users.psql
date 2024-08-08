@@ -6,5 +6,5 @@ CREATE TABLE public.users (
   first_name TEXT,
   last_name TEXT,
   email TEXT,
-  UNIQUE(email)
+  UNIQUE(user_id, email)
 )
