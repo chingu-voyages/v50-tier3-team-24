@@ -18,16 +18,18 @@
           <EditorComponent :onEditorReady="handleEditorReady" :readOnly="true" />
         </ClientOnly>
       </div>
-      <div class="flex">
-        <StickyNote 
-          :readonly="true"
-          v-for="sticky in stickies" :key="sticky.sticky_id"
-          :stickyData="sticky"
-          :pinNumber="sticky.anchor" 
-          :documentId="sticky.document_id"             
-          :uuid="sticky.sticky_id"
-          :color="sticky.color"
-        />
+      <div>
+        <div class="flex flex-wrap">
+          <StickyNote 
+            :readonly="true"
+            v-for="sticky in stickies" :key="sticky.sticky_id"
+            :stickyData="sticky"
+            :pinNumber="sticky.anchor" 
+            :documentId="sticky.document_id"             
+            :uuid="sticky.sticky_id"
+            :color="sticky.color"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -50,7 +52,7 @@
     const { data: apiResponse } = await useFetch<ApiResponse<AnnoteDocument>>(`/api/annote_documents/${id}`);
     annoteDocument.value = apiResponse.value?.data!;
 
-     stickies.value = await fetchStickies(id);
+     stickies.value = await fetchStickies(id as string);
   }
 
   function handleEditorReady(editor: CustomEditorJs) {

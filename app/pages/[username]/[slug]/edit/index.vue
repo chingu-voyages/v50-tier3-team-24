@@ -15,7 +15,7 @@
     </div>
     <div class="flex bg-gray-100 border border-gray-300 rounded p-5 min-h-[300px] my-5">
       <ClientOnly>
-        <EditorComponent :onEditorReady="handleEditorReady" :onMarkerInserted="handleMarkerInserted" />
+        <EditorComponent :onEditorReady="handleEditorReady" :onMarkerInserted="handleMarkerInserted" :onMarkerDeleted="handleDeleteMarker" :onLostFocus="handleEditorLostFocus" />
       </ClientOnly>
       <div>
         <Transition>
@@ -33,19 +33,21 @@
             />
           </div>
         </Transition>
-        <div class="flex">
-          <StickyNote 
-            v-for="sticky in stickies" :key="sticky.sticky_id"
-            :stickyData="sticky" 
-            :color="sticky.color" 
-            :pinNumber="sticky.anchor" 
-            :documentId="sticky.document_id" 
-            :readonly="true"
-            :onDelete="handleDeleteSticky"
-            :uuid="sticky.sticky_id"
-            :canEdit="true"
-            :onUpdateCreate="handleUpdateCreateSticky"
-          />
+        <div class="flex flex-wrap">
+          <!-- This is rendering the existing stickies in readonly mode, but can be edited if they click the menu option -->
+          <TransitionGroup>
+            <StickyNote 
+              v-for="sticky in stickies" :key="sticky.sticky_id"
+              :stickyData="sticky" 
+              :color="sticky.color" 
+              :pinNumber="sticky.anchor" 
+              :documentId="sticky.document_id" 
+              :readonly="true"
+              :uuid="sticky.sticky_id"
+              :canEdit="true"
+              :onUpdateCreate="handleUpdateCreateSticky"
+            />
+          </TransitionGroup>
         </div>
       </div>
     </div>
@@ -53,12 +55,17 @@
 </template>
 
 <script setup lang="ts">
+import { isEqual } from 'lodash';
 import type { ActionType } from '~/types/sticky/action-type/action-type';
 import type { StickyCreateActionData, StickyUpdateActionData } from '~/types/sticky/sticky-action-data/sticky-action-data';
 import type { LinkSticky, Sticky, VideoSticky } from '~/types/sticky/sticky-types';
-import type { AnnoteOnMarkerInsertedData } from '../../../../utils/annote-marker/definitions/types';
+import type { AnnoteOnMarkerInsertedData, AnnotteOnMarkerDeletedData } from '../../../../utils/annote-marker/definitions/types';
 
 const annoteDocument = ref<AnnoteDocument | null>(null);
+
+// The comparison document is going to be used to determine if there are changes in the document
+const annoteComparisonDocument = ref<AnnoteDocument | null>(null);
+
 const documentTitle = ref("");
 const editorController = ref<CustomEditorJs | null>(null);
 
@@ -120,10 +127,12 @@ if (id) {
     `/api/annote_documents/${id}`
   );
   annoteDocument.value = apiResponse.value?.data!;
+  annoteComparisonDocument.value = apiResponse.value?.data!;
+
   initialDocumentTitle.value = annoteDocument.value.title;
   documentTitle.value = annoteDocument.value.title;
 
-  stickies.value = await fetchStickies(id);
+  stickies.value = await fetchStickies(id as string);
 }
 
 function handleMarkerInserted (data?: AnnoteOnMarkerInsertedData) {
@@ -151,6 +160,7 @@ async function handleUpdateCreateSticky(action: ActionType, values: StickyCreate
   const httpBody = { document_id, title, body, color, anchor, sticky_type, sticky_id, source_url };
   const endPoint = action === "create" ? "/api/sticky" : `/api/sticky/${sticky_id}`;
 
+
   await useFetch<ApiResponse<Sticky | VideoSticky | LinkSticky>>(
     endPoint,
     {
@@ -159,7 +169,9 @@ async function handleUpdateCreateSticky(action: ActionType, values: StickyCreate
     }
   );
   annoteDocument.value = await patchAnnoteDocumentBlocks();
-  stickies.value = await fetchStickies(id);
+  annoteComparisonDocument.value = annoteDocument.value;
+
+  stickies.value = await fetchStickies(id as string);
   isInsertingNewAnnotation.value = false;
   newStickyData.value = null;
 }
@@ -182,7 +194,38 @@ async function handleDeleteSticky (sticky_id: string) {
     }
   );
   annoteDocument.value = await patchAnnoteDocumentBlocks();
-  stickies.value = await fetchStickies(id);
+  annoteComparisonDocument.value = annoteDocument.value;
+  
+  stickies.value = await fetchStickies(id as string);
+}
+
+async function handleEditorLostFocus() {
+  // This function handles the click away event from the editor and sends the patch request to
+  const newBlockData = await editorController.value?.save();
+  const oldBlockData = annoteComparisonDocument.value?.blocks;
+
+  if (isEqual(newBlockData?.blocks, oldBlockData)) {
+    console.info("No changes were made to the document");
+    return;
+  }
+
+  annoteDocument.value = await patchAnnoteDocumentBlocks();
+  annoteComparisonDocument.value = annoteDocument.value;
+}
+
+async function handleDeleteMarker(markerData: AnnotteOnMarkerDeletedData) {
+  const { uuid } = markerData;
+  const sticky_id = uuid;
+  await useFetch<ApiResponse<Sticky>>(
+    `/api/sticky/${sticky_id}`,
+    {
+      method: "DELETE",
+    }
+  );
+  annoteDocument.value = await patchAnnoteDocumentBlocks();
+  annoteComparisonDocument.value = annoteDocument.value;
+  
+  stickies.value = await fetchStickies(id as string);
 }
 </script>
 
