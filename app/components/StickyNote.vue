@@ -1,6 +1,6 @@
 <template>
   <div
-    class="relative p-2 m-2 shadow-md h-auto w-60 border-l-4"
+    class="relative p-2 m-2 shadow-md h-fit w-60 border-l-4"
     :style="{ backgroundColor: 'white', borderLeftColor: rgbaColor }"
   >
     <div class="pin-title-enclosure flex w-full border-b-2 pb-2" :style="{ borderBottomColor: rgbaColor }">
@@ -11,7 +11,7 @@
         {{ pinNumber }}
       </div>
       <div>
-        <p v-if="readOnly" class="text-lg font-cabin leading-5 mr-2" :style="{ color: color, height: 'auto' }">{{ title }}</p>
+        <p v-if="readOnly" class="text-lg font-cabin leading-5 mr-2" :style="{ color: color, height: 'auto' }">{{ getTrimmedTitle(title) }}</p>
         <textarea
           v-else
           v-model="title"
@@ -140,6 +140,10 @@ function handleEditMenuClick () {
 
 function toggleReadOnly () {
   readOnly.value = !readOnly.value;
+}
+
+function getTrimmedTitle(text: string) {
+  return text.length > 20 ? text.slice(0, 155) + "..." : text;
 }
 </script>
 

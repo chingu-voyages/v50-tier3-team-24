@@ -56,6 +56,7 @@
 
 <script setup lang="ts">
 import { isEqual } from 'lodash';
+import type { AnyBlockType } from '~/types/annote-document/editjs-block';
 import type { ActionType } from '~/types/sticky/action-type/action-type';
 import type { StickyCreateActionData, StickyUpdateActionData } from '~/types/sticky/sticky-action-data/sticky-action-data';
 import type { LinkSticky, Sticky, VideoSticky } from '~/types/sticky/sticky-types';
@@ -204,6 +205,8 @@ async function handleEditorLostFocus() {
   const newBlockData = await editorController.value?.save();
   const oldBlockData = annoteComparisonDocument.value?.blocks;
 
+  // console.log("207", newBlockData?.blocks)
+  // reconcileStickies();
   if (isEqual(newBlockData?.blocks, oldBlockData)) {
     console.info("No changes were made to the document");
     return;
@@ -211,6 +214,38 @@ async function handleEditorLostFocus() {
 
   annoteDocument.value = await patchAnnoteDocumentBlocks();
   annoteComparisonDocument.value = annoteDocument.value;
+
+  // Here we can reconcile orpaned stickies
+  await reconcileStickies();
+}
+
+async function reconcileStickies (): Promise<void> {
+  // Take the current state of the document and current state of the stickies, use the sticky IDs to determine if there are any stickies that are not in the document
+
+  // Create an array of stickyIds
+  const currentStickyIds = stickies.value.map(sticky => sticky.sticky_id);
+
+  // Convert the blocks data to an array of text data
+  const blocksTextData = annoteDocument.value?.blocks.reduce((acc, block) => {
+    if ("text" in block.data) {
+      acc.push((block.data as AnyBlockType).text);
+    }
+  
+    return acc;
+  }, [] as string[]);
+  
+  // These are stickyIds not found in current document
+  const nonExistentStickyId: string[] = [];
+  currentStickyIds.forEach((stickyId) => {
+    const stickyExists = blocksTextData?.some((blockText) => blockText.includes(stickyId));
+    if (!stickyExists) {
+      nonExistentStickyId.push(stickyId);
+    }
+  });
+
+  await Promise.allSettled(nonExistentStickyId.map((stickyId) => handleDeleteSticky(stickyId)));
+  // If there are non-exitenet stickies, delete them
+  
 }
 
 async function handleDeleteMarker(markerData: AnnotteOnMarkerDeletedData) {
