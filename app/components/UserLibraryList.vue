@@ -15,7 +15,8 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="mt-4">
+  <div class="w-2/3 mx-auto mt-4">
+    <h1 class="text-2xl">Library</h1>
     <!-- This search bar section -->
     <div class="flex justify-end py-4 pr-4 gap-x-2">
       <div class="flex searchTextField lightRoundedGreyBorder">
@@ -54,13 +55,13 @@ onMounted(async () => {
         v-for="(doc, index) in annoteDocs"
         :key="doc.document_id"
         :class="[
-          'pt-2 pb-2 pl-2 hover:custom-green duration-200',
+          'p-4 hover:custom-green duration-200',
           index % 2 === 0 ? 'bg-gray-100' : 'bg-white',
         ]"
       >
-        <div class="flex justify-end">
+        <div class="flex items-center justify-between">
           <div>
-            <p class="truncatable-text">
+            <p>
               {{ doc.title }}
             </p>
           </div>

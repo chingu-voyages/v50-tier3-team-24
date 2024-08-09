@@ -2,16 +2,31 @@
   <div class="flex gap-x-2">
     <div>
       <NuxtLink :to="linkUrl">
-        <Icon name="mdi:pencil-outline" color="black" />
+        <Icon
+          class="text-gray-300 hover:custom-green"
+          name="mdi:pencil-outline"
+          color="black"
+        />
       </NuxtLink>
     </div>
     <div>
-      <Icon name="mdi:share-variant-outline" color="black" />
+      <Icon
+        class="text-gray-300 hover:custom-green"
+        name="mdi:share-variant-outline"
+        color="black"
+      />
     </div>
   </div>
 </template>
+
 <script setup lang="ts">
 defineProps<{
   linkUrl: string;
 }>();
 </script>
+
+<style>
+.hover\:custom-green:hover {
+  color: #03a58d;
+}
+</style>
