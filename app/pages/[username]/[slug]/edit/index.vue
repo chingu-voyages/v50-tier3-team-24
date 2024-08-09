@@ -169,8 +169,8 @@ async function handleUpdateCreateSticky(action: ActionType, values: StickyCreate
       body: httpBody
     }
   );
-  annoteDocument.value = await patchAnnoteDocumentBlocks();
-  annoteComparisonDocument.value = annoteDocument.value;
+  
+  await syncAnnoteDocumentData();
 
   stickies.value = await fetchStickies(id as string);
   isInsertingNewAnnotation.value = false;
@@ -194,8 +194,8 @@ async function handleDeleteSticky (sticky_id: string) {
       method: "DELETE",
     }
   );
-  annoteDocument.value = await patchAnnoteDocumentBlocks();
-  annoteComparisonDocument.value = annoteDocument.value;
+  
+  await syncAnnoteDocumentData();
   
   stickies.value = await fetchStickies(id as string);
 }
@@ -205,17 +205,14 @@ async function handleEditorLostFocus() {
   const newBlockData = await editorController.value?.save();
   const oldBlockData = annoteComparisonDocument.value?.blocks;
 
-  // console.log("207", newBlockData?.blocks)
-  // reconcileStickies();
   if (isEqual(newBlockData?.blocks, oldBlockData)) {
     console.info("No changes were made to the document");
     return;
   }
 
-  annoteDocument.value = await patchAnnoteDocumentBlocks();
-  annoteComparisonDocument.value = annoteDocument.value;
+  await syncAnnoteDocumentData();
 
-  // Here we can reconcile orpaned stickies
+  // Here we can reconcile any orphaned stickies
   await reconcileStickies();
 }
 
@@ -234,17 +231,16 @@ async function reconcileStickies (): Promise<void> {
     return acc;
   }, [] as string[]);
   
-  // These are stickyIds not found in current document
-  const nonExistentStickyId: string[] = [];
+  const nonExistentStickyIds: string[] = [];
   currentStickyIds.forEach((stickyId) => {
     const stickyExists = blocksTextData?.some((blockText) => blockText.includes(stickyId));
     if (!stickyExists) {
-      nonExistentStickyId.push(stickyId);
+      nonExistentStickyIds.push(stickyId);
     }
   });
 
-  await Promise.allSettled(nonExistentStickyId.map((stickyId) => handleDeleteSticky(stickyId)));
-  // If there are non-exitenet stickies, delete them
+  // Send API request to delete the stickies
+  await Promise.allSettled(nonExistentStickyIds.map((stickyId) => handleDeleteSticky(stickyId)));
   
 }
 
@@ -257,10 +253,15 @@ async function handleDeleteMarker(markerData: AnnotteOnMarkerDeletedData) {
       method: "DELETE",
     }
   );
-  annoteDocument.value = await patchAnnoteDocumentBlocks();
-  annoteComparisonDocument.value = annoteDocument.value;
+ 
+  await syncAnnoteDocumentData();
   
   stickies.value = await fetchStickies(id as string);
+}
+
+async function syncAnnoteDocumentData () {
+  annoteDocument.value = await patchAnnoteDocumentBlocks();
+  annoteComparisonDocument.value = annoteDocument.value;
 }
 </script>
 
