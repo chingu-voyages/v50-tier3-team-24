@@ -1,6 +1,6 @@
 <template>
   <ClientOnly>
-    <div id="editorjs" class="bg-white rounded p-2.5 min-h-[250px]"></div>
+    <div id="editorjs" class="bg-white rounded p-2.5 min-h-[250px]" v-click-outside="handleEditorLostFocus"></div>
   </ClientOnly>
 </template>
 
@@ -18,6 +18,8 @@ interface EditorComponentProps {
   onEditorReady: (editor: CustomEditorJs) => void;
   readOnly?: boolean;
   onMarkerInserted?: (markerData: AnnoteOnMarkerInsertedData) => void;
+  onMarkerDeleted?: (markerData: AnnotteOnMarkerDeletedData) => void;
+  onLostFocus?: () => void;
 }
 
 const props = defineProps<EditorComponentProps>();
@@ -46,7 +48,7 @@ const editor = new EditorJS({
           props.onMarkerInserted?.(markerData);
         },
         onMarkerDeleted: (markerData: AnnotteOnMarkerDeletedData) => {
-          console.log("Marker deleted", markerData); 
+          props.onMarkerDeleted?.(markerData);
         }
       },
     },
@@ -55,6 +57,11 @@ const editor = new EditorJS({
     },
   },
 });
+
+function handleEditorLostFocus () {
+  // Note: This is using the v-click-outside directive to detect when the editor loses focus
+  props.onLostFocus && props.onLostFocus();
+}
 
 editor.isReady.then(() => {
   props.onEditorReady(editor);

@@ -1,5 +1,5 @@
 import { defineNuxtConfig } from "nuxt/config";
-
+import { fileURLToPath } from "url";
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   // Nuxt 4 directory structure and features
@@ -61,14 +61,14 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
+  alias: {
+    "~/types": fileURLToPath(new URL("./types", import.meta.url)),
+    "~/server": fileURLToPath(new URL("./server", import.meta.url)),
+  },
   typescript: {
     tsConfig: {
       compilerOptions: {
         baseUrl: ".",
-        paths: {
-          "~/types/*": ["./types/*"],
-          "~/server/*": ["./server/*"],
-        },
       },
     },
   },

@@ -1,4 +1,4 @@
-import Header from "@editorjs/header";
+export interface HeaderData extends BasicTextData {}
 
 interface BasicTextData {
   text: string;
@@ -17,7 +17,8 @@ export enum EditorJsBlockType {
   List = "list",
 }
 
+export type AnyBlockType = HeaderData | ParagraphData | MarkerData;
 export interface EditorJsBlock {
   type: EditorJsBlockType;
-  data: Header | ParagraphData | MarkerData | ListData;
+  data: AnyBlockType | ListData;
 }

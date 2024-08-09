@@ -1,6 +1,6 @@
 <template>
   <div
-    class="relative p-2 m-2 shadow-md h-60 w-60 border-l-4"
+    class="relative p-2 m-2 shadow-md h-fit w-60 border-l-4"
     :style="{ backgroundColor: 'white', borderLeftColor: rgbaColor }"
   >
     <div class="pin-title-enclosure flex w-full border-b-2 pb-2" :style="{ borderBottomColor: rgbaColor }">
@@ -11,7 +11,7 @@
         {{ pinNumber }}
       </div>
       <div>
-        <p v-if="readOnly" class="text-lg font-cabin leading-5 mr-2" :style="{ color: color, height: 'auto' }">{{ title }}</p>
+        <p v-if="readOnly" class="text-lg font-cabin leading-5 mr-2" :style="{ color: color, height: 'auto' }">{{ getTrimmedTitle(title) }}</p>
         <textarea
           v-else
           v-model="title"
@@ -22,7 +22,7 @@
           maxlength="200"
         />
       </div>
-      <div v-if="canEdit  " class="absolute top-0 right-0 ml-4">
+      <div v-if="canEdit" class="absolute top-0 right-0 ml-4">
         <button class="p-2" @click="toggleMenuOpen">
           <Icon class="self-center" name="mdi:dots-vertical" :style="{ color: color }" />
         </button>
@@ -30,9 +30,6 @@
           <ul class="bg-white border border-gray-300 rounded">
             <button class="w-full" :disabled="!readOnly" @click="handleEditMenuClick">
               <li class="p-2 hover:bg-gray-100">Edit</li>
-            </button>
-            <button class="w-full">
-              <li class="p-2 hover:bg-gray-100 text-red-600">Delete</li>
             </button>
           </ul>
         </div>  
@@ -68,7 +65,7 @@
       </div>
     </div>
     <div class="absolute bottom-0 w-full edit-controls-section">
-      <div class="flex justify-end pr-4">
+      <div v-if="!readOnly" class="flex justify-end pr-4">
         <button @click="handleUpdateCreateClick">
           <Icon name="mdi:check" />
         </button>
@@ -95,7 +92,6 @@ interface StickyNoteProps {
   canEdit?: boolean;
   title?: string | null;
   onUpdateCreate?: (action: ActionType, data: StickyCreateActionData | StickyUpdateActionData) => void;
-  onDelete?: (sticky_id: string) => void;
   onCancel?: () => void;
 }
 
@@ -124,10 +120,12 @@ function handleUpdateCreateClick () {
     anchor: props.pinNumber,
     sticky_id: props.uuid!,
     source_url: source_url.value,
-  })
+  });
+  toggleReadOnly();
 }
 
 function handleCancelClick () {
+  toggleReadOnly();
   props.onCancel && props.onCancel();
 }
 
@@ -139,8 +137,13 @@ function handleEditMenuClick () {
   toggleMenuOpen();
   toggleReadOnly();
 }
+
 function toggleReadOnly () {
   readOnly.value = !readOnly.value;
+}
+
+function getTrimmedTitle(text: string) {
+  return text.length > 20 ? text.slice(0, 155) + "..." : text;
 }
 </script>
 

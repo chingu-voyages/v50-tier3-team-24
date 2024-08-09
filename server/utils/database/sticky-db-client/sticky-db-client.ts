@@ -52,4 +52,27 @@ export class StickyDbClient extends BaseDbClient {
 
     return data || [];
   }
+
+  public async deleteStickyById(
+    user_id: string,
+    sticky_id: string
+  ): Promise<void> {
+    const { error, data } = await this.client
+      .from(this.TABLE_NAME)
+      .delete()
+      .match({ sticky_id, user_id });
+
+    if (error) throw new Error(error.message);
+  }
+
+  public async getStickyById(sticky_id: string): Promise<Sticky> {
+    const { data, error } = await this.client
+      .from(this.TABLE_NAME)
+      .select("*")
+      .eq("sticky_id", sticky_id);
+
+    if (error) throw new Error(error.message);
+
+    return data?.[0];
+  }
 }
