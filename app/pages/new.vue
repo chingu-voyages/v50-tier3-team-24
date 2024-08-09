@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col justify-center">
-    <h1 class="p-4 text-center">Auto-import from URL</h1>
+    <h1 class="p-4 text-2xl text-center">Auto-import from URL</h1>
     <form
       class="flex flex-col items-center mt-4 gap-y-4"
       @submit.prevent="handleSubmit"
@@ -14,21 +14,37 @@
             v-model="documentTitle"
             required
             type="text"
-            class="w-full pb-2 text-3xl placeholder-gray-300 border-b-2 border-gray-100 focus:outline-none"
+            class="w-full pb-2 text-3xl placeholder-gray-300 border-b-2 border-gray-100 focus:outline-none font-verdana"
             placeholder="Untitled Document..."
           />
         </div>
 
+        <!-- TODO - Add Cover Image Functionality -->
+        <div class="mb-4">
+          <div
+            class="flex items-center justify-center px-6 pt-5 pb-4 border-2 border-gray-300 border-dashed rounded-md"
+          >
+            <img :src="addCircleIcon" alt="Icon" class="w-8 h-8" />
+            <p class="pl-1 text-gray-300">Add cover image</p>
+          </div>
+        </div>
+
         <!-- Source URL -->
         <div>
-          <label for="sourceUrl">Source Url</label>
-          <input
-            id="sourceUrl"
-            type="text"
-            v-model="sourceUrl"
-            class="w-full p-2 border border-gray-300 rounded font-verdana"
-            placeholder="Url"
-          />
+          <p class="pb-2 text-sm text-gray-300">
+            Type or paste a link here to get started.
+          </p>
+          <div class="flex">
+            <Icon class="mr-2" name="mdi:link" />
+            <!-- <label for="sourceUrl">Source Url</label> -->
+            <input
+              id="sourceUrl"
+              type="text"
+              v-model="sourceUrl"
+              class="w-full text-sm bg-transparent border-none focus:outline-none font-cabin"
+              placeholder="Add link..."
+            />
+          </div>
         </div>
 
         <!-- Description -->
@@ -46,7 +62,7 @@
 
       <!-- Text Editor -->
       <div class="w-full pt-4 m-4 text-center border border-gray-300 rounded">
-        <label for="documentBody">Article Text Body</label>
+        <label for="documentBody" class="text-2xl">Article Text Body</label>
         <ClientOnly>
           <EditorComponent :onEditorReady="handleEditorReady" />
         </ClientOnly>
@@ -67,6 +83,7 @@
 
 <script lang="ts" setup>
 import { useRouter } from "#imports";
+import addCircleIcon from "@/public/assets/icons/add_circle.svg";
 import { ref } from "vue";
 
 const router = useRouter();
