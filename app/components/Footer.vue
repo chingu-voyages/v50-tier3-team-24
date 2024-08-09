@@ -1,14 +1,18 @@
 <template>
-  <footer class="py-8 text-gray-600 bg-gray-100">
+  <footer class="py-8 text-white bg-gray-700">
     <div class="container px-4 mx-auto">
-      <div class="flex flex-wrap justify-between">
+      <div class="flex flex-wrap items-center justify-between">
         <div class="w-full mb-4 md:w-1/4 md:mb-0">
-          <h3 class="mb-2 text-lg font-semibold">Annote</h3>
-          <p>Streamline your note-taking and boost productivity</p>
+          <NuxtLink to="/" class="flex items-center text-3xl no-underline">
+            <img :src="documentIcon" alt="Icon" class="w-8 h-8 mr-2" />
+            Annote
+          </NuxtLink>
         </div>
+        <p>
+          © 2024 Annote App. This project is open source; find us on GitHub!
+        </p>
         <div class="w-full mb-4 md:w-1/4 md:mb-0">
-          <h4 class="mb-2 font-semibold text-md">Quick Links</h4>
-          <ul>
+          <ul class="flex gap-4">
             <li>
               <NuxtLink to="/" class="hover:text-gray-900"
                 >Terms of Service</NuxtLink
@@ -21,18 +25,12 @@
             </li>
           </ul>
         </div>
-        <div class="w-full mb-4 md:w-1/4 md:mb-0">
-          <h4 class="mb-2 font-semibold text-md">Contact</h4>
-          <p>support@annote.com</p>
-        </div>
-      </div>
-      <div class="mt-8 text-center">
-        <p>&copy; 2023 Annote. All rights reserved.</p>
       </div>
     </div>
   </footer>
 </template>
 
 <script setup>
+import documentIcon from "@/public/assets/icons/edit_document.svg";
 // Any necessary setup logic can go here
 </script>
