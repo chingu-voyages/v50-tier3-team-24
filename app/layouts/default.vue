@@ -8,7 +8,3 @@
   </div>
 </template>
 
-<script setup>
-import Footerbar from "../components/Footerbar.vue";
-import Navbar from "../components/Navbar.vue";
-</script>
