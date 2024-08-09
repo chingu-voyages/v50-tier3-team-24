@@ -1,7 +1,7 @@
 <template>
-  <div class="flex gap-x-2 pr-4">
+  <div class="flex gap-x-2">
     <div>
-      <NuxtLink :to="linkUrl"> 
+      <NuxtLink :to="linkUrl">
         <Icon name="mdi:pencil-outline" color="black" />
       </NuxtLink>
     </div>
@@ -11,7 +11,7 @@
   </div>
 </template>
 <script setup lang="ts">
-  defineProps<{
-    linkUrl: string;
-  }>()
+defineProps<{
+  linkUrl: string;
+}>();
 </script>
