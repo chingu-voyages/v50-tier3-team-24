@@ -10,14 +10,13 @@
           <h4 class="mb-2 font-semibold text-md">Quick Links</h4>
           <ul>
             <li>
-              <NuxtLink to="/" class="hover:text-gray-900">Home</NuxtLink>
+              <NuxtLink to="/" class="hover:text-gray-900"
+                >Terms of Service</NuxtLink
+              >
             </li>
             <li>
-              <NuxtLink to="/about" class="hover:text-gray-900">About</NuxtLink>
-            </li>
-            <li>
-              <NuxtLink to="/library" class="hover:text-gray-900"
-                >Library</NuxtLink
+              <NuxtLink to="/" class="hover:text-gray-900"
+                >Privacy Policy</NuxtLink
               >
             </li>
           </ul>
