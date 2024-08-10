@@ -96,7 +96,6 @@ async function fetchStickiesForDocument(documentId: string): Promise<Sticky[]> {
             <img :src="documentIcon" alt="Icon" class="w-6 h-6 mr-2" />
             <p class="text-xs sm:text-sm md:text-m">
               {{ doc.title }}
-              {{ console.log(doc) }}
             </p>
           </div>
           <ShareLinkButtons
