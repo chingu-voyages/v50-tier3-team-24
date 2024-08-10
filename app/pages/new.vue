@@ -6,7 +6,7 @@
       @submit.prevent="handleSubmit"
     >
       <!-- Import From Source Section-->
-      <div>
+      <div class="p-10 border rounded-md shadow-md">
         <!-- Document Title -->
         <div class="mb-4">
           <input
