@@ -1,81 +1,149 @@
 <script setup lang="ts">
-  const annoteDocs = ref<AnnoteDocument[] | null>(null);
-  const { getCurrentUser } = useAuth();
-  
-  const currentUser = await getCurrentUser();
- 
-  onMounted(async () => {
-    const { data: fetchedDocument } = await $fetch<ApiResponse<AnnoteDocument[]>>('/api/annote_documents');
-    if (fetchedDocument) {
-      annoteDocs.value = fetchedDocument;
+import documentIcon from "@/public/assets/icons/edit_document.svg";
+import newsIcon from "@/public/assets/icons/news.svg";
+import visibilityIcon from "@/public/assets/icons/visibility.svg";
+
+const annoteDocs = ref<AnnoteDocument[] | null>(null);
+const stickyCountMap = ref<Record<string, number>>({});
+const { getCurrentUser } = useAuth();
+
+const currentUser = await getCurrentUser();
+
+onMounted(async () => {
+  const { data: fetchedDocument } = await $fetch<ApiResponse<AnnoteDocument[]>>(
+    "/api/annote_documents"
+  );
+  if (fetchedDocument) {
+    annoteDocs.value = fetchedDocument;
+  }
+
+  if (annoteDocs.value) {
+    stickyCountMap.value = await getStickiesCountForDocuments(annoteDocs.value);
+  }
+});
+
+async function getStickiesCountForDocuments (annoteDocuments: AnnoteDocument[]): Promise<Record<string, number>> {
+  const res = await Promise.allSettled(annoteDocuments.map((doc) => fetchStickiesForDocument(doc.document_id)));
+
+  return annoteDocuments.reduce((acc, doc) => {
+    const foundResult = res.find((r) => r.status === "fulfilled" && r.value.some((s) => s.document_id === doc.document_id));
+    if (foundResult && foundResult.status === "fulfilled") {
+      acc[doc.document_id] = foundResult.value.length;
+    } else {
+      acc[doc.document_id] = 0;
     }
-   
-  });
+    return acc;
+  }, {} as Record<string, number>);
+}
+
+async function fetchStickiesForDocument(documentId: string): Promise<Sticky[]> {
+  const { data: fetchedStickies } = await $fetch<ApiResponse<Sticky[]>>(
+    `/api/annote_documents/${documentId}/sticky`
+  );
+  return fetchedStickies || [];
+}
 </script>
 
 <template>
-  <div class="mt-4">
+  <div class="w-2/3 mx-auto mt-4">
+    <h1 class="text-2xl">Library</h1>
     <!-- This search bar section -->
-    <div class="py-4 flex justify-end gap-x-2 pr-4">
-
-      <div class="searchTextField lightRoundedGreyBorder flex">
-        <div class="self-center mt-2">
+    <div
+      class="flex flex-col items-center justify-end gap-4 py-4 pr-4 md:flex-row gap-x-2"
+    >
+      <div class="flex lightRoundedGreyBorder">
+        <div class="self-center mt-2 ml-2">
           <Icon name="mdi:magnify" color="black" size="1.5rem" />
         </div>
-        <input type="text" placeholder="Search" class="searchInput w-full p-2 border border-black" />
+        <input
+          type="text"
+          placeholder="Search"
+          class="w-full p-2 border border-black"
+        />
       </div>
 
       <!-- Drop down search filter -->
-      <div class="lightRoundedGreyBorder content-center">
-        <select>
+      <div class="content-center lightRoundedGreyBorder">
+        <select class="p-2">
           <option value="createdAscending">
             <p>&#129031; Date Created Ascending</p>
           </option>
-          <option value="createdDescending">&#129029; Date Created Descending</option>
-          <option value="alphaAscending">&#129031; Alphabetical Ascending</option>
-          <option value="alphaDescending">&#129029; Alphabetical Descending</option>
+          <option value="createdDescending">
+            &#129029; Date Created Descending
+          </option>
+          <option value="alphaAscending">
+            &#129031; Alphabetical Ascending
+          </option>
+          <option value="alphaDescending">
+            &#129029; Alphabetical Descending
+          </option>
         </select>
       </div>
     </div>
+
+    <!-- This is the list of annote documents -->
     <ul>
-      <li class="border-t border-black pt-2 pb-2 pl-2" v-for="doc in annoteDocs" :key="doc.document_id">
-        <div class="flex justify-between">
-          <div>
-            <p class="truncatable-text">
+      <li
+        v-for="(doc, index) in annoteDocs"
+        :key="doc.document_id"
+        :class="[
+          'p-4 hover:custom-green duration-200 relative group',
+          index % 2 === 0 ? 'bg-gray-100' : 'bg-white',
+        ]"
+      >
+        <div class="flex items-center justify-between">
+          <div class="flex items-center">
+            <img :src="documentIcon" alt="Icon" class="w-6 h-6 mr-2" />
+            <p class="text-xs sm:text-sm md:text-m">
               {{ doc.title }}
-            </p>  
+              {{ console.log(doc) }}
+            </p>
           </div>
-          <ShareLinkButtons :linkUrl="`/${currentUser?.data?.username}/${doc.slug}?id=${doc.document_id}`" />
+          <ShareLinkButtons
+            :linkUrl="`/${currentUser?.data?.username}/${doc.slug}?id=${doc.document_id}`"
+          />
+        </div>
+        <div
+          class="absolute flex mt-2 mr-2 text-sm transition-opacity duration-500 opacity-0 top-2 right-20 group-hover:opacity-50"
+        >
+          <div class="flex items-center">
+            <img :src="visibilityIcon" alt="Icon" class="w-4 h-4 mr-2" />
+            <span class="mr-2 capitalize"> {{ doc.visibility }}</span>
+          </div>
+          <div class="flex items-center">
+            <img :src="newsIcon" alt="Icon" class="w-4 h-4 mr-2" />
+            <span>{{ stickyCountMap[doc.document_id] }} Stickies</span>
+          </div>
         </div>
       </li>
-    </ul> 
+    </ul>
   </div>
 </template>
 
 <style scoped>
-  .truncatable-text {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    width: calc(100vw - 80px);
-  }
+.truncatable-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: calc(100vw - 80px);
+}
 
-  .searchTextField {
-    max-width: 240px;
-  }
+.lightRoundedGreyBorder {
+  border: 1px solid #dddddd;
+  border-radius: 5px;
+}
 
-  .lightRoundedGreyBorder {
-    border: 1px solid #DDDDDD;
-    border-radius: 5px;
-  }
+input {
+  outline: none;
+  border: none;
+}
 
-  input {
-    outline: none;
-    border: none;
-  }
+select {
+  outline: none;
+  border: none;
+}
 
-  select {
-    outline: none;
-    border: none;
-  }
+.hover\:custom-green:hover {
+  color: #03a58d;
+}
 </style>
