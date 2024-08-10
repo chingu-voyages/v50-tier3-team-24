@@ -80,7 +80,7 @@ onMounted(async () => {
         >
           <div class="flex items-center">
             <img :src="visibilityIcon" alt="Icon" class="w-4 h-4 mr-2" />
-            <span class="mr-2"> {{ doc.visibility }}</span>
+            <span class="mr-2 capitalize"> {{ doc.visibility }}</span>
           </div>
           <div class="flex items-center">
             <img :src="newsIcon" alt="Icon" class="w-4 h-4 mr-2" />
