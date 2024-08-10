@@ -17,14 +17,12 @@
   <div class="mt-4">
     <!-- This search bar section -->
     <div class="py-4 flex justify-end gap-x-2 pr-4">
-
       <div class="searchTextField lightRoundedGreyBorder flex">
         <div class="self-center mt-2">
           <Icon name="mdi:magnify" color="black" size="1.5rem" />
         </div>
         <input type="text" placeholder="Search" class="searchInput w-full p-2 border border-black" />
       </div>
-
       <!-- Drop down search filter -->
       <div class="lightRoundedGreyBorder content-center">
         <select>
@@ -40,11 +38,9 @@
     <ul>
       <li class="border-t border-black pt-2 pb-2 pl-2" v-for="doc in annoteDocs" :key="doc.document_id">
         <div class="flex justify-between">
-          <div>
-            <p class="truncatable-text">
-              {{ doc.title }}
-            </p>  
-          </div>
+          <p class="truncatable-text">
+            {{ doc.title }}
+          </p>  
           <ShareLinkButtons :linkUrl="`/${currentUser?.data?.username}/${doc.slug}?id=${doc.document_id}`" />
         </div>
       </li>
