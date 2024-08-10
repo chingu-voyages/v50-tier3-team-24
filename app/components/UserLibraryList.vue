@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import documentIcon from "@/public/assets/icons/edit_document.svg";
+
 const annoteDocs = ref<AnnoteDocument[] | null>(null);
 const { getCurrentUser } = useAuth();
 
@@ -60,7 +62,8 @@ onMounted(async () => {
         ]"
       >
         <div class="flex items-center justify-between">
-          <div>
+          <div class="flex items-center">
+            <img :src="documentIcon" alt="Icon" class="w-6 h-6 mr-2" />
             <p>
               {{ doc.title }}
             </p>
