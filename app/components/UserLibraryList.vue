@@ -22,21 +22,23 @@ onMounted(async () => {
   <div class="w-2/3 mx-auto mt-4">
     <h1 class="text-2xl">Library</h1>
     <!-- This search bar section -->
-    <div class="flex justify-end py-4 pr-4 gap-x-2">
-      <div class="flex searchTextField lightRoundedGreyBorder">
+    <div
+      class="flex flex-col items-center justify-end gap-4 py-4 pr-4 md:flex-row gap-x-2"
+    >
+      <div class="flex lightRoundedGreyBorder">
         <div class="self-center mt-2 ml-2">
           <Icon name="mdi:magnify" color="black" size="1.5rem" />
         </div>
         <input
           type="text"
           placeholder="Search"
-          class="w-full p-2 border border-black searchInput"
+          class="w-full p-2 border border-black"
         />
       </div>
 
       <!-- Drop down search filter -->
       <div class="content-center lightRoundedGreyBorder">
-        <select>
+        <select class="p-2">
           <option value="createdAscending">
             <p>&#129031; Date Created Ascending</p>
           </option>
@@ -98,10 +100,6 @@ onMounted(async () => {
   overflow: hidden;
   text-overflow: ellipsis;
   width: calc(100vw - 80px);
-}
-
-.searchTextField {
-  max-width: 240px;
 }
 
 .lightRoundedGreyBorder {
