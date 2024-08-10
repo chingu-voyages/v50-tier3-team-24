@@ -68,7 +68,7 @@ onMounted(async () => {
         <div class="flex items-center justify-between">
           <div class="flex items-center">
             <img :src="documentIcon" alt="Icon" class="w-6 h-6 mr-2" />
-            <p>
+            <p class="text-xs sm:text-sm md:text-m">
               {{ doc.title }}
               {{ console.log(doc) }}
             </p>
