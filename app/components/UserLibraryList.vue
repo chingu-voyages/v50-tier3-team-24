@@ -4,6 +4,7 @@ import newsIcon from "@/public/assets/icons/news.svg";
 import visibilityIcon from "@/public/assets/icons/visibility.svg";
 
 const annoteDocs = ref<AnnoteDocument[] | null>(null);
+const stickyCountMap = ref<Record<string, number>>({});
 const { getCurrentUser } = useAuth();
 
 const currentUser = await getCurrentUser();
@@ -15,7 +16,32 @@ onMounted(async () => {
   if (fetchedDocument) {
     annoteDocs.value = fetchedDocument;
   }
+
+  if (annoteDocs.value) {
+    stickyCountMap.value = await getStickiesCountForDocuments(annoteDocs.value);
+  }
 });
+
+async function getStickiesCountForDocuments (annoteDocuments: AnnoteDocument[]): Promise<Record<string, number>> {
+  const res = await Promise.allSettled(annoteDocuments.map((doc) => fetchStickiesForDocument(doc.document_id)));
+
+  return annoteDocuments.reduce((acc, doc) => {
+    const foundResult = res.find((r) => r.status === "fulfilled" && r.value.some((s) => s.document_id === doc.document_id));
+    if (foundResult && foundResult.status === "fulfilled") {
+      acc[doc.document_id] = foundResult.value.length;
+    } else {
+      acc[doc.document_id] = 0;
+    }
+    return acc;
+  }, {} as Record<string, number>);
+}
+
+async function fetchStickiesForDocument(documentId: string): Promise<Sticky[]> {
+  const { data: fetchedStickies } = await $fetch<ApiResponse<Sticky[]>>(
+    `/api/annote_documents/${documentId}/sticky`
+  );
+  return fetchedStickies || [];
+}
 </script>
 
 <template>
@@ -86,7 +112,7 @@ onMounted(async () => {
           </div>
           <div class="flex items-center">
             <img :src="newsIcon" alt="Icon" class="w-4 h-4 mr-2" />
-            <span>Stickies</span>
+            <span>{{ stickyCountMap[doc.document_id] }} Stickies</span>
           </div>
         </div>
       </li>
