@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import documentIcon from "@/public/assets/icons/edit_document.svg";
+import newsIcon from "@/public/assets/icons/news.svg";
+import visibilityIcon from "@/public/assets/icons/visibility.svg";
 
 const annoteDocs = ref<AnnoteDocument[] | null>(null);
 const { getCurrentUser } = useAuth();
@@ -57,7 +59,7 @@ onMounted(async () => {
         v-for="(doc, index) in annoteDocs"
         :key="doc.document_id"
         :class="[
-          'p-4 hover:custom-green duration-200',
+          'p-4 hover:custom-green duration-200 relative group',
           index % 2 === 0 ? 'bg-gray-100' : 'bg-white',
         ]"
       >
@@ -66,11 +68,24 @@ onMounted(async () => {
             <img :src="documentIcon" alt="Icon" class="w-6 h-6 mr-2" />
             <p>
               {{ doc.title }}
+              {{ console.log(doc) }}
             </p>
           </div>
           <ShareLinkButtons
             :linkUrl="`/${currentUser?.data?.username}/${doc.slug}?id=${doc.document_id}`"
           />
+        </div>
+        <div
+          class="absolute flex mt-2 mr-2 text-sm transition-opacity duration-500 opacity-0 top-2 right-20 group-hover:opacity-50"
+        >
+          <div class="flex items-center">
+            <img :src="visibilityIcon" alt="Icon" class="w-4 h-4 mr-2" />
+            <span class="mr-2"> {{ doc.visibility }}</span>
+          </div>
+          <div class="flex items-center">
+            <img :src="newsIcon" alt="Icon" class="w-4 h-4 mr-2" />
+            <span>Stickies</span>
+          </div>
         </div>
       </li>
     </ul>
