@@ -45,7 +45,7 @@ async function fetchStickiesForDocument(documentId: string): Promise<Sticky[]> {
 </script>
 
 <template>
-  <div class="w-2/3 mx-auto mt-4">
+  <div class="mt-4">
     <h1 class="text-2xl">Library</h1>
     <!-- This search bar section -->
     <div
