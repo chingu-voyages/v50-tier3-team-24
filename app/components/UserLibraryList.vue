@@ -82,21 +82,12 @@ function prevPage() {
   <div
     class="flex flex-col items-center justify-between py-4 pr-4 md:flex-row gap-x-2"
   >
-    <!-- New Button -->
-    <NuxtLink to="/new" class="w-[100px] mb-2 xs:w-auto sm:mb-0 sm:mr-2">
-      <button
-        class="w-full sm:w-auto px-4 py-2 bg-[#03a58d] text-white rounded hover:bg-[#028c76] focus:outline-none focus:ring-2 focus:ring-[#03a58d] focus:ring-opacity-50"
-      >
-        + New
-      </button>
-    </NuxtLink>
-
-    <!-- Search Bar -->
+    <!-- Search Bar --> 
     <div
-      class="flex flex-col items-center justify-between gap-4 py-4 pr-4 md:flex-row gap-x-2"
+      class="flex flex-col items-center justify-between gap-4 py-4 md:flex-row gap-x-2 w-full"
     >
       <div class="w-full">
-        <button type="submit" class="p-2 mt-4 text-white bg-[#03A58D] rounded font-cabin w-[107px]">
+        <button type="submit" class="p-2 text-white bg-[#03A58D] rounded font-cabin w-[107px] flex justify-center gap-2 w-full md:w-20">
           <Icon name="mdi:plus-circle" class="self-center" :style="{ color: '#fafafa'}" />
           New
         </button>
@@ -114,7 +105,7 @@ function prevPage() {
 
       <!-- Drop down search filter -->
       <div class="lightRoundedGreyBorder w-full">
-        <select class="p-2">
+        <select class="p-2 w-full">
           <option value="createdAscending">↑ Date Created Ascending</option>
           <option value="createdDescending">↓ Date Created Descending</option>
           <option value="alphaAscending">A↑ Alphabetical Ascending</option>
@@ -217,7 +208,7 @@ function prevPage() {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 600px;
+  max-width: 280px;
 }
 
 .lightRoundedGreyBorder {
@@ -237,5 +228,11 @@ select {
 
 .hover\:custom-green:hover {
   color: #03a58d;
+}
+
+@media only screen and (min-width: 768px) {
+  .truncatable-text {
+    max-width: 600px;
+  }
 }
 </style>
