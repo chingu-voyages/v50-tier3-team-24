@@ -20,6 +20,7 @@ interface EditorComponentProps {
   onMarkerInserted?: (markerData: AnnoteOnMarkerInsertedData) => void;
   onMarkerDeleted?: (markerData: AnnotteOnMarkerDeletedData) => void;
   onLostFocus?: () => void;
+  placeholder?: string;
 }
 
 const props = defineProps<EditorComponentProps>();
@@ -27,6 +28,7 @@ const props = defineProps<EditorComponentProps>();
 const editor = new EditorJS({
   holder: "editorjs",
   readOnly: Boolean(props.readOnly),
+  placeholder: props.placeholder || "Or start writing here...",
   tools: {
     header: {
       class: Header as any,

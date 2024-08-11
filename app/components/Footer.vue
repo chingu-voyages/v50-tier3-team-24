@@ -1,8 +1,8 @@
 <template>
-  <footer class="py-8 text-white bg-gray-700 w-full sticky bottom-0 z-50">
+  <footer class="py-8 text-white bg-gray-700 w-full fixed lg:sticky bottom-0 z-50">
     <div class="container px-4 mx-auto">
       <div class="flex flex-col items-center justify-between md:flex-row">
-        <div class="w-full mb-4 md:w-1/4 md:mb-0">
+        <div class="w-full mb-4 md:w-1/4 md:mb-0 flex justify-center lg:flex-none">
           <NuxtLink to="/" class="flex items-center text-3xl no-underline">
             <img :src="documentIcon" alt="Icon" class="w-8 h-8 mr-2" />
             Annote

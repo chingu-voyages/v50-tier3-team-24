@@ -49,9 +49,9 @@ async function fetchStickiesForDocument(documentId: string): Promise<Sticky[]> {
     <h1 class="text-2xl">Library</h1>
     <!-- This search bar section -->
     <div
-      class="flex flex-col items-center justify-end gap-4 py-4 pr-4 md:flex-row gap-x-2"
+      class="flex flex-col items-center justify-between gap-4 py-4 pr-4 md:flex-row gap-x-2"
     >
-      <div class="flex lightRoundedGreyBorder">
+      <div class="flex lightRoundedGreyBorder w-full">
         <div class="self-center mt-2 ml-2">
           <Icon name="mdi:magnify" color="black" size="1.5rem" />
         </div>
@@ -63,8 +63,8 @@ async function fetchStickiesForDocument(documentId: string): Promise<Sticky[]> {
       </div>
 
       <!-- Drop down search filter -->
-      <div class="content-center lightRoundedGreyBorder">
-        <select class="p-2">
+      <div class="lightRoundedGreyBorder w-full">
+        <select class="p-2 w-full">
           <option value="createdAscending">
             <p>&#129031; Date Created Ascending</p>
           </option>
@@ -87,7 +87,7 @@ async function fetchStickiesForDocument(documentId: string): Promise<Sticky[]> {
         v-for="(doc, index) in annoteDocs"
         :key="doc.document_id"
         :class="[
-          'p-4 hover:custom-green duration-200 relative group',
+          'p-4 hover:custom-green duration-200 relative group', 
           index % 2 === 0 ? 'bg-gray-100' : 'bg-white',
         ]"
       >
@@ -127,6 +127,7 @@ async function fetchStickiesForDocument(documentId: string): Promise<Sticky[]> {
   overflow: hidden;
   text-overflow: ellipsis;
   width: calc(100vw - 80px);
+  max-width: 600px;
 }
 
 .lightRoundedGreyBorder {
@@ -146,5 +147,9 @@ select {
 
 .hover\:custom-green:hover {
   color: #03a58d;
+}
+
+@media screen and (min-width: 1024px) {
+  
 }
 </style>
