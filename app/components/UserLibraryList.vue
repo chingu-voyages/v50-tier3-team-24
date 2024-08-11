@@ -150,9 +150,13 @@ function prevPage() {
       <div class="flex items-center justify-between">
         <div class="flex items-center">
           <img :src="documentIcon" alt="Icon" class="w-6 h-6 mr-2" />
-          <p class="text-xs sm:text-sm md:text-m">
-            {{ doc.title }}
-          </p>
+          <NuxtLink
+            :to="`/${currentUser?.data?.username}/${doc.slug}?id=${doc.document_id}`"
+          >
+            <p class="text-xs sm:text-sm md:text-m truncatable-text">
+              {{ doc.title }}
+            </p>
+          </NuxtLink>
         </div>
         <ShareLinkButtons
           :linkUrl="`/${currentUser?.data?.username}/${doc.slug}?id=${doc.document_id}`"
@@ -215,7 +219,6 @@ function prevPage() {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  width: calc(100vw - 80px);
 }
 
 .lightRoundedGreyBorder {
