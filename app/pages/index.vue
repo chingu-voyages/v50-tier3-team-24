@@ -1,3 +1,8 @@
+<style scoped>
+  .titleText {
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+  }
+</style>
 <template>
   <div class="font-sans text-gray-800">
     <header class="relative px-4 py-20 text-center bg-gray-300">
@@ -8,8 +13,8 @@
         "
       ></div>
       <div class="relative z-10">
-        <h1 class="mb-4 text-5xl font-bold text-white">Welcome to Annote</h1>
-        <p class="mb-8 text-2xl text-white">
+        <h1 class="mb-4 text-5xl font-bold text-white titleText">Welcome to Annote</h1>
+        <p class="mb-8 text-2xl text-white titleText">
           Streamline your note-taking and boost productivity
         </p>
         <NuxtLink
@@ -63,7 +68,7 @@
     <section class="px-4 py-16 text-center bg-gray-100">
       <h2 class="mb-12 text-4xl font-bold">How Annote Works</h2>
       <div class="flex flex-col gap-8">
-        <div class="flex p-6 bg-white rounded-lg shadow-md justify-evenly">
+        <div class="flex flex-col lg:flex-row p-6 bg-white rounded-lg shadow-md justify-evenly">
           <div>
             <div class="mb-4 text-3xl font-bold text-purple-600">1</div>
             <h3 class="mb-2 text-2xl font-semibold text-purple-800">
@@ -76,14 +81,14 @@
           <img
             src="https://res.cloudinary.com/dgxqotorm/image/upload/v1723228093/Screenshot_2024-08-09_at_2.20.45_PM_vt81sw.png"
             alt="Import URL"
-            class="w-1/2 rounded-lg"
+            class="lg:w-1/2 rounded-lg self-center"
           />
         </div>
-        <div class="flex p-6 bg-white rounded-lg shadow-md justify-evenly">
+        <div class="flex flex-col flex-col-reverse lg:flex-row p-6 bg-white rounded-lg shadow-md justify-evenly">
           <img
             src="https://res.cloudinary.com/dgxqotorm/image/upload/v1723228093/Screenshot_2024-08-09_at_2.20.45_PM_vt81sw.png"
             alt="Select From Library"
-            class="w-1/2 rounded-lg"
+            class="lg:w-1/2 rounded-lg"
           />
           <div>
             <div class="mb-4 text-3xl font-bold text-yellow-600">2</div>
@@ -96,7 +101,7 @@
             </p>
           </div>
         </div>
-        <div class="flex p-6 bg-white rounded-lg shadow-md justify-evenly">
+        <div class="flex flex-col p-6 bg-white rounded-lg shadow-md justify-evenly">
           <div>
             <div class="mb-4 text-3xl font-bold text-teal-600">3</div>
             <h3 class="mb-2 text-2xl font-semibold text-teal-700">
@@ -109,7 +114,7 @@
           <img
             src="https://res.cloudinary.com/dgxqotorm/image/upload/v1723228093/Screenshot_2024-08-09_at_2.20.45_PM_vt81sw.png"
             alt="Update Document"
-            class="w-1/2 rounded-lg"
+            class="lg:w-1/2 rounded-lg"
           />
         </div>
       </div>
