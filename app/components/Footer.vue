@@ -9,7 +9,8 @@
           </NuxtLink>
         </div>
         <p class="mb-4 text-center md:text-left md:mb-0">
-          © 2024 Annote App. This project is open source; find us on GitHub!
+          © 2024 Annote App. This project is open source; find us on
+          <NuxtLink to="https://github.com/chingu-voyages/v50-tier3-team-24">Github!</NuxtLink>
         </p>
         <div class="w-full md:w-1/4">
           <ul
