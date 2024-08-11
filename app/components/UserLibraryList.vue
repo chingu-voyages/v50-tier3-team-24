@@ -9,6 +9,9 @@ const { getCurrentUser } = useAuth();
 
 const currentUser = await getCurrentUser();
 
+const currentPage = ref(1);
+const documentsPerPage = 10; //We can change this later if needed
+
 onMounted(async () => {
   const { data: fetchedDocument } = await $fetch<ApiResponse<AnnoteDocument[]>>(
     "/api/annote_documents"
@@ -49,6 +52,28 @@ async function fetchStickiesForDocument(documentId: string): Promise<Sticky[]> {
     `/api/annote_documents/${documentId}/sticky`
   );
   return fetchedStickies || [];
+}
+
+const paginatedDocs = computed(() => {
+  const start = (currentPage.value - 1) * documentsPerPage;
+  const end = start + documentsPerPage;
+  return annoteDocs.value?.slice(start, end) || [];
+});
+
+const totalPages = computed(() => {
+  return Math.ceil((annoteDocs.value?.length || 0) / documentsPerPage);
+});
+
+function nextPage() {
+  if (currentPage.value < totalPages.value) {
+    currentPage.value++;
+  }
+}
+
+function prevPage() {
+  if (currentPage.value > 1) {
+    currentPage.value--;
+  }
 }
 </script>
 
@@ -115,7 +140,7 @@ async function fetchStickiesForDocument(documentId: string): Promise<Sticky[]> {
 
     <li
       v-else
-      v-for="(doc, index) in annoteDocs"
+      v-for="(doc, index) in paginatedDocs"
       :key="doc.document_id"
       :class="[
         'p-4 hover:custom-green duration-200 relative group',
@@ -147,6 +172,42 @@ async function fetchStickiesForDocument(documentId: string): Promise<Sticky[]> {
       </div>
     </li>
   </ul>
+
+  <!-- Pagination -->
+  <div class="flex justify-end mt-4">
+    <button
+      v-if="currentPage > 1"
+      @click="prevPage"
+      class="px-4 py-2 mr-2 bg-gray-200 rounded hover:bg-gray-300"
+    >
+      Previous
+    </button>
+    <button
+      v-for="page in totalPages"
+      :key="page"
+      @click="currentPage = page"
+      :class="[
+        'px-4 py-2 mx-1 rounded',
+        currentPage === page
+          ? 'bg-[#03a58d] text-white'
+          : 'bg-gray-200 hover:bg-gray-300',
+      ]"
+    >
+      {{ page }}
+    </button>
+    <button
+      @click="nextPage"
+      :disabled="currentPage === totalPages"
+      :class="[
+        'px-4 py-2 ml-2 rounded',
+        currentPage === totalPages
+          ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+          : 'bg-gray-200 hover:bg-gray-300',
+      ]"
+    >
+      Next
+    </button>
+  </div>
 </template>
 
 <style scoped>
