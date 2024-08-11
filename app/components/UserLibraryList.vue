@@ -53,102 +53,100 @@ async function fetchStickiesForDocument(documentId: string): Promise<Sticky[]> {
 </script>
 
 <template>
-  <div class="mt-4">
-    <h1 class="text-2xl">Library</h1>
-
-    <!-- This search bar section -->
-    <div
-      class="flex flex-col items-center justify-between py-4 pr-4 md:flex-row gap-x-2"
-    >
-      <NuxtLink to="/new" class="w-[100px] mb-2 xs:w-auto sm:mb-0 sm:mr-2">
-        <button
-          class="w-full sm:w-auto px-4 py-2 bg-[#03a58d] text-white rounded hover:bg-[#028c76] focus:outline-none focus:ring-2 focus:ring-[#03a58d] focus:ring-opacity-50"
-        >
-          + New
-        </button>
-      </NuxtLink>
-
-      <div
-        class="flex flex-col items-center justify-end gap-4 py-4 pr-4 md:flex-row gap-x-2"
+  <!-- This is the search bar section -->
+  <div
+    class="flex flex-col items-center justify-between py-4 pr-4 md:flex-row gap-x-2"
+  >
+    <!-- New Button -->
+    <NuxtLink to="/new" class="w-[100px] mb-2 xs:w-auto sm:mb-0 sm:mr-2">
+      <button
+        class="w-full sm:w-auto px-4 py-2 bg-[#03a58d] text-white rounded hover:bg-[#028c76] focus:outline-none focus:ring-2 focus:ring-[#03a58d] focus:ring-opacity-50"
       >
-        <div class="flex lightRoundedGreyBorder">
-          <div class="self-center mt-2 ml-2">
-            <Icon name="mdi:magnify" color="black" size="1.5rem" />
-          </div>
-          <input
-            type="text"
-            placeholder="Search"
-            class="w-full p-2 border border-black"
-          />
-        </div>
+        + New
+      </button>
+    </NuxtLink>
 
-        <!-- Drop down search filter -->
-        <div class="content-center lightRoundedGreyBorder">
-          <select class="p-2">
-            <option value="createdAscending">
-              <p>&#129031; Date Created Ascending</p>
-            </option>
-            <option value="createdDescending">
-              &#129029; Date Created Descending
-            </option>
-            <option value="alphaAscending">
-              &#129031; Alphabetical Ascending
-            </option>
-            <option value="alphaDescending">
-              &#129029; Alphabetical Descending
-            </option>
-          </select>
+    <!-- Search Bar -->
+    <div
+      class="flex flex-col items-center justify-end gap-4 py-4 pr-4 md:flex-row gap-x-2"
+    >
+      <div class="flex lightRoundedGreyBorder">
+        <div class="self-center mt-2 ml-2">
+          <Icon name="mdi:magnify" color="black" size="1.5rem" />
         </div>
+        <input
+          type="text"
+          placeholder="Search"
+          class="w-full p-2 border border-black"
+        />
+      </div>
+
+      <!-- Drop down search filter -->
+      <div class="content-center lightRoundedGreyBorder">
+        <select class="p-2">
+          <option value="createdAscending">
+            <p>&#129031; Date Created Ascending</p>
+          </option>
+          <option value="createdDescending">
+            &#129029; Date Created Descending
+          </option>
+          <option value="alphaAscending">
+            &#129031; Alphabetical Ascending
+          </option>
+          <option value="alphaDescending">
+            &#129029; Alphabetical Descending
+          </option>
+        </select>
       </div>
     </div>
-
-    <!-- This is the list of annote documents -->
-    <ul>
-      <li v-if="!annoteDocs || annoteDocs.length === 0" class="p-4 bg-gray-100">
-        <p>
-          Your library is empty. Click
-          <NuxtLink to="/new" class="text-[#03a58d] hover:underline"
-            >here</NuxtLink
-          >
-          to create a new document.
-        </p>
-      </li>
-
-      <li
-        v-else
-        v-for="(doc, index) in annoteDocs"
-        :key="doc.document_id"
-        :class="[
-          'p-4 hover:custom-green duration-200 relative group',
-          index % 2 === 0 ? 'bg-gray-100' : 'bg-white',
-        ]"
-      >
-        <div class="flex items-center justify-between">
-          <div class="flex items-center">
-            <img :src="documentIcon" alt="Icon" class="w-6 h-6 mr-2" />
-            <p class="text-xs sm:text-sm md:text-m">
-              {{ doc.title }}
-            </p>
-          </div>
-          <ShareLinkButtons
-            :linkUrl="`/${currentUser?.data?.username}/${doc.slug}?id=${doc.document_id}`"
-          />
-        </div>
-        <div
-          class="absolute flex mt-2 mr-2 text-sm transition-opacity duration-500 opacity-0 top-2 right-20 group-hover:opacity-50"
-        >
-          <div class="flex items-center">
-            <img :src="visibilityIcon" alt="Icon" class="w-4 h-4 mr-2" />
-            <span class="mr-2 capitalize"> {{ doc.visibility }}</span>
-          </div>
-          <div class="flex items-center">
-            <img :src="newsIcon" alt="Icon" class="w-4 h-4 mr-2" />
-            <span>{{ stickyCountMap[doc.document_id] }} Stickies</span>
-          </div>
-        </div>
-      </li>
-    </ul>
   </div>
+
+  <!-- This is the list of annote documents -->
+  <ul>
+    <li v-if="!annoteDocs || annoteDocs.length === 0" class="p-4 bg-gray-100">
+      <p>
+        Your library is empty. Click
+        <NuxtLink to="/new" class="text-[#03a58d] hover:underline"
+          >here</NuxtLink
+        >
+        to create a new document.
+      </p>
+    </li>
+
+    <li
+      v-else
+      v-for="(doc, index) in annoteDocs"
+      :key="doc.document_id"
+      :class="[
+        'p-4 hover:custom-green duration-200 relative group',
+        index % 2 === 0 ? 'bg-gray-100' : 'bg-white',
+      ]"
+    >
+      <div class="flex items-center justify-between">
+        <div class="flex items-center">
+          <img :src="documentIcon" alt="Icon" class="w-6 h-6 mr-2" />
+          <p class="text-xs sm:text-sm md:text-m">
+            {{ doc.title }}
+          </p>
+        </div>
+        <ShareLinkButtons
+          :linkUrl="`/${currentUser?.data?.username}/${doc.slug}?id=${doc.document_id}`"
+        />
+      </div>
+      <div
+        class="absolute flex mt-2 mr-2 text-sm transition-opacity duration-500 opacity-0 top-2 right-20 group-hover:opacity-50"
+      >
+        <div class="flex items-center">
+          <img :src="visibilityIcon" alt="Icon" class="w-4 h-4 mr-2" />
+          <span class="mr-2 capitalize"> {{ doc.visibility }}</span>
+        </div>
+        <div class="flex items-center">
+          <img :src="newsIcon" alt="Icon" class="w-4 h-4 mr-2" />
+          <span>{{ stickyCountMap[doc.document_id] }} Stickies</span>
+        </div>
+      </div>
+    </li>
+  </ul>
 </template>
 
 <style scoped>
