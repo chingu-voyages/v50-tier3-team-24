@@ -104,7 +104,18 @@ async function fetchStickiesForDocument(documentId: string): Promise<Sticky[]> {
 
     <!-- This is the list of annote documents -->
     <ul>
+      <li v-if="!annoteDocs || annoteDocs.length === 0" class="p-4 bg-gray-100">
+        <p>
+          Your library is empty. Click
+          <NuxtLink to="/new" class="text-[#03a58d] hover:underline"
+            >here</NuxtLink
+          >
+          to create a new document.
+        </p>
+      </li>
+
       <li
+        v-else
         v-for="(doc, index) in annoteDocs"
         :key="doc.document_id"
         :class="[
