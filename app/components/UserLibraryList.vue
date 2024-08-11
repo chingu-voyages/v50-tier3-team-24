@@ -51,6 +51,12 @@ async function fetchStickiesForDocument(documentId: string): Promise<Sticky[]> {
     <div
       class="flex flex-col items-center justify-between gap-4 py-4 pr-4 md:flex-row gap-x-2"
     >
+      <div class="w-full">
+        <button type="submit" class="p-2 mt-4 text-white bg-[#03A58D] rounded font-cabin w-[107px]">
+          <Icon name="mdi:plus-circle" class="self-center" :style="{ color: '#fafafa'}" />
+          New
+        </button>
+      </div>
       <div class="flex lightRoundedGreyBorder w-full">
         <div class="self-center mt-2 ml-2">
           <Icon name="mdi:magnify" color="black" size="1.5rem" />
