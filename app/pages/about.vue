@@ -31,7 +31,7 @@ const teamMembers = [
 
 <template>
   <div class="container px-4 py-8 mx-auto">
-    <h1 class="mb-8 text-4xl font-bold">Annote</h1>
+    <h1 class="mb-8 text-4xl font-bold text-teal-700">Annote</h1>
     <h2 class="mb-8 text-2xl font-bold">A Rich Annotation Tool</h2>
 
     <div class="mb-12">
