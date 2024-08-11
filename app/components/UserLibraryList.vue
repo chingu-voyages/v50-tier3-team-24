@@ -109,18 +109,10 @@ function prevPage() {
       <!-- Drop down search filter -->
       <div class="content-center lightRoundedGreyBorder">
         <select class="p-2">
-          <option value="createdAscending">
-            <p>&#129031; Date Created Ascending</p>
-          </option>
-          <option value="createdDescending">
-            &#129029; Date Created Descending
-          </option>
-          <option value="alphaAscending">
-            &#129031; Alphabetical Ascending
-          </option>
-          <option value="alphaDescending">
-            &#129029; Alphabetical Descending
-          </option>
+          <option value="createdAscending">↑ Date Created Ascending</option>
+          <option value="createdDescending">↓ Date Created Descending</option>
+          <option value="alphaAscending">A↑ Alphabetical Ascending</option>
+          <option value="alphaDescending">A↓ Alphabetical Descending</option>
         </select>
       </div>
     </div>
