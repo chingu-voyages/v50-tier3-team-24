@@ -95,7 +95,7 @@ async function fetchStickiesForDocument(documentId: string): Promise<Sticky[]> {
           <div class="flex items-center">
             <img :src="documentIcon" alt="Icon" class="w-6 h-6 mr-2" />
             <NuxtLink :to="`/${currentUser?.data?.username}/${doc.slug}?id=${doc.document_id}`">
-              <p class="text-xs sm:text-sm md:text-m">
+              <p class="text-xs sm:text-sm md:text-m truncatable-text">
                 {{ doc.title }}
               </p>
             </NuxtLink>
