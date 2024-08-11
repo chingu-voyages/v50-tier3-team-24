@@ -69,7 +69,10 @@
       </div>
 
       <!-- Submit Button -->
-      <button type="submit" class="p-2 mt-4 text-white bg-blue-500 rounded">
+      <button
+        type="submit"
+        class="p-2 mt-4 text-white bg-[#03a58d] rounded hover:bg-[#028c76] focus:outline-none focus:ring-2 focus:ring-[#03a58d] focus:ring-opacity-50"
+      >
         Submit
       </button>
     </form>
