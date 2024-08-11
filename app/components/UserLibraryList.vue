@@ -154,8 +154,4 @@ select {
 .hover\:custom-green:hover {
   color: #03a58d;
 }
-
-@media screen and (min-width: 1024px) {
-  
-}
 </style>
