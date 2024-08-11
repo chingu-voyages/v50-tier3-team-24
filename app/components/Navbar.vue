@@ -14,30 +14,24 @@
           </button>
         </div>
 
-        <div class="items-center hidden space-x-6 lg:flex text-md">
+        <div
+          :class="[
+            'lg:flex',
+            { hidden: !isMenuOpen },
+            'items-center space-x-6 text-md',
+          ]"
+        >
           <ul class="flex flex-col lg:flex-row lg:space-y-0 lg:space-x-6">
-            <li>
+            <li v-for="item in menuItems" :key="item.to">
               <NuxtLink
-                to="/about"
-                class="flex items-center pt-4 no-underline lg:pt-0 homeBtnColor"
+                :to="item.to"
+                class="flex items-center pt-4 no-underline lg:pt-0"
+                :class="item.class"
+                @click="isMenuOpen = false"
               >
-                <img :src="homeIcon" alt="Icon" class="w-8 h-8 mr-2" />About
-              </NuxtLink>
-            </li>
-            <li>
-              <NuxtLink
-                to="/library"
-                class="flex items-center pt-4 no-underline lg:pt-0 libraryBtnColor"
-              >
-                <img :src="bookIcon" alt="Icon" class="w-8 h-8 mr-2" />Library
-              </NuxtLink>
-            </li>
-            <li>
-              <NuxtLink
-                to="/new"
-                class="flex items-center pt-4 no-underline lg:pt-0 newBtnColor"
-              >
-                <img :src="addCircleIcon" alt="Icon" class="w-8 h-8 mr-2" />New
+                <img :src="item.icon" alt="Icon" class="w-8 h-8 mr-2" />{{
+                  item.text
+                }}
               </NuxtLink>
             </li>
             <li v-if="user" class="relative">
@@ -64,64 +58,16 @@
               </div>
             </li>
             <li v-else>
-              <NuxtLink to="/login" class="flex items-center no-underline"
+              <NuxtLink
+                to="/login"
+                class="flex items-center no-underline"
+                @click="isMenuOpen = false"
                 >Sign In</NuxtLink
               >
             </li>
           </ul>
         </div>
       </div>
-    </div>
-    <div
-      v-if="isMenuOpen"
-      class="absolute left-0 right-0 z-50 w-full bg-white shadow-md top-full"
-    >
-      <ul class="flex flex-col p-4 lg:flex-row lg:space-y-0 lg:space-x-6">
-        <li>
-          <NuxtLink
-            to="/about"
-            class="flex items-center pt-4 no-underline lg:pt-0 homeBtnColor"
-            @click="isMenuOpen = false"
-          >
-            <img :src="homeIcon" alt="Icon" class="w-8 h-8 mr-2" />About
-          </NuxtLink>
-        </li>
-        <li>
-          <NuxtLink
-            to="/library"
-            class="flex items-center pt-4 no-underline lg:pt-0 libraryBtnColor"
-            @click="isMenuOpen = false"
-          >
-            <img :src="bookIcon" alt="Icon" class="w-8 h-8 mr-2" />Library
-          </NuxtLink>
-        </li>
-        <li>
-          <NuxtLink
-            to="/new"
-            class="flex items-center pt-4 no-underline lg:pt-0 newBtnColor"
-            @click="isMenuOpen = false"
-          >
-            <img :src="addCircleIcon" alt="Icon" class="w-8 h-8 mr-2" />New
-          </NuxtLink>
-        </li>
-        <li v-if="user">
-          <button
-            @click="toggleDropdown"
-            class="flex items-center pt-4 no-underline lg:pt-0 accountBtnColor"
-          >
-            <img :src="accountIcon" alt="Icon" class="w-8 h-8 mr-2" />
-            Account
-          </button>
-        </li>
-        <li v-else>
-          <NuxtLink
-            to="/login"
-            class="flex items-center no-underline"
-            @click="isMenuOpen = false"
-            >Sign In</NuxtLink
-          >
-        </li>
-      </ul>
     </div>
   </nav>
 </template>
@@ -140,6 +86,12 @@ const user = useSupabaseUser();
 const { logout, currentUser } = useAuth();
 const isDropdownOpen = ref(false);
 const isMenuOpen = ref(false);
+
+const menuItems = [
+  { to: "/about", icon: homeIcon, text: "About", class: "homeBtnColor" },
+  { to: "/library", icon: bookIcon, text: "Library", class: "libraryBtnColor" },
+  { to: "/new", icon: addCircleIcon, text: "New", class: "newBtnColor" },
+];
 
 const handleLogout = () => {
   logout();
