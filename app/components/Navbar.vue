@@ -76,7 +76,7 @@
       v-if="isMenuOpen"
       class="absolute left-0 right-0 z-50 w-full bg-white shadow-md top-full"
     >
-      <ul class="flex flex-col lg:flex-row lg:space-y-0 lg:space-x-6">
+      <ul class="flex flex-col p-4 lg:flex-row lg:space-y-0 lg:space-x-6">
         <li>
           <NuxtLink
             to="/about"
