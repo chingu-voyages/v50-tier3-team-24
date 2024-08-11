@@ -19,6 +19,7 @@
             'lg:flex',
             { hidden: !isMenuOpen },
             'items-center space-x-6 text-md',
+            'absolute top-full left-0 w-full bg-white p-4 z-50 lg:relative lg:w-auto',
           ]"
         >
           <ul class="flex flex-col lg:flex-row lg:space-y-0 lg:space-x-6">
@@ -44,7 +45,7 @@
               </button>
               <div
                 v-if="isDropdownOpen"
-                class="absolute right-0 z-10 w-48 py-1 mt-2 bg-white rounded-md shadow-lg"
+                class="z-10 w-48 mt-4 bg-white lg:rounded-md lg:shadow-lg lg:absolute"
               >
                 <p class="px-4 py-2 text-sm accountBtnColor">
                   {{ currentUser.username }}
@@ -133,5 +134,12 @@ onUnmounted(() => {
 }
 .accountBtnColor {
   color: #f1607d;
+}
+
+@media (max-width: 1023px) {
+  .absolute {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
 }
 </style>
