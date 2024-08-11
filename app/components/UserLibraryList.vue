@@ -22,11 +22,19 @@ onMounted(async () => {
   }
 });
 
-async function getStickiesCountForDocuments (annoteDocuments: AnnoteDocument[]): Promise<Record<string, number>> {
-  const res = await Promise.allSettled(annoteDocuments.map((doc) => fetchStickiesForDocument(doc.document_id)));
+async function getStickiesCountForDocuments(
+  annoteDocuments: AnnoteDocument[]
+): Promise<Record<string, number>> {
+  const res = await Promise.allSettled(
+    annoteDocuments.map((doc) => fetchStickiesForDocument(doc.document_id))
+  );
 
   return annoteDocuments.reduce((acc, doc) => {
-    const foundResult = res.find((r) => r.status === "fulfilled" && r.value.some((s) => s.document_id === doc.document_id));
+    const foundResult = res.find(
+      (r) =>
+        r.status === "fulfilled" &&
+        r.value.some((s) => s.document_id === doc.document_id)
+    );
     if (foundResult && foundResult.status === "fulfilled") {
       acc[doc.document_id] = foundResult.value.length;
     } else {
@@ -47,37 +55,50 @@ async function fetchStickiesForDocument(documentId: string): Promise<Sticky[]> {
 <template>
   <div class="mt-4">
     <h1 class="text-2xl">Library</h1>
+
     <!-- This search bar section -->
     <div
-      class="flex flex-col items-center justify-end gap-4 py-4 pr-4 md:flex-row gap-x-2"
+      class="flex flex-col items-center justify-between py-4 pr-4 md:flex-row gap-x-2"
     >
-      <div class="flex lightRoundedGreyBorder">
-        <div class="self-center mt-2 ml-2">
-          <Icon name="mdi:magnify" color="black" size="1.5rem" />
-        </div>
-        <input
-          type="text"
-          placeholder="Search"
-          class="w-full p-2 border border-black"
-        />
-      </div>
+      <NuxtLink to="/new" class="w-[100px] mb-2 xs:w-auto sm:mb-0 sm:mr-2">
+        <button
+          class="w-full sm:w-auto px-4 py-2 bg-[#03a58d] text-white rounded hover:bg-[#028c76] focus:outline-none focus:ring-2 focus:ring-[#03a58d] focus:ring-opacity-50"
+        >
+          + New
+        </button>
+      </NuxtLink>
 
-      <!-- Drop down search filter -->
-      <div class="content-center lightRoundedGreyBorder">
-        <select class="p-2">
-          <option value="createdAscending">
-            <p>&#129031; Date Created Ascending</p>
-          </option>
-          <option value="createdDescending">
-            &#129029; Date Created Descending
-          </option>
-          <option value="alphaAscending">
-            &#129031; Alphabetical Ascending
-          </option>
-          <option value="alphaDescending">
-            &#129029; Alphabetical Descending
-          </option>
-        </select>
+      <div
+        class="flex flex-col items-center justify-end gap-4 py-4 pr-4 md:flex-row gap-x-2"
+      >
+        <div class="flex lightRoundedGreyBorder">
+          <div class="self-center mt-2 ml-2">
+            <Icon name="mdi:magnify" color="black" size="1.5rem" />
+          </div>
+          <input
+            type="text"
+            placeholder="Search"
+            class="w-full p-2 border border-black"
+          />
+        </div>
+
+        <!-- Drop down search filter -->
+        <div class="content-center lightRoundedGreyBorder">
+          <select class="p-2">
+            <option value="createdAscending">
+              <p>&#129031; Date Created Ascending</p>
+            </option>
+            <option value="createdDescending">
+              &#129029; Date Created Descending
+            </option>
+            <option value="alphaAscending">
+              &#129031; Alphabetical Ascending
+            </option>
+            <option value="alphaDescending">
+              &#129029; Alphabetical Descending
+            </option>
+          </select>
+        </div>
       </div>
     </div>
 
