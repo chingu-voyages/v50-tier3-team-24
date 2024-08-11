@@ -29,19 +29,19 @@
         </div>
 
         <!-- Source URL . This is commented out because URL scraping is not functioning now. -->
-        <div class="mb-4 hidden">
-          <div class="flex">
-            <Icon class="mr-2 self-center" name="mdi:link" :style="{ color: '#75D3D4'}" />
+        <!-- <div class="mb-4 hidden"> -->
+          <!-- <div class="flex"> -->
+            <!-- <Icon class="mr-2 self-center" name="mdi:link" :style="{ color: '#75D3D4'}" /> -->
             <!-- <label for="sourceUrl">Source Url</label> -->
-            <input
+            <!-- <input
               id="sourceUrl"
               type="text"
           
               class="w-full text-base bg-transparent border-none focus:outline-none !font-cabin"
               placeholder="Type or paste a link here to get started."
-            />
-          </div>
-        </div>
+            /> -->
+          <!-- </div> -->
+        <!-- </div> -->
         <!-- User manually enters the source url  -->
         <div>
           <input
