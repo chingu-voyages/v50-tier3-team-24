@@ -58,12 +58,14 @@
                 </button>
               </div>
             </li>
-            <li v-else>
+            <li v-else class="relative">
               <NuxtLink
                 to="/login"
-                class="flex items-center no-underline"
+                class="flex items-center pt-4 no-underline lg:pt-0 accountBtnColor"
                 @click="isMenuOpen = false"
-                >Sign In</NuxtLink
+              >
+                <img :src="accountIcon" alt="Icon" class="w-8 h-8 mr-2" /> Sign
+                In</NuxtLink
               >
             </li>
           </ul>
