@@ -46,7 +46,7 @@ export function useAuth() {
 
       currentUser.value = (await getCurrentUser())?.data!;
 
-      router.push("/about");
+      router.push("/");
     } catch (err: any) {
       error.value = err.message;
     }
@@ -77,7 +77,7 @@ export function useAuth() {
 
       currentUser.value = (await getCurrentUser())?.data!;
 
-      router.push("/about");
+      router.push("/");
     } catch (err: any) {
       error.value = err.message;
     }
