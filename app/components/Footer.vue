@@ -1,16 +1,18 @@
 <template>
-  <footer class="py-8 text-white bg-gray-700 w-full sticky bottom-0 z-50">
+  <footer class="py-8 text-white bg-gray-700 w-full bottom-0 z-50">
     <div class="container px-4 mx-auto">
-      <div class="flex flex-col items-center justify-between md:flex-row">
-        <div class="w-full mb-4 md:w-1/4 md:mb-0">
-          <NuxtLink to="/" class="flex items-center text-3xl no-underline">
+      <div class="flex items-center justify-between md:flex-row">
+        <div class="w-full mb-4 md:w-1/4 md:mb-0 flex justify-center lg:flex-none">
+          <NuxtLink to="/" class="flex items-center !text-md lg:text-3xl no-underline">
             <img :src="documentIcon" alt="Icon" class="w-8 h-8 mr-2" />
             Annote
           </NuxtLink>
         </div>
-        <p class="mb-4 text-center md:text-left md:mb-0">
+        <p class="text-sm md:text-left md:mb-0 self-center">
           © 2024 Annote App. This project is open source; find us on
-          <NuxtLink to="https://github.com/chingu-voyages/v50-tier3-team-24">Github!</NuxtLink>
+          <NuxtLink to="https://github.com/chingu-voyages/v50-tier3-team-24">
+            <Icon name="mdi:github" size="1.3rem" />
+          </NuxtLink>
         </p>
         <div class="w-full md:w-1/4">
           <ul
@@ -19,14 +21,14 @@
             <li>
               <NuxtLink
                 to="/"
-                class="transition-colors duration-200 hover:text-gray-300"
+                class="transition-colors duration-200 hover:text-gray-300 text-sm"
                 >Terms of Service</NuxtLink
               >
             </li>
             <li>
               <NuxtLink
                 to="/"
-                class="transition-colors duration-200 hover:text-gray-300"
+                class="transition-colors duration-200 hover:text-gray-300 text-sm"
                 >Privacy Policy</NuxtLink
               >
             </li>

@@ -82,20 +82,24 @@ function prevPage() {
   <div
     class="flex flex-col items-center justify-between py-4 pr-4 md:flex-row gap-x-2"
   >
-    <!-- New Button -->
-    <NuxtLink to="/new" class="w-[100px] mb-2 xs:w-auto sm:mb-0 sm:mr-2">
-      <button
-        class="w-full sm:w-auto px-4 py-2 bg-[#03a58d] text-white rounded hover:bg-[#028c76] focus:outline-none focus:ring-2 focus:ring-[#03a58d] focus:ring-opacity-50"
-      >
-        + New
-      </button>
-    </NuxtLink>
-
     <!-- Search Bar -->
     <div
-      class="flex flex-col items-center justify-end gap-4 py-4 pr-4 md:flex-row gap-x-2"
+      class="flex flex-col items-center justify-between w-full gap-4 py-4 md:flex-row gap-x-2"
     >
-      <div class="flex lightRoundedGreyBorder">
+      <div class="w-full">
+        <button
+          type="submit"
+          class="p-2 text-white bg-[#03A58D] rounded font-cabin w-[107px] flex justify-center gap-2 w-full md:w-20"
+        >
+          <Icon
+            name="mdi:plus-circle"
+            class="self-center"
+            :style="{ color: '#fafafa' }"
+          />
+          New
+        </button>
+      </div>
+      <div class="flex w-full lightRoundedGreyBorder">
         <div class="self-center mt-2 ml-2">
           <Icon name="mdi:magnify" color="black" size="1.5rem" />
         </div>
@@ -107,8 +111,8 @@ function prevPage() {
       </div>
 
       <!-- Drop down search filter -->
-      <div class="content-center lightRoundedGreyBorder">
-        <select class="p-2">
+      <div class="w-full lightRoundedGreyBorder">
+        <select class="w-full p-2">
           <option value="createdAscending">↑ Date Created Ascending</option>
           <option value="createdDescending">↓ Date Created Descending</option>
           <option value="alphaAscending">A↑ Alphabetical Ascending</option>
@@ -211,6 +215,7 @@ function prevPage() {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  max-width: 280px;
 }
 
 .lightRoundedGreyBorder {
@@ -230,5 +235,11 @@ select {
 
 .hover\:custom-green:hover {
   color: #03a58d;
+}
+
+@media only screen and (min-width: 768px) {
+  .truncatable-text {
+    max-width: 600px;
+  }
 }
 </style>
