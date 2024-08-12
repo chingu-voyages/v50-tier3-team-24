@@ -12,6 +12,7 @@ const currentUser = await getCurrentUser();
 const currentPage = ref(1);
 const documentsPerPage = 10;
 const searchTerm = ref("");
+const sortOption = ref("createdDescending");
 
 onMounted(async () => {
   const { data: fetchedDocument } = await $fetch<ApiResponse<AnnoteDocument[]>>(
@@ -56,20 +57,44 @@ async function fetchStickiesForDocument(documentId: string): Promise<Sticky[]> {
 }
 
 const filteredDocs = computed(() => {
-  if (!searchTerm.value) return annoteDocs.value;
-  return annoteDocs.value?.filter((doc) =>
-    doc.title.toLowerCase().includes(searchTerm.value.toLowerCase())
-  );
+  let docs = annoteDocs.value || [];
+
+  if (searchTerm.value) {
+    docs = docs.filter((doc) =>
+      doc.title.toLowerCase().includes(searchTerm.value.toLowerCase())
+    );
+  }
+
+  docs = [...docs].sort((a, b) => {
+    switch (sortOption.value) {
+      case "createdAscending":
+        return (
+          new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+        );
+      case "createdDescending":
+        return (
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+        );
+      case "alphaAscending":
+        return a.title.localeCompare(b.title);
+      case "alphaDescending":
+        return b.title.localeCompare(a.title);
+      default:
+        return 0;
+    }
+  });
+
+  return docs;
 });
 
 const paginatedDocs = computed(() => {
   const start = (currentPage.value - 1) * documentsPerPage;
   const end = start + documentsPerPage;
-  return filteredDocs.value?.slice(start, end) || [];
+  return filteredDocs.value.slice(start, end);
 });
 
 const totalPages = computed(() => {
-  return Math.ceil((filteredDocs.value?.length || 0) / documentsPerPage);
+  return Math.ceil(filteredDocs.value.length / documentsPerPage);
 });
 
 function nextPage() {
@@ -118,7 +143,7 @@ function prevPage() {
       </div>
 
       <div class="w-full lightRoundedGreyBorder">
-        <select class="w-full p-2">
+        <select v-model="sortOption" class="w-full p-2">
           <option value="createdAscending">↑ Date Created Ascending</option>
           <option value="createdDescending">↓ Date Created Descending</option>
           <option value="alphaAscending">A↑ Alphabetical Ascending</option>
@@ -129,10 +154,7 @@ function prevPage() {
   </div>
 
   <ul>
-    <li
-      v-if="!filteredDocs || filteredDocs.length === 0"
-      class="p-4 bg-gray-100"
-    >
+    <li v-if="filteredDocs.length === 0" class="p-4 bg-gray-100">
       <p v-if="!annoteDocs || annoteDocs.length === 0">
         Your library is empty. Click
         <NuxtLink to="/new" class="text-[#03a58d] hover:underline"
