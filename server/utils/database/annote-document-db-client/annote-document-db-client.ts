@@ -92,4 +92,16 @@ export class AnnoteDocumentDbClient extends BaseDbClient {
     if (error) throw new Error(error.message);
     return data || [];
   }
+
+  public async deleteDocumentById(
+    user_id: string,
+    document_id: string
+  ): Promise<void> {
+    const { error } = await this.client
+      .from(this.TABLE_NAME)
+      .delete()
+      .match({ document_id, user_id });
+
+    if (error) throw new Error(error.message);
+  }
 }
