@@ -16,6 +16,7 @@
         color="black"
       />
     </div> -->
+    <slot></slot>
   </div>
 </template>
 

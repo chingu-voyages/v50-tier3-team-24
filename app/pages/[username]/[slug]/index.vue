@@ -14,7 +14,13 @@
               <ShareLinkButtons
                 v-if="currentUser?.data?.username === username"
                 :link-url="`${annoteDocument?.slug}/edit?id=${annoteDocument?.document_id}`"
-              />
+              >
+              <button @click="toggleConfirmDeleteWindow">
+                <!-- This is the document delete button. -->
+                <Icon name="mdi:trash-can-outline" class="text-gray-300 hover:text-[#F64C00]" />
+              </button>
+            </ShareLinkButtons>
+            <DeleteConfirmModal :open="confirmDeleteWindowOpen" :onClose="toggleConfirmDeleteWindow" :onDelete="handleDeleteDocument" />
             </div>
           </div>
           <!-- Document Link -->
@@ -60,10 +66,13 @@ const route = useRoute();
 const annoteDocument = ref<AnnoteDocument | null>(null);
 const editorController = ref<CustomEditorJs | null>(null);
 const stickies = ref<Sticky[]>([]); // These will be readonly stickies
+const router = useRouter();
 const { fetchStickies } = useSticky();
+const { deleteDocument } = useDocument();
 const { getCurrentUser } = useAuth();
 
 const currentUser = await getCurrentUser();
+const confirmDeleteWindowOpen = ref(false);
 
 const { id } = route.query;
 const { username } = route.params;
@@ -84,5 +93,27 @@ function handleEditorReady(editor: CustomEditorJs) {
       blocks: annoteDocument.value?.blocks || [],
     });
   });
+}
+
+function toggleConfirmDeleteWindow() {
+  confirmDeleteWindowOpen.value = !confirmDeleteWindowOpen.value;
+}
+
+async function handleDeleteDocument() {
+  if (!annoteDocument.value) {
+    console.error("We can't delete this document. It's probably null.", annoteDocument.value);
+    return;
+  }
+  
+  const res = await deleteDocument(annoteDocument.value.document_id);
+
+  if (res?.status === "ok") {
+    toggleConfirmDeleteWindow();
+    // When a document is successfully deleted, redirect to the user's library page
+    await router.push(`/library`);
+  } else {
+    console.error("Failed to delete document", res);
+  }
+  
 }
 </script>
