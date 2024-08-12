@@ -1,9 +1,6 @@
 <template>
   <div class="containerWidth">
-    <form
-      class="flex flex-col mt-4 gap-y-4"
-      @submit.prevent="handleSubmit"
-    >
+    <form class="flex flex-col mt-4 gap-y-4" @submit.prevent="handleSubmit">
       <!-- Import From Source Section-->
       <div>
         <!-- Document Title -->
@@ -23,24 +20,27 @@
           <div
             class="flex items-center justify-center px-6 pt-2 pb-2 border-2 border-gray-300 border-dashed rounded-md"
           >
-            <Icon name="mdi:plus-circle-outline" :style="{ color: '#75D3D4'}" />
+            <Icon
+              name="mdi:plus-circle-outline"
+              :style="{ color: '#75D3D4' }"
+            />
             <p class="pl-1 text-gray-300">Add cover image</p>
           </div>
         </div>
 
         <!-- Source URL . This is commented out because URL scraping is not functioning now. -->
-        <!-- <div class="mb-4 hidden"> -->
-          <!-- <div class="flex"> -->
-            <!-- <Icon class="mr-2 self-center" name="mdi:link" :style="{ color: '#75D3D4'}" /> -->
-            <!-- <label for="sourceUrl">Source Url</label> -->
-            <!-- <input
+        <!-- <div class="hidden mb-4"> -->
+        <!-- <div class="flex"> -->
+        <!-- <Icon class="self-center mr-2" name="mdi:link" :style="{ color: '#75D3D4'}" /> -->
+        <!-- <label for="sourceUrl">Source Url</label> -->
+        <!-- <input
               id="sourceUrl"
               type="text"
           
               class="w-full text-base bg-transparent border-none focus:outline-none !font-cabin"
               placeholder="Type or paste a link here to get started."
             /> -->
-          <!-- </div> -->
+        <!-- </div> -->
         <!-- </div> -->
         <!-- User manually enters the source url  -->
         <div>
@@ -48,7 +48,7 @@
             id="sourceUrl"
             type="text"
             v-model="sourceUrl"
-            class="w-full p-2 border border-gray-300 rounded font-verdana border-none focus:outline-none"
+            class="w-full p-2 border border-gray-300 border-none rounded font-verdana focus:outline-none"
             placeholder="Source URL..."
           />
         </div>
@@ -59,7 +59,7 @@
             id="description"
             type="text"
             v-model="description"
-            class="w-full p-2 border border-gray-300 rounded font-verdana border-none focus:outline-none"
+            class="w-full p-2 border border-gray-300 border-none rounded font-verdana focus:outline-none"
             placeholder="Description"
           />
         </div>
@@ -72,13 +72,20 @@
         </ClientOnly>
       </div>
 
-      <!-- Submit Button -->  
-       <div class="w-20 h-10 ml-4 mb-8">
-         <button type="submit" class="p-2 mt-4 text-white bg-[#03A58D] rounded font-cabin">
-           <Icon name="mdi:check" class="self-center" :style="{ color: '#fafafa'}" />
-           Done
-         </button>
-       </div>
+      <!-- Submit Button -->
+      <div class="w-20 h-10 mb-8 ml-4">
+        <button
+          type="submit"
+          class="p-2 mt-4 text-white bg-[#03A58D] rounded font-cabin"
+        >
+          <Icon
+            name="mdi:check"
+            class="self-center"
+            :style="{ color: '#fafafa' }"
+          />
+          Done
+        </button>
+      </div>
     </form>
 
     <!-- Error message -->
@@ -135,7 +142,7 @@ function handleEditorReady(editor: CustomEditorJs) {
 }
 </script>
 <style scoped>
-  .containerWidth {
-    max-width: 960px;
-  }
+.containerWidth {
+  max-width: 960px;
+}
 </style>
