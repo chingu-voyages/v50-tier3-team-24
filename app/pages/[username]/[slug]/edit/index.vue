@@ -9,8 +9,12 @@
         placeholder="Title"
       />
       <div class="flex items-center gap-2 ml-2">
-        <Icon name="mdi:check" />
-        <Icon name="mdi:trash-can-outline" />
+        <button class="hover:custom-green">
+          <Icon name="mdi:check" />
+        </button>
+        <button class="hover:text-[#F64C00]" @click="toggleConfirmDeleteWindow">
+          <Icon name="mdi:trash-can-outline" />
+        </button>
       </div>
     </div>
     <div class="flex bg-gray-100 border border-gray-300 rounded p-5 min-h-[300px] my-5">
@@ -51,6 +55,7 @@
         </div>
       </div>
     </div>
+    <DeleteConfirmModal :open="confirmDeleteWindowOpen" :onClose="toggleConfirmDeleteWindow" :onDelete="handleDeleteDocument" />
   </div>
 </template>
 
@@ -78,6 +83,10 @@ const newStickyData = ref<{ pinNumber: number; color: string; title: string, doc
 
 const stickies = ref<Sticky[]>([]);
 const { fetchStickies } = useSticky();
+
+const confirmDeleteWindowOpen = ref(false);
+const { deleteDocument } = useDocument();
+const router = useRouter();
 
 const { id } = route.query;
 
@@ -161,7 +170,6 @@ async function handleUpdateCreateSticky(action: ActionType, values: StickyCreate
   const httpBody = { document_id, title, body, color, anchor, sticky_type, sticky_id, source_url };
   const endPoint = action === "create" ? "/api/sticky" : `/api/sticky/${sticky_id}`;
 
-
   await useFetch<ApiResponse<Sticky | VideoSticky | LinkSticky>>(
     endPoint,
     {
@@ -187,6 +195,10 @@ function handleCloseOutSticky () {
   })
 }
 
+function toggleConfirmDeleteWindow() {
+  confirmDeleteWindowOpen.value = !confirmDeleteWindowOpen.value;
+}
+
 async function handleDeleteSticky (sticky_id: string) {
   await useFetch<ApiResponse<Sticky>>(
     `/api/sticky/${sticky_id}`,
@@ -205,10 +217,7 @@ async function handleEditorLostFocus() {
   const newBlockData = await editorController.value?.save();
   const oldBlockData = annoteComparisonDocument.value?.blocks;
 
-  if (isEqual(newBlockData?.blocks, oldBlockData)) {
-    console.info("No changes were made to the document");
-    return;
-  }
+  if (isEqual(newBlockData?.blocks, oldBlockData)) return;
 
   await syncAnnoteDocumentData();
 
@@ -262,6 +271,23 @@ async function handleDeleteMarker(markerData: AnnotteOnMarkerDeletedData) {
 async function syncAnnoteDocumentData () {
   annoteDocument.value = await patchAnnoteDocumentBlocks();
   annoteComparisonDocument.value = annoteDocument.value;
+}
+
+async function handleDeleteDocument () {
+  if (!annoteDocument.value) {
+    console.error("We can't delete this document. It's probably null.", annoteDocument.value);
+    return;
+  }
+  
+  const res = await deleteDocument(annoteDocument.value.document_id);
+
+  if (res?.status === "ok") {
+    toggleConfirmDeleteWindow();
+    // When a document is successfully deleted, redirect to the user's library page
+    await router.push(`/library`);
+  } else {
+    console.error("There was an error deleting the document", res);
+  }
 }
 </script>
 
