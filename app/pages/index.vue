@@ -76,7 +76,7 @@
       <div class="flex flex-col gap-8">
         <!-- Step 1 -->
         <container
-          class="flex flex-col gap-4 p-6 bg-white lg:flex-row justify-evenly"
+          class="flex flex-col items-center gap-4 p-6 bg-white lg:flex-row justify-evenly"
         >
           <div class="flex flex-col gap-8">
             <div class="flex flex-col items-center justify-center">
@@ -107,7 +107,7 @@
 
         <!-- Step 2 -->
         <container
-          class="flex flex-col flex-col-reverse gap-4 p-6 bg-white lg:flex-row justify-evenly"
+          class="flex flex-col flex-col-reverse items-center gap-4 p-6 bg-white lg:flex-row justify-evenly"
         >
           <img
             src="https://res.cloudinary.com/dgxqotorm/image/upload/v1723411483/Screenshot_2024-08-11_at_5.23.27_PM_k6zdyd.png"
@@ -140,7 +140,7 @@
 
         <!-- Step 3 -->
         <container
-          class="flex flex-col items-center gap-4 p-6 bg-white justify-evenly"
+          class="flex flex-col items-center gap-4 p-6 bg-white lg:flex-row justify-evenly"
         >
           <div class="flex flex-col items-center justify-center gap-8">
             <div class="flex flex-col items-center justify-center">
