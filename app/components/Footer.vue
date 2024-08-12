@@ -10,7 +10,7 @@
         </div>
         <p class="text-sm md:text-left md:mb-0 self-center">
           © 2024 Annote App. This project is open source; find us on
-          <NuxtLink to="https://github.com/chingu-voyages/v50-tier3-team-24">
+          <NuxtLink to="https://github.com/chingu-voyages/v50-tier3-team-24" target="_blank" >
             <Icon name="mdi:github" size="1.3rem" />
           </NuxtLink>
         </p>
