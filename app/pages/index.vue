@@ -1,5 +1,12 @@
+<style scoped>
+.titleText {
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
+    1px 1px 0 #000;
+}
+</style>
 <template>
   <div class="font-sans text-gray-800">
+    <!-- Hero Section -->
     <header class="relative px-4 py-20 text-center bg-gray-300">
       <div
         class="absolute inset-0 z-0 bg-center bg-cover"
@@ -8,8 +15,10 @@
         "
       ></div>
       <div class="relative z-10">
-        <h1 class="mb-4 text-5xl font-bold text-white">Welcome to Annote</h1>
-        <p class="mb-8 text-2xl text-white">
+        <h1 class="mb-4 text-5xl font-bold text-white titleText">
+          Welcome to Annote
+        </h1>
+        <p class="mb-8 text-2xl text-white titleText">
           Streamline your note-taking and boost productivity
         </p>
         <NuxtLink
@@ -20,6 +29,7 @@
       </div>
     </header>
 
+    <!-- Key Features Section -->
     <section class="px-4 py-16 text-center">
       <h2 class="mb-12 text-4xl font-bold">Key Features</h2>
       <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
@@ -60,58 +70,105 @@
       </div>
     </section>
 
+    <!-- How It Works Section -->
     <section class="px-4 py-16 text-center bg-gray-100">
       <h2 class="mb-12 text-4xl font-bold">How Annote Works</h2>
       <div class="flex flex-col gap-8">
-        <div class="flex p-6 bg-white rounded-lg shadow-md justify-evenly">
-          <div>
-            <div class="mb-4 text-3xl font-bold text-purple-600">1</div>
-            <h3 class="mb-2 text-2xl font-semibold text-purple-800">
-              Import URL
-            </h3>
-            <p class="text-purple-600">
-              Easily import content from any web page with a single click
-            </p>
+        <!-- Step 1 -->
+        <container
+          class="flex flex-col items-center gap-4 p-6 bg-white lg:flex-row justify-evenly"
+        >
+          <div class="flex flex-col gap-8">
+            <div class="flex flex-col items-center justify-center">
+              <h1
+                class="flex items-center justify-center w-12 h-12 mb-4 text-3xl font-bold text-white bg-purple-600 rounded-full"
+              >
+                1
+              </h1>
+              <h3 class="mb-2 text-2xl font-semibold text-purple-800">
+                Import URL
+              </h3>
+              <p class="text-purple-600">
+                Easily import content from any web page with a single click
+              </p>
+            </div>
+
+            <!-- <div class="flex flex-col text-start">
+              <p>- Lorem ipsum dolor sit amet, consectetur adipiscing elit,</p>
+              <p>- Lorem ipsum dolor sit amet, consectetur adipiscing elit,</p>
+            </div> -->
           </div>
           <img
-            src="https://res.cloudinary.com/dgxqotorm/image/upload/v1723228093/Screenshot_2024-08-09_at_2.20.45_PM_vt81sw.png"
+            src="https://res.cloudinary.com/dgxqotorm/image/upload/v1723411677/Screenshot_2024-08-11_at_5.26.52_PM_kentbh.png"
             alt="Import URL"
-            class="w-1/2 rounded-lg"
+            class="self-center rounded-lg shadow-md lg:w-1/2"
           />
-        </div>
-        <div class="flex p-6 bg-white rounded-lg shadow-md justify-evenly">
+        </container>
+
+        <!-- Step 2 -->
+        <container
+          class="flex flex-col flex-col-reverse items-center gap-4 p-6 bg-white lg:flex-row justify-evenly"
+        >
           <img
-            src="https://res.cloudinary.com/dgxqotorm/image/upload/v1723228093/Screenshot_2024-08-09_at_2.20.45_PM_vt81sw.png"
+            src="https://res.cloudinary.com/dgxqotorm/image/upload/v1723411483/Screenshot_2024-08-11_at_5.23.27_PM_k6zdyd.png"
             alt="Select From Library"
-            class="w-1/2 rounded-lg"
+            class="rounded-lg shadow-md lg:w-1/2"
           />
-          <div>
-            <div class="mb-4 text-3xl font-bold text-yellow-600">2</div>
-            <h3 class="mb-2 text-2xl font-semibold text-yellow-700">
-              Select From Library
-            </h3>
-            <p class="text-yellow-600">
-              Access your imported content in your personal library and start
-              editing
-            </p>
+          <div class="flex flex-col gap-8">
+            <div class="flex flex-col items-center justify-center">
+              <h1
+                class="flex items-center justify-center w-12 h-12 mb-4 text-3xl font-bold text-white bg-yellow-600 rounded-full"
+              >
+                2
+              </h1>
+
+              <h3 class="mb-2 text-2xl font-semibold text-yellow-700">
+                Select From Library
+              </h3>
+              <p class="text-yellow-600">
+                Access your imported content in your personal library and start
+                editing
+              </p>
+            </div>
+
+            <!-- <div class="flex flex-col text-start">
+              <p>- Lorem ipsum dolor sit amet, consectetur adipiscing elit,</p>
+              <p>- Lorem ipsum dolor sit amet, consectetur adipiscing elit,</p>
+            </div> -->
           </div>
-        </div>
-        <div class="flex p-6 bg-white rounded-lg shadow-md justify-evenly">
-          <div>
-            <div class="mb-4 text-3xl font-bold text-teal-600">3</div>
-            <h3 class="mb-2 text-2xl font-semibold text-teal-700">
-              Update Document
-            </h3>
-            <p class="text-teal-600">
-              Add notes, highlights, and annotations to enhance your document
-            </p>
+        </container>
+
+        <!-- Step 3 -->
+        <container
+          class="flex flex-col items-center gap-4 p-6 bg-white lg:flex-row justify-evenly"
+        >
+          <div class="flex flex-col items-center justify-center gap-8">
+            <div class="flex flex-col items-center justify-center">
+              <h1
+                class="flex items-center justify-center w-12 h-12 mb-4 text-3xl font-bold text-white bg-teal-600 rounded-full"
+              >
+                3
+              </h1>
+
+              <h3 class="mb-2 text-2xl font-semibold text-teal-700">
+                Update Document
+              </h3>
+              <p class="text-teal-600">
+                Add notes, highlights, and annotations to enhance your document
+              </p>
+            </div>
+
+            <!-- <div class="flex flex-col text-start">
+              <p>- Lorem ipsum dolor sit amet, consectetur adipiscing elit,</p>
+              <p>- Lorem ipsum dolor sit amet, consectetur adipiscing elit,</p>
+            </div> -->
           </div>
           <img
             src="https://res.cloudinary.com/dgxqotorm/image/upload/v1723228093/Screenshot_2024-08-09_at_2.20.45_PM_vt81sw.png"
             alt="Update Document"
-            class="w-1/2 rounded-lg"
+            class="rounded-lg shadow-md lg:w-1/2"
           />
-        </div>
+        </container>
       </div>
     </section>
 

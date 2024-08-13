@@ -1,12 +1,8 @@
 <template>
-  <div class="flex flex-col justify-center">
-    <h1 class="p-4 text-2xl text-center">Auto-import from URL</h1>
-    <form
-      class="flex flex-col items-center mt-4 gap-y-4"
-      @submit.prevent="handleSubmit"
-    >
+  <div class="containerWidth">
+    <form class="flex flex-col mt-4 gap-y-4" @submit.prevent="handleSubmit">
       <!-- Import From Source Section-->
-      <div class="p-10 border rounded-md shadow-md">
+      <div>
         <!-- Document Title -->
         <div class="mb-4">
           <input
@@ -22,56 +18,74 @@
         <!-- TODO - Add Cover Image Functionality -->
         <div class="mb-4">
           <div
-            class="flex items-center justify-center px-6 pt-5 pb-4 border-2 border-gray-300 border-dashed rounded-md"
+            class="flex items-center justify-center px-6 pt-2 pb-2 border-2 border-gray-300 border-dashed rounded-md"
           >
-            <img :src="addCircleIcon" alt="Icon" class="w-8 h-8" />
+            <Icon
+              name="mdi:plus-circle-outline"
+              :style="{ color: '#75D3D4' }"
+            />
             <p class="pl-1 text-gray-300">Add cover image</p>
           </div>
         </div>
 
-        <!-- Source URL -->
-        <div>
-          <p class="pb-2 text-sm text-gray-300">
-            Type or paste a link here to get started.
-          </p>
-          <div class="flex">
-            <Icon class="mr-2" name="mdi:link" />
-            <!-- <label for="sourceUrl">Source Url</label> -->
-            <input
+        <!-- Source URL . This is commented out because URL scraping is not functioning now. -->
+        <!-- <div class="hidden mb-4"> -->
+        <!-- <div class="flex"> -->
+        <!-- <Icon class="self-center mr-2" name="mdi:link" :style="{ color: '#75D3D4'}" /> -->
+        <!-- <label for="sourceUrl">Source Url</label> -->
+        <!-- <input
               id="sourceUrl"
               type="text"
-              v-model="sourceUrl"
-              class="w-full text-sm bg-transparent border-none focus:outline-none font-cabin"
-              placeholder="Add link..."
-            />
-          </div>
+          
+              class="w-full text-base bg-transparent border-none focus:outline-none !font-cabin"
+              placeholder="Type or paste a link here to get started."
+            /> -->
+        <!-- </div> -->
+        <!-- </div> -->
+        <!-- User manually enters the source url  -->
+        <div>
+          <input
+            id="sourceUrl"
+            type="text"
+            v-model="sourceUrl"
+            class="w-full p-2 border border-gray-300 border-none rounded font-verdana focus:outline-none"
+            placeholder="Source URL..."
+          />
         </div>
 
         <!-- Description -->
         <div>
-          <label for="description">Description</label>
           <input
             id="description"
             type="text"
             v-model="description"
-            class="w-full p-2 border border-gray-300 rounded font-verdana"
-            placeholder="Url"
+            class="w-full p-2 border border-gray-300 border-none rounded font-verdana focus:outline-none"
+            placeholder="Description"
           />
         </div>
       </div>
 
       <!-- Text Editor -->
-      <div class="w-full pt-4 m-4 text-center border border-gray-300 rounded">
-        <label for="documentBody" class="text-2xl">Article Text Body</label>
+      <div class="w-full pt-4 m-4 border border-gray-300 rounded">
         <ClientOnly>
           <EditorComponent :onEditorReady="handleEditorReady" />
         </ClientOnly>
       </div>
 
       <!-- Submit Button -->
-      <button type="submit" class="p-2 mt-4 text-white bg-blue-500 rounded">
-        Submit
-      </button>
+      <div class="w-20 h-10 mb-8 ml-4">
+        <button
+          type="submit"
+          class="p-2 mt-4 text-white bg-[#03A58D] rounded font-cabin"
+        >
+          <Icon
+            name="mdi:check"
+            class="self-center"
+            :style="{ color: '#fafafa' }"
+          />
+          Done
+        </button>
+      </div>
     </form>
 
     <!-- Error message -->
@@ -83,7 +97,6 @@
 
 <script lang="ts" setup>
 import { useRouter } from "#imports";
-import addCircleIcon from "@/public/assets/icons/add_circle.svg";
 import { ref } from "vue";
 
 const router = useRouter();
@@ -128,3 +141,8 @@ function handleEditorReady(editor: CustomEditorJs) {
   editorController.value = editor;
 }
 </script>
+<style scoped>
+.containerWidth {
+  max-width: 960px;
+}
+</style>

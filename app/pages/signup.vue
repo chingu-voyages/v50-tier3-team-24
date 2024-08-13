@@ -67,6 +67,12 @@
       <p v-if="error" class="mt-2 text-sm text-center text-red-600">
         {{ error }}
       </p>
+      <p class="text-sm text-center text-gray-600">
+        Already have an account?
+        <NuxtLink to="/login" class="text-blue-500 hover:underline"
+          >Log in</NuxtLink
+        >
+      </p>
     </div>
   </div>
 </template>

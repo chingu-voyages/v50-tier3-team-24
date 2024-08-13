@@ -9,13 +9,14 @@
         />
       </NuxtLink>
     </div>
-    <div>
+    <!-- disable this since the share feature is not ready <div>
       <Icon
         class="text-gray-300 hover:custom-green"
         name="mdi:share-variant-outline"
         color="black"
       />
-    </div>
+    </div> -->
+    <slot></slot>
   </div>
 </template>
 
