@@ -13,16 +13,15 @@
             <img :src="hamburgerIcon" alt="Icon" class="w-8 h-8 mr-2" />
           </button>
         </div>
-
         <div
-          :class="[
-            'lg:flex',
-            { hidden: !isMenuOpen },
-            'items-center space-x-6 text-md',
-            'absolute top-full left-0 w-full bg-white p-4 z-50 lg:relative lg:w-auto',
+        :class="[
+          'lg:flex',
+          { hidden: !isMenuOpen },
+          'items-center space-x-6 text-md',
+          'absolute top-full left-0 w-full bg-white p-4 z-50 lg:relative lg:w-auto',
           ]"
-        >
-          <ul class="flex flex-col lg:flex-row lg:space-y-0 lg:space-x-6">
+          >
+          <ul class="flex flex-col lg:flex-row lg:space-y-0 lg:space-x-6"> 
             <li v-for="item in menuItems" :key="item.to">
               <NuxtLink
                 :to="item.to"
@@ -48,7 +47,7 @@
                 class="z-10 w-48 mt-4 bg-white lg:rounded-md lg:shadow-lg lg:absolute"
               >
                 <p class="px-4 py-2 text-sm accountBtnColor">
-                  {{ currentUser.username }}
+                  {{ currentUser?.data.username }}
                 </p>
                 <button
                   @click="handleLogout"
@@ -69,7 +68,7 @@
               >
             </li>
           </ul>
-        </div>
+          </div>
       </div>
     </div>
   </nav>
@@ -86,9 +85,11 @@ import { onMounted, onUnmounted, ref } from "vue";
 import { useAuth } from "../composables/useAuth";
 
 const user = useSupabaseUser();
-const { logout, currentUser } = useAuth();
+const { logout, getCurrentUser } = useAuth();
 const isDropdownOpen = ref(false);
 const isMenuOpen = ref(false);
+
+const currentUser = await getCurrentUser();
 
 const menuItems = [
   { to: "/about", icon: homeIcon, text: "About", class: "homeBtnColor" },
@@ -112,6 +113,10 @@ const toggleMenu = (event) => {
 const closeMenuOnClickOutside = (event) => {
   if (isMenuOpen.value && !event.target.closest("nav")) {
     isMenuOpen.value = false;
+  }
+
+  if (isDropdownOpen.value && !event.target.closest(".relative")) {
+    isDropdownOpen.value = false;
   }
 };
 
