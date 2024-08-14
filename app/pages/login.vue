@@ -49,7 +49,6 @@ const { login, error } = useAuth();
 const isBusy = ref(false);
 
 const handleLogin = async () => {
-  console.log("Handle login")
   isBusy.value = true;
   await login(email.value, password.value);
 };
