@@ -2,6 +2,7 @@
 import documentIcon from "@/public/assets/icons/edit_document.svg";
 import newsIcon from "@/public/assets/icons/news.svg";
 import visibilityIcon from "@/public/assets/icons/visibility.svg";
+import { VueSpinner } from "vue3-spinners";
 
 const annoteDocs = ref<AnnoteDocument[] | null>(null);
 const stickyCountMap = ref<Record<string, number>>({});
@@ -13,6 +14,8 @@ const currentPage = ref(1);
 const documentsPerPage = 10;
 const searchTerm = ref("");
 const sortOption = ref("createdDescending");
+
+const isBusy = ref(false);
 
 onMounted(async () => {
   const { data: fetchedDocument } = await $fetch<ApiResponse<AnnoteDocument[]>>(
@@ -108,6 +111,9 @@ function prevPage() {
     currentPage.value--;
   }
 }
+function setBusy() {
+  isBusy.value = true;
+}
 </script>
 
 <template>
@@ -118,17 +124,19 @@ function prevPage() {
       class="flex flex-col items-center justify-between w-full gap-4 py-4 md:flex-row gap-x-2"
     >
       <div class="w-full">
-        <button
-          type="submit"
-          class="p-2 text-white bg-[#03A58D] rounded font-cabin w-[107px] flex justify-center gap-2 w-full md:w-20"
-        >
-          <Icon
-            name="mdi:plus-circle"
-            class="self-center"
-            :style="{ color: '#fafafa' }"
-          />
-          New
-        </button>
+        <NuxtLink to="/new">
+          <button
+            type="submit"
+            class="p-2 text-white bg-[#03A58D] rounded font-cabin w-[107px] flex justify-center gap-2 w-full md:w-20"
+          >
+            <Icon
+              name="mdi:plus-circle"
+              class="self-center"
+              :style="{ color: '#fafafa' }"
+            />
+            New
+          </button>
+        </NuxtLink>
       </div>
       <div class="flex w-full lightRoundedGreyBorder">
         <div class="self-center mt-2 ml-2">
@@ -152,8 +160,12 @@ function prevPage() {
       </div>
     </div>
   </div>
-
-  <ul>
+  <div v-if="isBusy">
+    <div class="flex justify-center h-14">
+      <VueSpinner size="30" color="#03A58D" />
+    </div>  
+  </div>
+  <ul v-else>
     <li v-if="filteredDocs.length === 0" class="p-4 bg-gray-100">
       <p v-if="!annoteDocs || annoteDocs.length === 0">
         Your library is empty. Click
@@ -174,7 +186,7 @@ function prevPage() {
         index % 2 === 0 ? 'bg-gray-100' : 'bg-white',
       ]"
     >
-      <div class="flex items-center justify-between">
+      <div class="flex items-center justify-between" @click="setBusy">
         <div class="flex items-center">
           <img :src="documentIcon" alt="Icon" class="w-6 h-6 mr-2" />
           <NuxtLink

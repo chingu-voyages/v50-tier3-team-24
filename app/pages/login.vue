@@ -25,12 +25,7 @@
             class="relative w-full px-3 py-2 border rounded-sm focus:z-10 sm:text-sm"
           />
         </div>
-        <button
-          type="submit"
-          class="w-full px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600"
-        >
-          Login
-        </button>
+        <SpinnerButton :isBusy="isBusy" title="Login" />
       </form>
       <p v-if="error" class="text-sm text-center text-red-600">{{ error }}</p>
       <p class="text-sm text-center text-gray-600">
@@ -51,8 +46,10 @@ const email = ref("");
 const password = ref("");
 
 const { login, error } = useAuth();
+const isBusy = ref(false);
 
 const handleLogin = async () => {
+  isBusy.value = true;
   await login(email.value, password.value);
 };
 </script>
