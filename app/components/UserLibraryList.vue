@@ -118,17 +118,19 @@ function prevPage() {
       class="flex flex-col items-center justify-between w-full gap-4 py-4 md:flex-row gap-x-2"
     >
       <div class="w-full">
-        <button
-          type="submit"
-          class="p-2 text-white bg-[#03A58D] rounded font-cabin w-[107px] flex justify-center gap-2 w-full md:w-20"
-        >
-          <Icon
-            name="mdi:plus-circle"
-            class="self-center"
-            :style="{ color: '#fafafa' }"
-          />
-          New
-        </button>
+        <NuxtLink to="/new">
+          <button
+            type="submit"
+            class="p-2 text-white bg-[#03A58D] rounded font-cabin w-[107px] flex justify-center gap-2 w-full md:w-20"
+          >
+            <Icon
+              name="mdi:plus-circle"
+              class="self-center"
+              :style="{ color: '#fafafa' }"
+            />
+            New
+          </button>
+        </NuxtLink>
       </div>
       <div class="flex w-full lightRoundedGreyBorder">
         <div class="self-center mt-2 ml-2">
