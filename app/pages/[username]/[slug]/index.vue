@@ -14,6 +14,7 @@
               <ShareLinkButtons
                 v-if="currentUser?.data?.username === username"
                 :link-url="`${annoteDocument?.slug}/edit?id=${annoteDocument?.document_id}`"
+                :onLinkClicked="setIsBusy"
               >
               <button @click="toggleConfirmDeleteWindow">
                 <!-- This is the document delete button. -->
@@ -37,12 +38,17 @@
             </div>
           </NuxtLink>
         </header>
-        <ClientOnly>
-          <EditorComponent
-            :onEditorReady="handleEditorReady"
-            :readOnly="true"
-          />
-        </ClientOnly>
+        <div v-if="isBusy" class="flex justify-center h-14">
+          <VueSpinner color="#03a58d" size="30px" />
+        </div>
+        <div v-else>
+          <ClientOnly>
+            <EditorComponent
+              :onEditorReady="handleEditorReady"
+              :readOnly="true"
+            />
+          </ClientOnly>
+        </div>
       </div>
       <div>
         <div class="flex flex-wrap">
@@ -62,6 +68,8 @@
   </div>
 </template>
 <script setup lang="ts">
+import { VueSpinner } from 'vue3-spinners';
+
 const route = useRoute();
 const annoteDocument = ref<AnnoteDocument | null>(null);
 const editorController = ref<CustomEditorJs | null>(null);
@@ -76,6 +84,7 @@ const confirmDeleteWindowOpen = ref(false);
 
 const { id } = route.query;
 const { username } = route.params;
+const isBusy = ref(false);
 
 if (id) {
   const { data: apiResponse } = await useFetch<ApiResponse<AnnoteDocument>>(
@@ -114,6 +123,8 @@ async function handleDeleteDocument() {
   } else {
     console.error("Failed to delete document", res);
   }
-  
 }
+const setIsBusy = () => {
+  isBusy.value = true;
+};
 </script>

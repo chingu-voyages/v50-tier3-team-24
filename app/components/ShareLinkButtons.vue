@@ -1,6 +1,6 @@
 <template>
   <div class="flex gap-x-2">
-    <div>
+    <div @click="handleElementClicked">
       <NuxtLink :to="linkUrl">
         <Icon
           class="text-gray-300 hover:custom-green"
@@ -16,14 +16,23 @@
         color="black"
       />
     </div> -->
-    <slot></slot>
+    <div @click="handleElementClicked">
+      <slot></slot>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-defineProps<{
+const props = defineProps<{
   linkUrl: string;
+  onLinkClicked?: () => void;
 }>();
+
+const handleElementClicked = () => {
+  if (props.onLinkClicked) {
+    props.onLinkClicked();
+  }
+};
 </script>
 
 <style>
