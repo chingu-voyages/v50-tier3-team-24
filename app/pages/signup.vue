@@ -56,12 +56,7 @@
         </div>
 
         <div>
-          <button
-            type="submit"
-            class="w-full px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600"
-          >
-            Sign Up
-          </button>
+          <SpinnerButton :isBusy="isBusy" title="Sign up" />
         </div>
       </form>
       <p v-if="error" class="mt-2 text-sm text-center text-red-600">
@@ -87,8 +82,10 @@ const last_name = ref("");
 const email = ref("");
 const password = ref("");
 const { signup, error } = useAuth();
+const isBusy = ref(false);
 
 const handleSignup = async () => {
+  isBusy.value = true;
   await signup(
     email.value,
     password.value,
