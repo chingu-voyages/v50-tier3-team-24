@@ -86,6 +86,7 @@ const { id } = route.query;
 const { username } = route.params;
 const isBusy = ref(false);
 
+
 if (id) {
   const { data: apiResponse } = await useFetch<ApiResponse<AnnoteDocument>>(
     `/api/annote_documents/${id}`
@@ -93,6 +94,7 @@ if (id) {
   annoteDocument.value = apiResponse.value?.data!;
 
   stickies.value = await fetchStickies(id as string);
+  useHead({ title: `${annoteDocument.value?.title} | Annote` });
 }
 
 function handleEditorReady(editor: CustomEditorJs) {
