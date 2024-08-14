@@ -75,7 +75,7 @@
       <h2 class="mb-12 text-4xl font-bold">How Annote Works</h2>
       <div class="flex flex-col gap-8">
         <!-- Step 1 -->
-        <container
+        <div
           class="flex flex-col items-center gap-4 p-6 bg-white lg:flex-row justify-evenly"
         >
           <div class="flex flex-col gap-8">
@@ -103,10 +103,10 @@
             alt="Import URL"
             class="self-center rounded-lg shadow-md lg:w-1/2"
           />
-        </container>
+        </div>
 
         <!-- Step 2 -->
-        <container
+        <div
           class="flex flex-col flex-col-reverse items-center gap-4 p-6 bg-white lg:flex-row justify-evenly"
         >
           <img
@@ -136,10 +136,10 @@
               <p>- Lorem ipsum dolor sit amet, consectetur adipiscing elit,</p>
             </div> -->
           </div>
-        </container>
+        </div>
 
         <!-- Step 3 -->
-        <container
+        <div
           class="flex flex-col items-center gap-4 p-6 bg-white lg:flex-row justify-evenly"
         >
           <div class="flex flex-col items-center justify-center gap-8">
@@ -168,7 +168,7 @@
             alt="Update Document"
             class="rounded-lg shadow-md lg:w-1/2"
           />
-        </container>
+        </div>
       </div>
     </section>
 
