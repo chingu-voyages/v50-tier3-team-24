@@ -41,15 +41,12 @@
                 class="flex items-center pt-4 no-underline lg:pt-0 accountBtnColor"
               >
                 <img :src="accountIcon" alt="Icon" class="w-8 h-8 mr-2" />
-                Account
+                {{ currentUser?.username }}
               </button>
               <div
                 v-if="isDropdownOpen"
                 class="z-10 w-48 mt-4 bg-white lg:rounded-md lg:shadow-lg lg:absolute"
               >
-                <p class="px-4 py-2 text-sm accountBtnColor">
-                  {{ currentUser.username }}
-                </p>
                 <button
                   @click="handleLogout"
                   class="block w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-100"
