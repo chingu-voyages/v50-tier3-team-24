@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { VueSpinner } from 'vue3-spinners';
+useHead({ 
+  title: "Library | Annote",
+})
 </script>
 
 <template>

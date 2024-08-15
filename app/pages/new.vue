@@ -107,6 +107,7 @@ const description = ref("");
 
 const apiError = ref<string | null | undefined>(null);
 const editorController = ref<CustomEditorJs | null>(null);
+useHead({ title: "New Document | Annote" });
 
 async function handleSubmit() {
   const outputData = await editorController.value?.save();
