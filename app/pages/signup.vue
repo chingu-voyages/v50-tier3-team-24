@@ -83,6 +83,7 @@ const email = ref("");
 const password = ref("");
 const { signup, error } = useAuth();
 const isBusy = ref(false);
+useHead({ title: "Sign up | Annote" });
 
 const handleSignup = async () => {
   isBusy.value = true;

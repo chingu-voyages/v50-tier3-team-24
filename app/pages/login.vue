@@ -47,6 +47,7 @@ const password = ref("");
 
 const { login, error } = useAuth();
 const isBusy = ref(false);
+useHead({ title: "Sign in | Annote" });
 
 const handleLogin = async () => {
   isBusy.value = true;

@@ -141,7 +141,7 @@ if (id) {
 
   initialDocumentTitle.value = annoteDocument.value.title;
   documentTitle.value = annoteDocument.value.title;
-
+  useHead({ title: `Edit - ${annoteDocument.value?.title} | Annote` });
   stickies.value = await fetchStickies(id as string);
 }
 

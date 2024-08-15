@@ -1,6 +1,6 @@
 <script setup>
 import { Icon } from "@iconify/vue";
-
+useHead({ title: "About | Annote" });
 const teamMembers = [
   {
     name: "Joseph Kotvas",
