@@ -8,14 +8,11 @@ export default defineEventHandler(async (event) => {
     const content = await WebScraper.scrape(url);
 
     // Extract the article content, covert it to an array of ArticleContent
-    const extractor = new HtmlExtractor(content);
-    const articleHtmlContent = extractor.extract();
-
-    // Map the ArticleContent to EditorJS blocks
-    const htmlToBlockMapper = new HtmlToBlockMapper();
-    const mappedContent = htmlToBlockMapper.map(articleHtmlContent);
-
-    return { status: "ok", data: mappedContent };
+    // Map the ArticleContent to EditorJS blocks and return a response
+    return {
+      status: "ok",
+      data: new HtmlToBlockMapper().map(new HtmlExtractor(content).extract()),
+    };
   } catch (error: any) {
     return {
       status: "fail",
