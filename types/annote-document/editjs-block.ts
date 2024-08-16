@@ -1,5 +1,8 @@
-export interface HeaderData extends BasicTextData {}
+export interface HeaderData extends BasicTextData {
+  level: HeaderLevel;
+}
 
+export type HeaderLevel = 1 | 2 | 3 | 4 | 5 | 6;
 interface BasicTextData {
   text: string;
 }
