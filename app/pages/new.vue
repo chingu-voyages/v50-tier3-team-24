@@ -29,21 +29,33 @@
         </div>
 
         <!-- Source URL . This is commented out because URL scraping is not functioning now. -->
-        <!-- <div class="hidden mb-4"> -->
-        <!-- <div class="flex"> -->
-        <!-- <Icon class="self-center mr-2" name="mdi:link" :style="{ color: '#75D3D4'}" /> -->
-        <!-- <label for="sourceUrl">Source Url</label> -->
-        <!-- <input
-              id="sourceUrl"
+        <div class="mb-4">
+          <div class="flex">
+            <Icon class="self-center mr-2" name="mdi:link" :style="{ color: '#75D3D4'}" />
+            <input
+              id="autoImportUrl"
               type="text"
-          
               class="w-full text-base bg-transparent border-none focus:outline-none !font-cabin"
               placeholder="Type or paste a link here to get started."
-            /> -->
-        <!-- </div> -->
-        <!-- </div> -->
+              v-model="sourceUrl"
+            />
+            <button
+              type="button"
+              class="p-2 mt-4 text-xs md:text-sm xl:text-base text-white bg-[#03A58D] rounded font-cabin h-10 w-28 lg:h-12 lg:w-32 disabled:bg-gray-400"
+              :disabled="!isAutoImportUrlValid"
+              @click="handleAutoImport"
+            >
+              <Icon
+                name="mdi:file-import-outline"
+                class="self-center"
+                :style="{ color: '#fafafa' }"
+              />
+              Auto import
+            </button>
+          </div>
+        </div>
         <!-- User manually enters the source url  -->
-        <div>
+        <div class="hidden">
           <input
             id="sourceUrl"
             type="text"
@@ -98,6 +110,7 @@
 <script lang="ts" setup>
 import { useRouter } from "#imports";
 import { ref } from "vue";
+import { validateUrl } from "../utils/web-scraper/validators/url-validator";
 
 const router = useRouter();
 
@@ -141,6 +154,16 @@ async function handleSubmit() {
 function handleEditorReady(editor: CustomEditorJs) {
   editorController.value = editor;
 }
+
+const isAutoImportUrlValid = computed<boolean>(() => {
+  return validateUrl(sourceUrl.value);
+});
+
+async function handleAutoImport() {
+  // TODO: - Implement URL scraping
+
+}
+
 </script>
 <style scoped>
 .containerWidth {
