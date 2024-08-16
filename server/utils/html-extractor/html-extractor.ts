@@ -24,6 +24,7 @@ export class HtmlExtractor {
       ...this.articleContent,
       ...this.extractByMain(),
       ...this.extractByArticle(),
+      ...this.extractByDivWithIdMain(),
     ];
   }
 
@@ -39,7 +40,6 @@ export class HtmlExtractor {
   }
 
   private extractByArticle(): ArticleContent[] {
-    // Let's try `article` tag first
     const article = this.root?.querySelector("article");
     const accumulator: ArticleContent[] = [];
     if (article) {
@@ -50,8 +50,17 @@ export class HtmlExtractor {
 
   // This is generally good for news websites (wapo, nytimes, etc)
   private extractByMain(): ArticleContent[] {
-    // Let's try `main` tag first
     const main = this.root?.querySelector("main");
+    const accumulator: ArticleContent[] = [];
+    if (main) {
+      this.recursivelyTraverseHtmlElements(main, accumulator);
+    }
+    return accumulator;
+  }
+
+  // When the HTML uses a div with an id of main
+  private extractByDivWithIdMain(): ArticleContent[] {
+    const main = this.root?.querySelector("div#main");
     const accumulator: ArticleContent[] = [];
     if (main) {
       this.recursivelyTraverseHtmlElements(main, accumulator);

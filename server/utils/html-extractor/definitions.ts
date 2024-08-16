@@ -11,6 +11,7 @@ export type HTMLTextElement =
   | "li"
   | "div";
 
+// TODO: Find a way to handle simple tables. For now, we'll ignore them
 export type ArticleContent = {
   contentType: HTMLTextElement;
   content: string;
