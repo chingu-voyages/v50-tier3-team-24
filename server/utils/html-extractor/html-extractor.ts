@@ -20,16 +20,17 @@ export class HtmlExtractor {
     // This step is tricker because websites organize the content differently. Maybe we can use a plug-in or an adapter
     // to extract the main content of the article depending on the website?
 
+    // TODO: this logic needs to be refined as there could be duplicate content
     return [
       ...this.articleContent,
-      ...this.extractByMain(),
-      ...this.extractByArticle(),
-      ...this.extractByDivWithIdMain(),
+      ...this.extractBySelector("main"),
+      ...this.extractBySelector("article"),
+      ...this.extractBySelector("div#main"),
     ];
   }
 
   private extractTitle(): void {
-    // Extract the main article title. This appears to be consistent across all articles?
+    // Extract the main article title. This extraction appears to be consistent across all articles.
     const title = this.root?.querySelector("h1");
     if (title) {
       this.articleContent.push({
@@ -39,31 +40,11 @@ export class HtmlExtractor {
     }
   }
 
-  private extractByArticle(): ArticleContent[] {
-    const article = this.root?.querySelector("article");
+  private extractBySelector(selector: string): ArticleContent[] {
+    const htmlElements = this.root?.querySelector(selector);
     const accumulator: ArticleContent[] = [];
-    if (article) {
-      this.recursivelyTraverseHtmlElements(article, accumulator);
-    }
-    return accumulator;
-  }
-
-  // This is generally good for news websites (wapo, nytimes, etc)
-  private extractByMain(): ArticleContent[] {
-    const main = this.root?.querySelector("main");
-    const accumulator: ArticleContent[] = [];
-    if (main) {
-      this.recursivelyTraverseHtmlElements(main, accumulator);
-    }
-    return accumulator;
-  }
-
-  // When the HTML uses a div with an id of main
-  private extractByDivWithIdMain(): ArticleContent[] {
-    const main = this.root?.querySelector("div#main");
-    const accumulator: ArticleContent[] = [];
-    if (main) {
-      this.recursivelyTraverseHtmlElements(main, accumulator);
+    if (htmlElements) {
+      this.recursivelyTraverseHtmlElements(htmlElements, accumulator);
     }
     return accumulator;
   }
@@ -88,7 +69,7 @@ export class HtmlExtractor {
     element?: HTMLElement
   ): ArticleContent | null {
     if (!element) return null;
-    const valideHtmlTags: HTMLTextElement[] = [
+    const validHtmlTags: HTMLTextElement[] = [
       "p",
       "h2",
       "h3",
@@ -101,7 +82,7 @@ export class HtmlExtractor {
       "div",
     ];
 
-    if (valideHtmlTags.includes(element.rawTagName as any)) {
+    if (validHtmlTags.includes(element.rawTagName as any)) {
       if (element.text?.trim() === "") return null;
       return {
         contentType: element.rawTagName as HTMLTextElement,
