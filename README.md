@@ -12,6 +12,24 @@ https://annote.nuxt.dev/
 - Database: postgreSQL
 - Deployment: Nuxthub with Cloudflare
 
+# How to use the app
+
+## Basic usage
+
+1. Register for an account and sign in with your e-mail and password.
+2. If you have existing documents, they will appear in a list under the `Library` menu.
+3. You can create a new document by clicking the `New` option. Enter a title, description and a URL (coming soon, auto-importing articles by Url!) and then save.
+4. After creating a document, you will be taken to the document in edit mode where you can start marking up the text and adding stickies.
+5. Create markups using the editor's tool bar, either the + sign that appears, or a pop-up toolbar that appears after highlighting text.
+
+## Creating and deleting sticky annotations
+
+1. Highlight document text.
+2. Pop-up toolbar will appear. Click the circle tool (the marker tool) and a color pallet will appear.
+3. Chose a marker color. On the right, a new sticky annotation note will appear
+4. Fill in the note and click the checkmark to save it.
+5. Deleting a sticky involves clearing the associated highlighted text by unselecting the marker tool in the popup. This will delete the sticky.
+
 # Setup your development environment
 
 0. Clone the project
