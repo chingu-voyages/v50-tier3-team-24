@@ -42,7 +42,7 @@ export class HtmlExtractor {
     const htmlElement = this.root?.querySelector(selector);
 
     if (!htmlElement) {
-      console.error("No elements found for selector:");
+      console.error("No elements found for selector:", selector);
     }
     const accumulator: ArticleContent[] = [];
     if (htmlElement) {

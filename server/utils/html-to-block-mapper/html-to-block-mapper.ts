@@ -31,7 +31,7 @@ export class HtmlToBlockMapper {
     };
 
     const blocks: EditorJsBlock[] = [];
-
+    console.info("articleContent:", articleContent);
     articleContent.forEach((content, index) => {
       if (content.contentType === "ul" || content.contentType === "ol") {
         // HTML List elements need to be treated slightly differently given that the articleContent comes to this function as flattened
@@ -92,7 +92,6 @@ export class HtmlToBlockMapper {
   private getCustomDivMapper(): Function {
     switch (this.hostName) {
       case "timesofindia.indiatimes.com":
-        return this.mapParagraph;
       case "css-tricks.com":
         return this.mapParagraph;
       default:
