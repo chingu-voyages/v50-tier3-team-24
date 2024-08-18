@@ -13,20 +13,10 @@ export class HtmlExtractor {
     }
   }
 
-  public extract(): ArticleContent[] {
+  public extract(selector: string = "main"): ArticleContent[] {
     // Extrating the main content of the article seems straight forward and consistent across websites
     this.extractTitle();
-
-    // This step is tricker because websites organize the content differently. Maybe we can use a plug-in or an adapter
-    // to extract the main content of the article depending on the website?
-
-    // TODO: this logic needs to be refined as there could be duplicate content
-    return [
-      ...this.articleContent,
-      ...this.extractBySelector("main"),
-      ...this.extractBySelector("article"),
-      ...this.extractBySelector("div#main"),
-    ];
+    return [...this.articleContent, ...this.extractBySelector(selector)];
   }
 
   private extractTitle(): void {
