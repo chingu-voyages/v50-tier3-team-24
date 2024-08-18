@@ -7,16 +7,24 @@ export class HtmlExtractor {
   private articleContent: ArticleContent[] = [];
 
   constructor(html: string) {
-    this.root = parser.parse(html);
+    this.root = parser.parse(html, {
+      blockTextElements: {
+        script: false,
+        noscript: false,
+        style: false,
+      },
+    });
     if (!this.root) {
       throw new Error("Failed to parse HTML");
     }
   }
 
-  public extract(selector: string = "main"): ArticleContent[] {
+  public extract(selectors: string[] = ["main"]): ArticleContent[] {
     // Extrating the main content of the article seems straight forward and consistent across websites
     this.extractTitle();
-    return [...this.articleContent, ...this.extractBySelector(selector)];
+    return [...this.articleContent].concat(
+      ...selectors.map((selector) => this.extractBySelector(selector))
+    );
   }
 
   private extractTitle(): void {
@@ -31,10 +39,14 @@ export class HtmlExtractor {
   }
 
   private extractBySelector(selector: string): ArticleContent[] {
-    const htmlElements = this.root?.querySelector(selector);
+    const htmlElement = this.root?.querySelector(selector);
+
+    if (!htmlElement) {
+      console.error("No elements found for selector:");
+    }
     const accumulator: ArticleContent[] = [];
-    if (htmlElements) {
-      this.recursivelyTraverseHtmlElements(htmlElements, accumulator);
+    if (htmlElement) {
+      this.recursivelyTraverseHtmlElements(htmlElement, accumulator);
     }
     return accumulator;
   }
@@ -59,7 +71,7 @@ export class HtmlExtractor {
     element?: HTMLElement
   ): ArticleContent | null {
     if (!element) return null;
-    const validHtmlTags: HTMLTextElement[] = [
+    const validHtmlTags: string[] = [
       "p",
       "h2",
       "h3",
