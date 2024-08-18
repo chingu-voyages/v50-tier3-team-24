@@ -14,10 +14,7 @@ export class HtmlToBlockMapper {
     console.info("hostName:", this.hostName);
   }
 
-  public map(
-    articleContent: ArticleContent[],
-    hostName?: string
-  ): EditorJsBlock[] {
+  public map(articleContent: ArticleContent[]): EditorJsBlock[] {
     // This 'directory' basically tells the mapper how to map each HTML element to an EditorJS block
     const directory: Record<HTMLTextElement, Function> = {
       h1: this.mapHeader,
@@ -95,6 +92,8 @@ export class HtmlToBlockMapper {
   private getCustomDivMapper(): Function {
     switch (this.hostName) {
       case "timesofindia.indiatimes.com":
+        return this.mapParagraph;
+      case "css-tricks.com":
         return this.mapParagraph;
       default:
         return () => null;
