@@ -1,4 +1,4 @@
-// Take the raw HTML and extract the data we need
+// Take the raw string HTML and use the node-html-parser library to create an HTML structure from which we can query elements.
 import parser, { HTMLElement } from "node-html-parser";
 import { ArticleContent, HTMLTextElement } from "./definitions";
 
@@ -19,7 +19,7 @@ export class HtmlExtractor {
     }
   }
 
-  public extract(selectors: string[] = ["main"]): ArticleContent[] {
+  public extract(selectors: string[]): ArticleContent[] {
     // Extrating the main content of the article seems straight forward and consistent across websites
     this.extractTitle();
     return [...this.articleContent].concat(

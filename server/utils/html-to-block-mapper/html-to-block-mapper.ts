@@ -15,7 +15,7 @@ export class HtmlToBlockMapper {
   }
 
   public map(articleContent: ArticleContent[]): EditorJsBlock[] {
-    // This 'directory' basically tells the mapper how to map each HTML element to an EditorJS block
+    // This 'directory' basically tells the mapper which mapping function to call to map each HTML element to an EditorJS block
     const directory: Record<HTMLTextElement, Function> = {
       h1: this.mapHeader,
       h2: this.mapHeader,
@@ -34,8 +34,7 @@ export class HtmlToBlockMapper {
 
     articleContent.forEach((content, index) => {
       if (content.contentType === "ul" || content.contentType === "ol") {
-        // HTML List elements need to be treated slightly differently given that the articleContent comes to this function as flattened
-        // Theoretically how I've parsed the articleContent, <li> elements should directly follow <ul> or <ol> elements.
+        // Lists are handle slightly differently. We need to check if the next elements are <li> elements
         blocks.push(
           directory[content.contentType](
             content,
@@ -89,6 +88,7 @@ export class HtmlToBlockMapper {
     };
   }
 
+  // This handles special cases. Where the divs need to be handled differently. There may be a better way to do this
   private getCustomDivMapper(): Function {
     switch (this.hostName) {
       case "timesofindia.indiatimes.com":
@@ -100,6 +100,8 @@ export class HtmlToBlockMapper {
   }
 }
 
+// Extracts the number part of the header tag. For example, h1 -> 1, h2 -> 2, etc.
+// Editjs uses a number to represent the header level
 function getHeaderLevel(contentType: string): number {
   return parseInt(contentType[1]);
 }
