@@ -1,5 +1,5 @@
 import { HtmlToBlockMapper } from "#imports";
-import { getSelectorByHostName } from "~/server/utils/html-extractor/hostnames";
+import { getSelectorsByHostName } from "~/server/utils/html-extractor/hostnames";
 import { HtmlExtractor } from "~/server/utils/html-extractor/html-extractor";
 
 export default defineEventHandler(async (event) => {
@@ -16,7 +16,7 @@ export default defineEventHandler(async (event) => {
     return {
       status: "ok",
       data: new HtmlToBlockMapper(hostName).map(
-        new HtmlExtractor(content).extract(getSelectorByHostName(hostName))
+        new HtmlExtractor(content).extract(getSelectorsByHostName(hostName))
       ),
     };
   } catch (error: any) {
