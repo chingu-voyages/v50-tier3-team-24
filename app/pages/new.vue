@@ -87,14 +87,8 @@
 
       <!-- Submit Button -->
       <div class="w-20 h-10 mb-8 ml-4">
-        <SpinnerButton :isBusy="isBusy" title="Done" class="p-2 mt-4 text-white bg-[#03A58D] rounded font-cabin">
-          <Icon
-            name="mdi:check"
-            class="self-center"
-            size="20"
-            :style="{ color: '#fafafa' }"
-          />
-        </SpinnerButton>
+        <SpinnerButton :isBusy="isBusy" title="Done" class="p-2 mt-4 text-white bg-[#03A58D] rounded font-cabin" />
+      
       </div>
     </form>
 
@@ -127,6 +121,7 @@ useHead({ title: "New Document | Annote" });
 async function handleSubmit() {
   const outputData = await editorController.value?.save();
   try {
+    isBusy.value = true;
     const { data: apiResponse } = await useFetch<ApiResponse<AnnoteDocument>>(
       "/api/annote_documents",
       {
@@ -148,8 +143,10 @@ async function handleSubmit() {
     const { slug, document_id } = apiResponse.value?.data!;
 
     await router.push(`/library/${slug}/edit?id=${document_id}`);
+    isBusy.value = false;
   } catch (err: any) {
     apiError.value = err.message;
+    isBusy.value = false;
   }
 }
 
