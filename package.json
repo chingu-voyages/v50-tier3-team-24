@@ -34,6 +34,7 @@
     "click-outside-vue3": "^4.0.1",
     "h3": "^1.12.0",
     "lodash": "^4.17.21",
+    "node-html-parser": "^6.1.13",
     "nuxt": "^3.12.4",
     "vue": "^3.4.37",
     "vue-router": "^4.4.3",

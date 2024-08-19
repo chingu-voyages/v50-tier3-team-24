@@ -64,6 +64,7 @@ export default defineNuxtConfig({
   alias: {
     "~/types": fileURLToPath(new URL("./types", import.meta.url)),
     "~/server": fileURLToPath(new URL("./server", import.meta.url)),
+    "~/utils": fileURLToPath(new URL("./utils", import.meta.url)),
   },
   typescript: {
     tsConfig: {

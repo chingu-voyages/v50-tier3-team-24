@@ -5,7 +5,6 @@
     :disabled="isBusy"
   >
     <div class="flex gap-x-2 justify-center">
-      <!-- TODO: We can use a conditional slot to render a custom spinner -->
       <VueSpinner v-if="props.isBusy" size="20" color="white" />
       <p>
         {{ props.title }}

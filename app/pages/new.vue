@@ -29,21 +29,34 @@
         </div>
 
         <!-- Source URL . This is commented out because URL scraping is not functioning now. -->
-        <!-- <div class="hidden mb-4"> -->
-        <!-- <div class="flex"> -->
-        <!-- <Icon class="self-center mr-2" name="mdi:link" :style="{ color: '#75D3D4'}" /> -->
-        <!-- <label for="sourceUrl">Source Url</label> -->
-        <!-- <input
-              id="sourceUrl"
+        <div class="mb-4">
+          <div class="flex">
+            <Icon class="self-center mr-2" name="mdi:link" :style="{ color: '#75D3D4'}" />
+            <input
+              id="autoImportUrl"
               type="text"
-          
-              class="w-full text-base bg-transparent border-none focus:outline-none !font-cabin"
+              class="w-full text-base bg-transparent border-none focus:outline-none !font-cabin pr-2"
               placeholder="Type or paste a link here to get started."
-            /> -->
-        <!-- </div> -->
-        <!-- </div> -->
+              v-model="sourceUrl"
+            />
+            <button
+              type="button"
+              class="p-2 mt-4 text-xs md:text-sm xl:text-base text-white bg-[#03A58D] rounded font-cabin h-10 w-28 lg:h-12 lg:w-32 disabled:bg-gray-400"
+              :disabled="!isAutoImportUrlValid"
+              @click="handleAutoImport"
+            >
+              <Icon
+                name="mdi:file-import-outline"
+                class="self-center"
+                :style="{ color: '#fafafa' }"
+              />
+              Auto import
+            </button>
+          </div>
+          <p v-if="hasImportError" class="text-red-500 text-xs">{{ hasImportError }}</p>
+        </div>
         <!-- User manually enters the source url  -->
-        <div>
+        <div class="hidden">
           <input
             id="sourceUrl"
             type="text"
@@ -74,17 +87,8 @@
 
       <!-- Submit Button -->
       <div class="w-20 h-10 mb-8 ml-4">
-        <button
-          type="submit"
-          class="p-2 mt-4 text-white bg-[#03A58D] rounded font-cabin"
-        >
-          <Icon
-            name="mdi:check"
-            class="self-center"
-            :style="{ color: '#fafafa' }"
-          />
-          Done
-        </button>
+        <SpinnerButton :isBusy="isBusy" title="Done" class="p-2 mt-4 text-white bg-[#03A58D] rounded font-cabin" />
+      
       </div>
     </form>
 
@@ -96,8 +100,9 @@
 </template>
 
 <script lang="ts" setup>
-import { useRouter } from "#imports";
+import { EditorJsBlockType, useRouter, type HeaderData } from "#imports";
 import { ref } from "vue";
+import { validateUrl } from "~/utils/web-scraper/validators/url-validator";
 
 const router = useRouter();
 
@@ -107,11 +112,16 @@ const description = ref("");
 
 const apiError = ref<string | null | undefined>(null);
 const editorController = ref<CustomEditorJs | null>(null);
+
+const isBusy = ref<boolean>(false);
+const hasImportError = ref<string | null>(null);
+
 useHead({ title: "New Document | Annote" });
 
 async function handleSubmit() {
   const outputData = await editorController.value?.save();
   try {
+    isBusy.value = true;
     const { data: apiResponse } = await useFetch<ApiResponse<AnnoteDocument>>(
       "/api/annote_documents",
       {
@@ -133,13 +143,57 @@ async function handleSubmit() {
     const { slug, document_id } = apiResponse.value?.data!;
 
     await router.push(`/library/${slug}/edit?id=${document_id}`);
+    isBusy.value = false;
   } catch (err: any) {
     apiError.value = err.message;
+    isBusy.value = false;
   }
 }
 
 function handleEditorReady(editor: CustomEditorJs) {
   editorController.value = editor;
+}
+
+const isAutoImportUrlValid = computed<boolean>(() => {
+  return validateUrl(sourceUrl.value);
+});
+
+async function handleAutoImport() {
+  isBusy.value = true;
+  hasImportError.value = null;
+
+  const res = await useFetch<ApiResponse<EditorJsBlock[]>>("/api/scrape", {
+    method: "POST",
+    body: {
+      url: sourceUrl.value,
+    },
+  });
+
+  if (res.data.value?.status !== "ok") {
+    renderAutoImportError("Unable to auto-import from the provided URL.");
+    isBusy.value = false;
+    return;
+  }
+  
+  // Render the editor with the received data
+  const { data } = res.data.value;
+
+  if (!data || data.length === 0) {
+    isBusy.value = false;
+    renderAutoImportError("Sorry, we can't extract any content from the provided URL.");
+    return;
+  }
+
+  editorController.value?.blocks.render({ blocks: data });
+  const headerBlock: HeaderData = data?.find((block) => block.type === EditorJsBlockType.Header)?.data as HeaderData
+  if (headerBlock?.level === 1) {
+    documentTitle.value = headerBlock.text;
+  }
+  isBusy.value = false;
+}
+
+function renderAutoImportError (errorMessage: string) {
+  hasImportError.value = errorMessage;
 }
 </script>
 <style scoped>
