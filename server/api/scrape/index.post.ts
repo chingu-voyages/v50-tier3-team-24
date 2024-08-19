@@ -1,5 +1,5 @@
-import { HtmlToBlockMapper } from "#imports";
 import { serverSupabaseUser } from "#supabase/server";
+import { ArticleContentToBlockMapper } from "~/server/utils/article-content-to-block-mapper/article-content-to-block-mapper";
 import { getSelectorsByHostName } from "~/server/utils/html-extractor/hostnames";
 import { HtmlExtractor } from "~/server/utils/html-extractor/html-extractor";
 import { webScraperValidator } from "~/server/utils/validators/web-scraper/web-scraper-validator";
@@ -44,7 +44,7 @@ export default defineEventHandler(async (event) => {
 
     return {
       status: "ok",
-      data: new HtmlToBlockMapper(hostName).map(
+      data: new ArticleContentToBlockMapper(hostName).map(
         new HtmlExtractor(content).extract(getSelectorsByHostName(hostName))
       ),
     };

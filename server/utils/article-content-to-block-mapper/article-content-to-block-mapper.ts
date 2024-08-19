@@ -6,7 +6,7 @@ import {
 import { ArticleContent, HTMLTextElement } from "../html-extractor/definitions";
 
 // This class maps the array of ArticleContent as outputted from the html-extract EditorJS blocks
-export class HtmlToBlockMapper {
+export class ArticleContentToBlockMapper {
   private hostName: string;
 
   constructor(hostName: string) {
