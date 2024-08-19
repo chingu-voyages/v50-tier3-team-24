@@ -180,7 +180,7 @@ async function handleAutoImport() {
 
   if (!data || data.length === 0) {
     isBusy.value = false;
-    renderAutoImportError("No content found in the provided URL.");
+    renderAutoImportError("Sorry, we can't extract any content from the provided URL.");
     return;
   }
 
