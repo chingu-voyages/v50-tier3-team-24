@@ -102,7 +102,7 @@
 <script lang="ts" setup>
 import { EditorJsBlockType, useRouter, type HeaderData } from "#imports";
 import { ref } from "vue";
-import { validateUrl } from "../utils/web-scraper/validators/url-validator";
+import { validateUrl } from "~/utils/web-scraper/validators/url-validator";
 
 const router = useRouter();
 
