@@ -202,7 +202,7 @@ function setBusy() {
         />
       </div>
       <div
-        class="absolute flex mt-2 mr-2 text-sm transition-opacity duration-500 opacity-0 top-2 right-20 group-hover:opacity-50"
+        class="absolute flex mt-2 mr-2 text-sm transition-opacity duration-500 opacity-0 top-2 right-20 group-hover:opacity-50 hidden visibility-sticky-summary"
       >
         <div class="flex items-center">
           <img :src="visibilityIcon" alt="Icon" class="w-4 h-4 mr-2" />
@@ -257,7 +257,7 @@ function setBusy() {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 280px;
+  max-width: 360px;
 }
 
 .lightRoundedGreyBorder {
@@ -279,9 +279,45 @@ select {
   color: #03a58d;
 }
 
+@media only screen and (min-width: 700px) {
+  .truncatable-text {
+    max-width: 340px;
+  }
+  .visibility-sticky-summary {
+    display: flex;
+  }
+}
+
 @media only screen and (min-width: 768px) {
   .truncatable-text {
-    max-width: 600px;
+    max-width: 470px;
+  }
+  .visibility-sticky-summary {
+    display: flex;
+  }
+}
+
+@media only screen and (min-width: 1024px) {
+  .truncatable-text {
+    max-width: 280px;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .truncatable-text {
+    max-width: 380px;
+  }
+}
+
+@media screen and (min-width: 1300px) {
+  .truncatable-text {
+    max-width: 500px;
+  }
+}
+
+@media screen and (min-width: 1700px) {
+  .truncatable-text {
+    max-width: 700px;
   }
 }
 </style>
