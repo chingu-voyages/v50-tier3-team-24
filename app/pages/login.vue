@@ -30,7 +30,7 @@
       <p v-if="error" class="text-sm text-center text-red-600">{{ error }}</p>
       <p class="text-sm text-center text-gray-600">
         Don't have an account?
-        <NuxtLink to="/signup" class="text-blue-500 hover:underline"
+        <NuxtLink to="/signup" class="text-teal-600 hover:underline"
           >Sign up here</NuxtLink
         >
       </p>
