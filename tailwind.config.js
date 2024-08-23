@@ -4,9 +4,10 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        gloria: ["Gloria Hallelujah", "sans-serif"],
         verdana: ["Verdana", "sans-serif"],
-        cabin: ["Cabin Condensed", "sans-serif"],
+        cabin: ["Cabin", "sans-serif"],
+        "cabin-condensed": ["Cabin Condensed", "sans-serif"],
+        "source-serif": ["Source Serif", "serif"],
       },
     },
   },
