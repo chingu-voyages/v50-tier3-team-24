@@ -1,8 +1,15 @@
 @font-face {
-  font-family: "Gloria Hallelujah";
-  src: url("/assets/fonts/GloriaHallelujah-Regular.ttf") format("truetype");
+  font-family: "Cabin";
+  src: url("/assets/fonts/Cabin-Variable.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
+}
+
+@font-face {
+  font-family: "Cabin";
+  src: url("/assets/fonts/Cabin-Italic-Variable.ttf") format("truetype");
+  font-weight: normal;
+  font-style: italic;
 }
 
 @font-face {
@@ -12,10 +19,42 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: "Source Serif";
+  src: url("/assets/fonts/SourceSerif4-Variable.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
 body {
-  font-family: "Verdana", sans-serif;
+  font-family: "Cabin", sans-serif;
 }
 
 .greyLinkColor {
   color: #787878;
+}
+
+#editorjs,
+#editorjs p {
+  font-family: "Source Serif", serif;
+  font-size: 1.125rem;
+  font-weight: 400;
+}
+
+#editorjs h1 {
+  font-family: "Cabin", sans-serif;
+  font-size: 2rem;
+  font-weight: 500;
+}
+
+#editorjs h2 {
+  font-family: "Cabin", sans-serif;
+  font-size: 1.375rem;
+  font-weight: 700;
+}
+
+#editorjs h3 {
+  font-family: "Cabin", sans-serif;
+  font-size: 1.15rem;
+  font-weight: 700;
 }
