@@ -8,6 +8,23 @@
   </div>
 </template>
 
+<script setup lang="ts">
+  // Setup a global state for the username
+  const usernameState = useState("username");
+  const user = useSupabaseUser();
+
+  // Here is where we initialize the username state
+  await callOnce(async () => {
+    if (user) {
+      const { data: fetchedUser } = await $fetch<ApiResponse<Partial<User>>>((`/api/users/${user.value.id}`));
+      if (fetchedUser) {
+        usernameState.value = fetchedUser.username;
+      }
+    }
+  });
+
+  
+</script>
 <style scoped>
 @media only screen and (min-width: 1024px) {
   main {

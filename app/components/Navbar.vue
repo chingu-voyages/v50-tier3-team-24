@@ -40,7 +40,7 @@
                 class="flex items-center pt-4 no-underline lg:pt-0 accountBtnColor"
               >
                 <img :src="accountIcon" alt="Icon" class="w-8 h-8 mr-2" />
-                {{ currentUser?.username }}
+                {{ currentUsername }}
               </button>
               <div
                 v-if="isDropdownOpen"
@@ -94,7 +94,8 @@ const { logout, getCurrentUser } = useAuth();
 const isDropdownOpen = ref(false);
 const isMenuOpen = ref(false);
 
-const currentUser = (await getCurrentUser())?.data;
+// const currentUser = (await getCurrentUser())?.data;
+const currentUsername = useState("username");
 
 const menuItems = [
   { to: "/about", icon: homeIcon, text: "About", class: "homeBtnColor" },
