@@ -59,7 +59,7 @@
       prompt="Are you sure you want to delete this document?"
       :open="confirmDeleteWindowOpen" 
       :onClose="toggleConfirmDeleteWindow" 
-      :onDelete="handleDeleteDocument" 
+      :onConfirmAction="handleDeleteDocument" 
     />
   </div>
 </template>
