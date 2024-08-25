@@ -18,6 +18,7 @@ const sortOption = ref("createdDescending");
 const isBusy = ref(false);
 
 onMounted(async () => {
+  currentUser = (await getCurrentUser())?.data;
   const { data: fetchedDocument } = await $fetch<ApiResponse<AnnoteDocument[]>>(
     "/api/annote_documents"
   );

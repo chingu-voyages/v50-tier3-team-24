@@ -5,9 +5,9 @@
         <p> {{ prompt }}</p>
         <div class="flex gap-8 mt-4 justify-center">
           <div>
-            <button class="text-[#F64C00] hover:font-bold" @click="handleDelete">Yes</button>
+            <button class="text-[#F64C00] hover:font-bold" @click="handleConfirmAction">{{ props.confirmActionLabel }}</button>
           </div>
-          <div>
+          <div v-if="props.cancel">
             <button class="" @click="handleClose">Cancel</button>
           </div>
         </div>
@@ -20,15 +20,22 @@
   interface DeleteConfirmModalProps {
     prompt: string;
     open: boolean;
-    onDelete?: () => void;
+    confirmActionLabel?: string;
+    onConfirmAction?: () => void;
     onClose: () => void;
+    cancel?: boolean;
   }
 
-  const props = defineProps<DeleteConfirmModalProps>();
+  const props = withDefaults(defineProps<DeleteConfirmModalProps>(), {
+    cancel: true,
+    confirmActionLabel: "Yes",
+    open: true,
+    onClose: () => {},
+  })
 
-  const handleDelete = () => {
-    if (props.onDelete) {
-      props.onDelete();
+  const handleConfirmAction = () => {
+    if (props.onConfirmAction) {
+      props.onConfirmAction();
     }
     props.onClose();
   };

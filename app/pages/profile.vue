@@ -37,6 +37,9 @@
           <label for="password2" class="block font-bold w-36">Confirm password:</label>
           <input type="password" id="password2" class="w-full p-2 border border-gray-300 rounded" v-model="password2" />
         </div>
+        <div class="mb-4">
+          <p class="text-sm text-teal-700">*Note: Changing your password will end your session, and will require you to sign in again.</p>
+        </div>
         <div v-if="passwordError" class="text-red-500">
           <p class="text-sm">{{ passwordError }}</p></div>
           <SpinnerButton 
@@ -56,10 +59,10 @@ import { VueSpinner } from 'vue3-spinners';
   const usernameGlobalState = useState("username");
   // We should allow the user to update their username and password
   useHead({
-    title: "Profile",
+    title: "Annote | Profile",
     meta: [
       {
-        name: "description",
+        name: "Profile Page",
         content: "Update your profile information"
       }
     ]
@@ -76,6 +79,8 @@ import { VueSpinner } from 'vue3-spinners';
 
   const isBusy = ref(false);
   const isInvalidPassword = ref(true);
+
+  const { logout } = useAuth();
   
   let originalUsername: string | null = null;
 
@@ -98,7 +103,7 @@ import { VueSpinner } from 'vue3-spinners';
 
   const userCreatedTimeStamp = computed<string>(() => {
     if (currentUser.value) {
-      return new Date(currentUser.value.created_at).toLocaleDateString();
+      return new Date(currentUser.value?.created_at).toLocaleDateString();
     }
     return "";
   })
@@ -109,7 +114,7 @@ import { VueSpinner } from 'vue3-spinners';
     if (username.value === originalUsername) return;
 
     if (!isUsernameValid(username.value)) {
-      usernameError.value = "Invalid username: must be at least 3 characters long and contain only letters, numbers, and underscores";
+      usernameError.value = "Please provide a username";
       username.value = originalUsername || "";
       return;
     }
@@ -119,7 +124,7 @@ import { VueSpinner } from 'vue3-spinners';
 
   function isUsernameValid(input: string) {
     if (!input) return false;
-    if (!input.match(/^[a-zA-Z0-9_]+$/)) return false;
+    if (!input.match(/^[a-z\d\-_]+$/i)) return false;
     if (input.trim().length < 3) return false;
     
     return true;
@@ -177,6 +182,8 @@ import { VueSpinner } from 'vue3-spinners';
       // Reset the inputs
       password1.value = "";
       password2.value = "";
+
+      await logout();
     } catch (error: any) {
       passwordError.value = error.message;
     } finally {
