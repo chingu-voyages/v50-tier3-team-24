@@ -12,9 +12,8 @@
             </h1>
             <div class="pt-2">
               <ShareLinkButtons
-                v-if="currentUser?.data?.username === username"
+                v-if="currentUser?.user_id === annoteDocument?.user_id"
                 :link-url="`${annoteDocument?.slug}/edit?id=${annoteDocument?.document_id}`"
-                
               >
               <button @click="toggleConfirmDeleteWindow">
                 <!-- This is the document delete button. -->
@@ -25,7 +24,8 @@
               prompt="Are you sure you want to delete this document?"
               :open="confirmDeleteWindowOpen" 
               :onClose="toggleConfirmDeleteWindow" 
-              :onDelete="handleDeleteDocument" 
+              :onConfirmAction="handleDeleteDocument"
+              :confirmActionLabel="'Delete'"
               />
             </div>
           </div>
@@ -83,18 +83,18 @@ const { fetchStickies } = useSticky();
 const { deleteDocument } = useDocument();
 const { getCurrentUser } = useAuth();
 
-const currentUser = await getCurrentUser();
+const currentUser = (await getCurrentUser())?.data;
 const confirmDeleteWindowOpen = ref(false);
 
 const { id } = route.query;
 const { username } = route.params;
 const isBusy = ref(false);
 
-
 if (id) {
   const { data: apiResponse } = await useFetch<ApiResponse<AnnoteDocument>>(
     `/api/annote_documents/${id}`
   );
+
   annoteDocument.value = apiResponse.value?.data!;
 
   stickies.value = await fetchStickies(id as string);
@@ -130,7 +130,4 @@ async function handleDeleteDocument() {
     console.error("Failed to delete document", res);
   }
 }
-const setIsBusy = () => {
-  isBusy.value = true;
-};
 </script>
