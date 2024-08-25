@@ -8,7 +8,7 @@ const annoteDocs = ref<AnnoteDocument[] | null>(null);
 const stickyCountMap = ref<Record<string, number>>({});
 const { getCurrentUser } = useAuth();
 
-const currentUser = await getCurrentUser();
+let currentUser: User | null | undefined = null;
 
 const currentPage = ref(1);
 const documentsPerPage = 10;
@@ -190,7 +190,7 @@ function setBusy() {
         <div class="flex items-center">
           <img :src="documentIcon" alt="Icon" class="w-6 h-6 mr-2" />
           <NuxtLink
-            :to="`/${currentUser?.data?.username}/${doc.slug}?id=${doc.document_id}`"
+            :to="`/${currentUser?.username}/${doc.slug}?id=${doc.document_id}`"
           >
             <p class="text-xs sm:text-sm md:text-m truncatable-text">
               {{ doc.title }}
@@ -198,7 +198,7 @@ function setBusy() {
           </NuxtLink>
         </div>
         <ShareLinkButtons
-          :linkUrl="`/${currentUser?.data?.username}/${doc.slug}?id=${doc.document_id}`"
+          :linkUrl="`/${currentUser?.username}/${doc.slug}?id=${doc.document_id}`"
         />
       </div>
       <div
