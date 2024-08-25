@@ -52,5 +52,6 @@ useHead({ title: "Sign in | Annote" });
 const handleLogin = async () => {
   isBusy.value = true;
   await login(email.value, password.value);
+  isBusy.value = false;
 };
 </script>
