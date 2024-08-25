@@ -2,7 +2,7 @@
   <Transition>
     <div v-if="props.open" class="fixed w-screen h-screen z-50 bg-transparent left-0 top-0 modalBackdrop">
       <div class="bg-white p-8 mt-[30vh] lg:ml-[30%] lg:mr-[30%]">
-        <p>Are you sure you want to delete this document?</p>
+        <p> {{ prompt }}</p>
         <div class="flex gap-8 mt-4 justify-center">
           <div>
             <button class="text-[#F64C00] hover:font-bold" @click="handleDelete">Yes</button>
@@ -18,6 +18,7 @@
 
 <script setup lang="ts">
   interface DeleteConfirmModalProps {
+    prompt: string;
     open: boolean;
     onDelete?: () => void;
     onClose: () => void;

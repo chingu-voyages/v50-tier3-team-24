@@ -14,14 +14,19 @@
               <ShareLinkButtons
                 v-if="currentUser?.data?.username === username"
                 :link-url="`${annoteDocument?.slug}/edit?id=${annoteDocument?.document_id}`"
-                :onLinkClicked="setIsBusy"
+                
               >
               <button @click="toggleConfirmDeleteWindow">
                 <!-- This is the document delete button. -->
                 <Icon name="mdi:trash-can-outline" class="text-gray-300 hover:text-[#F64C00]" />
               </button>
             </ShareLinkButtons>
-            <DeleteConfirmModal :open="confirmDeleteWindowOpen" :onClose="toggleConfirmDeleteWindow" :onDelete="handleDeleteDocument" />
+            <ConfirmationModal
+              prompt="Are you sure you want to delete this document?"
+              :open="confirmDeleteWindowOpen" 
+              :onClose="toggleConfirmDeleteWindow" 
+              :onDelete="handleDeleteDocument" 
+              />
             </div>
           </div>
           <!-- Document Link -->
@@ -69,7 +74,6 @@
 </template>
 <script setup lang="ts">
 import { VueSpinner } from 'vue3-spinners';
-
 const route = useRoute();
 const annoteDocument = ref<AnnoteDocument | null>(null);
 const editorController = ref<CustomEditorJs | null>(null);
