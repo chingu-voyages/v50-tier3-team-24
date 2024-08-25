@@ -7,17 +7,18 @@ export default defineEventHandler<Promise<ApiResponse<AnnoteDocument[]>>>(
     const dbClient = new AnnoteDocumentDbClient();
     const apiResponse = {} as ApiResponse<AnnoteDocument[]>;
 
-    const user = await serverSupabaseUser(event);
-    if (!user) {
-      setResponseStatus(event, 401);
-      apiResponse.status = "fail";
-      apiResponse.error = createError({
-        statusCode: 401,
-        statusMessage: "Unauthorized",
-      });
-      return apiResponse;
-    }
     try {
+      const user = await serverSupabaseUser(event);
+      if (!user) {
+        setResponseStatus(event, 401);
+        apiResponse.status = "fail";
+        apiResponse.error = createError({
+          statusCode: 401,
+          statusMessage: "Unauthorized",
+        });
+        return apiResponse;
+      }
+
       const documents = await dbClient.getAllDocuments(user.id);
       apiResponse.data = documents;
       apiResponse.status = "ok";
