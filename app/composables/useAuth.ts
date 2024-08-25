@@ -76,7 +76,7 @@ export function useAuth() {
       }
 
       currentUser.value = (await getCurrentUser())?.data!;
-
+      useState("username", () => currentUser.value?.username);
       router.push("/");
     } catch (err: any) {
       error.value = err.message;

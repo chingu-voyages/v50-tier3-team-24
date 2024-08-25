@@ -15,16 +15,15 @@
 
   // Here is where we initialize the username state
   await callOnce(async () => {
-    if (user) {
+    if (user && user.value) {
       const { data: fetchedUser } = await $fetch<ApiResponse<Partial<User>>>((`/api/users/${user.value.id}`));
       if (fetchedUser) {
         usernameState.value = fetchedUser.username;
       }
     }
   });
-
-  
 </script>
+
 <style scoped>
 @media only screen and (min-width: 1024px) {
   main {

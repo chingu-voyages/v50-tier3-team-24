@@ -90,11 +90,10 @@ import { onMounted, onUnmounted, ref } from "vue";
 import { useAuth } from "../composables/useAuth";
 
 const user = useSupabaseUser();
-const { logout, getCurrentUser } = useAuth();
+const { logout } = useAuth();
 const isDropdownOpen = ref(false);
 const isMenuOpen = ref(false);
 
-// const currentUser = (await getCurrentUser())?.data;
 const currentUsername = useState("username");
 
 const menuItems = [
