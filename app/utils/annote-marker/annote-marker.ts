@@ -39,6 +39,7 @@ export default class AnnoteMarker {
   public render() {
     const mainContainer = document.createElement("div");
     mainContainer.classList.add("main-container");
+    mainContainer.classList.add("ce-inline-tool");
 
     const buttonContainer = document.createElement("div");
     buttonContainer.classList.add("button-container");

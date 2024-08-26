@@ -12,16 +12,21 @@
             </h1>
             <div class="pt-2">
               <ShareLinkButtons
-                v-if="currentUser?.data?.username === username"
+                v-if="currentUser?.user_id === annoteDocument?.user_id"
                 :link-url="`${annoteDocument?.slug}/edit?id=${annoteDocument?.document_id}`"
-                :onLinkClicked="setIsBusy"
               >
               <button @click="toggleConfirmDeleteWindow">
                 <!-- This is the document delete button. -->
                 <Icon name="mdi:trash-can-outline" class="text-gray-300 hover:text-[#F64C00]" />
               </button>
             </ShareLinkButtons>
-            <DeleteConfirmModal :open="confirmDeleteWindowOpen" :onClose="toggleConfirmDeleteWindow" :onDelete="handleDeleteDocument" />
+            <ConfirmationModal
+              prompt="Are you sure you want to delete this document?"
+              :open="confirmDeleteWindowOpen" 
+              :onClose="toggleConfirmDeleteWindow" 
+              :onConfirmAction="handleDeleteDocument"
+              :confirmActionLabel="'Delete'"
+              />
             </div>
           </div>
           <!-- Document Link -->
@@ -69,7 +74,6 @@
 </template>
 <script setup lang="ts">
 import { VueSpinner } from 'vue3-spinners';
-
 const route = useRoute();
 const annoteDocument = ref<AnnoteDocument | null>(null);
 const editorController = ref<CustomEditorJs | null>(null);
@@ -79,18 +83,18 @@ const { fetchStickies } = useSticky();
 const { deleteDocument } = useDocument();
 const { getCurrentUser } = useAuth();
 
-const currentUser = await getCurrentUser();
+const currentUser = (await getCurrentUser())?.data;
 const confirmDeleteWindowOpen = ref(false);
 
 const { id } = route.query;
 const { username } = route.params;
 const isBusy = ref(false);
 
-
 if (id) {
   const { data: apiResponse } = await useFetch<ApiResponse<AnnoteDocument>>(
     `/api/annote_documents/${id}`
   );
+
   annoteDocument.value = apiResponse.value?.data!;
 
   stickies.value = await fetchStickies(id as string);
@@ -126,7 +130,4 @@ async function handleDeleteDocument() {
     console.error("Failed to delete document", res);
   }
 }
-const setIsBusy = () => {
-  isBusy.value = true;
-};
 </script>

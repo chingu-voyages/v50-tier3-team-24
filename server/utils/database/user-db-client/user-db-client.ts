@@ -48,6 +48,26 @@ export class UserDbClient extends BaseDbClient {
 
     return userData;
   }
-}
 
-const client = new UserDbClient();
+  public async updateUsernameByUserId(
+    user_id: string,
+    updateData: {
+      username: string;
+    }
+  ): Promise<void> {
+    const { error } = await this.client
+      .from(this.TABLE_NAME)
+      .update(updateData)
+      .eq("user_id", user_id);
+
+    if (error) throw new Error(error.message);
+  }
+
+  public async updatePassword(user_id: string, password: string) {
+    const { error } = await this.client.auth.admin.updateUserById(user_id, {
+      password: password,
+    });
+
+    if (error) throw new Error(error.message);
+  }
+}

@@ -55,7 +55,12 @@
         </div>
       </div>
     </div>
-    <DeleteConfirmModal :open="confirmDeleteWindowOpen" :onClose="toggleConfirmDeleteWindow" :onDelete="handleDeleteDocument" />
+    <ConfirmationModal
+      prompt="Are you sure you want to delete this document?"
+      :open="confirmDeleteWindowOpen" 
+      :onClose="toggleConfirmDeleteWindow" 
+      :onConfirmAction="handleDeleteDocument" 
+    />
   </div>
 </template>
 
