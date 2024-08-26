@@ -13,3 +13,5 @@ export interface AnnoteDocument {
   author?: string;
   visibility: "private" | "public";
 }
+
+export const ANNOTE_MARKER_CSS = "cdx-marker";
