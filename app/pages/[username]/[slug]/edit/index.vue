@@ -19,7 +19,13 @@
     </div>
     <div class="flex bg-gray-100 border border-gray-300 rounded p-5 min-h-[300px] my-5">
       <ClientOnly>
-        <EditorComponent :onEditorReady="handleEditorReady" :onMarkerInserted="handleMarkerInserted" :onMarkerDeleted="handleDeleteMarker" :onLostFocus="handleEditorLostFocus" />
+        <EditorComponent 
+          :onEditorReady="handleEditorReady" 
+          :onMarkerInserted="handleMarkerInserted" 
+          :onMarkerDeleted="handleDeleteMarker" 
+          :onLostFocus="handleEditorLostFocus"
+          :onUuidsInView="handleUuidsEnteredInView"
+        />
       </ClientOnly>
       <div>
         <Transition>
@@ -288,6 +294,13 @@ async function handleDeleteDocument () {
   } else {
     console.error("There was an error deleting the document", res);
   }
+}
+
+async function handleUuidsEnteredInView (uuids: string[]) {
+  // This function is called when the user scrolls the document and new stickies come into view
+  // It should update the stickies in view in the database
+  // This function should be debounced
+  console.log("Uuids entered in view", uuids);  
 }
 </script>
 

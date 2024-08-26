@@ -19,6 +19,7 @@ interface EditorComponentProps {
   readOnly?: boolean;
   onMarkerInserted?: (markerData: AnnoteOnMarkerInsertedData) => void;
   onMarkerDeleted?: (markerData: AnnotteOnMarkerDeletedData) => void;
+  onUuidsInView?: (uuids: string[]) => void;
   onLostFocus?: () => void;
   placeholder?: string;
 }
@@ -51,6 +52,9 @@ const editor = new EditorJS({
         },
         onMarkerDeleted: (markerData: AnnotteOnMarkerDeletedData) => {
           props.onMarkerDeleted?.(markerData);
+        },
+        onUuidsInvIew: (markerData: string[]) => {
+          props.onUuidsInView?.(markerData);
         }
       },
     },

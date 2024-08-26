@@ -28,6 +28,10 @@ export default class AnnoteMarker {
       base: this._api.styles.inlineToolButton,
       active: this._api.styles.inlineToolButtonActive,
     };
+
+    if (this._config.onUuidsInvIew) {
+      window?.addEventListener("scroll", () => this.handleWindowScroll(this));
+    }
   }
 
   // Specifies tool as an inline toolbar tool
@@ -206,6 +210,18 @@ export default class AnnoteMarker {
     active: string;
   };
 
+  private handleWindowScroll(thisElement: any) {
+    const markers = document.getElementsByClassName(AnnoteMarker.CSS);
+    const uuidsInViewPort: string[] = [];
+
+    for (let i = 0; i < markers.length; i++) {
+      if (markers[i] && isInViewPort(markers[i] as HTMLElement)) {
+        uuidsInViewPort.push((markers[i] as any)?.dataset.uuid);
+      }
+    }
+
+    thisElement._config.onUuidsInvIew(uuidsInViewPort);
+  }
   /**
    * Unwrap term-tag - de-highlight and remove the pin, essentially
    *
@@ -277,9 +293,11 @@ export default class AnnoteMarker {
 
   /**
    * Sanitizer rule. EditorJS will filter out attributes on tags that aren't in these santize rules.
-   * @return {{mark: {class: string}}}
    */
-  static get sanitize() {
+  static get sanitize(): {
+    mark: Record<string, any>;
+    div: Record<string, any>;
+  } {
     return {
       mark: {
         class: AnnoteMarker.CSS,
@@ -305,4 +323,19 @@ export default class AnnoteMarker {
   static get getPinCSS() {
     return "pin";
   }
+}
+
+function isInViewPort(htmlElement: HTMLElement): boolean {
+  // Reference: https://jacobnarayan.com/blogs/how-to-tell-if-an-html-element-is-in-the-viewport
+  const rect = htmlElement.getBoundingClientRect();
+
+  const isinview =
+    rect.top >= 0 &&
+    rect.left >= 0 &&
+    rect.bottom <=
+      (window.innerHeight || document.documentElement.clientHeight) &&
+    rect.right <= (window.innerWidth || document.documentElement.clientWidth);
+
+  // returns true or false based on whether or not the element is in viewport
+  return isinview;
 }
