@@ -40,18 +40,26 @@
                 class="flex items-center pt-4 no-underline lg:pt-0 accountBtnColor"
               >
                 <img :src="accountIcon" alt="Icon" class="w-8 h-8 mr-2" />
-                {{ currentUser?.username }}
+                {{ currentUsername }}
               </button>
               <div
                 v-if="isDropdownOpen"
                 class="z-10 w-48 mt-4 bg-white lg:rounded-md lg:shadow-lg lg:absolute"
               >
-                <button
-                  @click="handleLogout"
+              <NuxtLink to="/profile">              
+                <button @click="isDropdownOpen = false"
                   class="block w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-100"
                 >
-                  Logout
+                  Profile
                 </button>
+              </NuxtLink>
+              
+              <button
+                @click="handleLogout"
+                class="block w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-100"
+              >
+                Logout
+              </button>
               </div>
             </li>
             <li v-else class="relative">
@@ -82,11 +90,11 @@ import { onMounted, onUnmounted, ref } from "vue";
 import { useAuth } from "../composables/useAuth";
 
 const user = useSupabaseUser();
-const { logout, getCurrentUser } = useAuth();
+const { logout } = useAuth();
 const isDropdownOpen = ref(false);
 const isMenuOpen = ref(false);
 
-const currentUser = await getCurrentUser();
+const currentUsername = useState("username");
 
 const menuItems = [
   { to: "/about", icon: homeIcon, text: "About", class: "homeBtnColor" },
