@@ -1,0 +1,5 @@
+/* This triggers on update for the sticky table to update the timestamp */
+CREATE TRIGGER set_sticky_timestamp
+BEFORE UPDATE ON sticky
+FOR EACH ROW
+EXECUTE PROCEDURE trigger_set_timestamp();
