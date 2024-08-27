@@ -33,24 +33,24 @@
     </div>
     <div class="absolute top-0 bottom-0 right-0 w-1/2">
       <img
-        src="@/public/assets/icons/edit_document.svg"
-        class="absolute w-64 h-64 top-1/4 right-1/4 animate-float"
+        src="@/public/assets/icons/hero1.svg"
+        class="absolute w-96 h-96 right-1/4 floating-image-1"
         alt="Vector 1"
       />
       <img
-        src="@/public/assets/icons/account_circle.svg"
-        class="absolute w-32 h-32 top-1/2 right-3/4 animate-float animation-delay-400"
+        src="@/public/assets/icons/hero2.svg"
+        class="absolute w-32 h-32 top-1/2 right-3/4 floating-image-2 animation-delay-400"
         alt="Vector 2"
       />
       <img
-        src="@/public/assets/icons/help_clinic.svg"
-        class="absolute w-24 h-24 top-1/4 right-10 animate-float animation-delay-300"
-        alt="Vector 2"
+        src="@/public/assets/icons/hero3.svg"
+        class="absolute w-24 h-24 top-1/4 right-20 floating-image-3 animation-delay-300"
+        alt="Vector 3"
       />
       <img
-        src="@/public/assets/icons/library_books.svg"
-        class="absolute w-20 h-20 top-3/4 right-10 animate-float animation-delay-300"
-        alt="Vector 2"
+        src="@/public/assets/icons/hero4.svg"
+        class="absolute w-20 h-20 top-2/3 right-10 floating-image-4 animation-delay-300"
+        alt="Vector 4"
       />
     </div>
   </section>
@@ -92,15 +92,59 @@
   animation: float 6s ease-in-out infinite;
 }
 
-@keyframes float {
-  0% {
-    transform: translateY(0px);
+@keyframes float-1 {
+  0%,
+  100% {
+    transform: translateY(0);
   }
   50% {
     transform: translateY(-20px);
   }
+}
+
+@keyframes float-2 {
+  0%,
   100% {
-    transform: translateY(0px);
+    transform: translateY(0);
   }
+  50% {
+    transform: translateY(-15px);
+  }
+}
+
+@keyframes float-3 {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-25px);
+  }
+}
+
+@keyframes float-4 {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-30px);
+  }
+}
+
+.floating-image-1 {
+  animation: float-1 4s ease-in-out infinite;
+}
+
+.floating-image-2 {
+  animation: float-2 5s ease-in-out infinite;
+}
+
+.floating-image-3 {
+  animation: float-3 6s ease-in-out infinite;
+}
+
+.floating-image-4 {
+  animation: float-4 7s ease-in-out infinite;
 }
 </style>
