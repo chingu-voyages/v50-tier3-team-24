@@ -1,5 +1,5 @@
 <template>
-  <section class="relative flex overflow-hidden modern-gradient">
+  <section class="relative flex overflow-hidden modern-gradient rounded-xl">
     <div class="flex items-center w-1/2 p-10">
       <div class="px-12">
         <h1
@@ -24,7 +24,7 @@
           </NuxtLink>
           <NuxtLink
             to="/about"
-            class="px-6 py-3 font-bold text-center transition duration-300 bg-transparent border-2 border-teal-500 rounded-lg hover:bg-gray-200 gradient-text-primary animate-fade-in-up animation-delay-900"
+            class="px-6 py-3 font-bold text-center transition duration-300 border-2 border-black rounded-lg animate-fade-in-up animation-delay-900"
           >
             Learn More
           </NuxtLink>
