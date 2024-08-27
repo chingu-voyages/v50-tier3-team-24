@@ -133,7 +133,7 @@
 }
 
 .floating-image-1 {
-  animation: float-1 4s ease-in-out infinite;
+  animation: float-1 10s ease-in-out infinite;
 }
 
 .floating-image-2 {
