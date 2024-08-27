@@ -31,17 +31,27 @@
         </div>
       </div>
     </div>
-    <div class="absolute top-0 bottom-0 right-0 w-1/3 pointer-events-none">
+    <div class="absolute top-0 bottom-0 right-0 w-1/2">
       <img
         src="@/public/assets/icons/edit_document.svg"
         class="absolute w-64 h-64 top-1/4 right-1/4 animate-float"
         alt="Vector 1"
       />
-      <!-- <img
-        src="@/public/assets/icons/edit_document.svg"
-        class="absolute w-20 h-20 top-1/2 right-1/3 animate-float animation-delay-300"
+      <img
+        src="@/public/assets/icons/account_circle.svg"
+        class="absolute w-32 h-32 top-1/2 right-3/4 animate-float animation-delay-400"
         alt="Vector 2"
-      /> -->
+      />
+      <img
+        src="@/public/assets/icons/help_clinic.svg"
+        class="absolute w-24 h-24 top-1/4 right-10 animate-float animation-delay-300"
+        alt="Vector 2"
+      />
+      <img
+        src="@/public/assets/icons/library_books.svg"
+        class="absolute w-20 h-20 top-3/4 right-10 animate-float animation-delay-300"
+        alt="Vector 2"
+      />
     </div>
   </section>
 </template>
