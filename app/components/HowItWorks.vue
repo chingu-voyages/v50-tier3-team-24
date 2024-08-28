@@ -27,7 +27,7 @@
             <img
               src="https://res.cloudinary.com/dgxqotorm/image/upload/v1723411677/Screenshot_2024-08-11_at_5.26.52_PM_kentbh.png"
               alt="Instant Web Import"
-              class="w-full rounded-lg shadow-lg"
+              class="w-full transition-transform duration-300 transform rounded-lg shadow-lg rotate-2 hover:rotate-0"
             />
           </div>
         </div>
@@ -54,7 +54,7 @@
             <img
               src="https://res.cloudinary.com/dgxqotorm/image/upload/v1723411483/Screenshot_2024-08-11_at_5.23.27_PM_k6zdyd.png"
               alt="Smart Content Library"
-              class="w-full rounded-lg shadow-lg"
+              class="w-full transition-transform duration-300 transform rounded-lg shadow-lg rotate-neg-2 hover:rotate-0"
             />
           </div>
         </div>
@@ -81,7 +81,7 @@
             <img
               src="https://res.cloudinary.com/dgxqotorm/image/upload/v1723228093/Screenshot_2024-08-09_at_2.20.45_PM_vt81sw.png"
               alt="Dynamic Document Enhancement"
-              class="w-full rounded-lg shadow-lg"
+              class="w-full transition-transform duration-300 transform rounded-lg shadow-lg rotate-2 hover:rotate-0"
             />
           </div>
         </div>
@@ -89,3 +89,17 @@
     </div>
   </section>
 </template>
+
+<style scoped>
+.rotate-2 {
+  transform: rotate(2deg);
+}
+
+.rotate-neg-2 {
+  transform: rotate(-2deg);
+}
+
+.hover\:rotate-0:hover {
+  transform: rotate(0deg);
+}
+</style>
