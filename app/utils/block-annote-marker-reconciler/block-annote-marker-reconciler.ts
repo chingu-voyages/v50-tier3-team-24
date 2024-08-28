@@ -19,12 +19,19 @@ export class BlockAnnoteMarkerReconciler {
         case EditorJsBlockType.Header:
         case EditorJsBlockType.Paragraph:
           (block.data as AnyBlockType).text = this.reconcileTextBlock(
-            block.data as AnyBlockType
+            (block.data as AnyBlockType).text
           );
           outputBlocks.push(block);
           break;
         case EditorJsBlockType.List:
-        // We need to loop through the items
+          // We need to loop through the items
+          const listItems: string[] = [];
+          for (const item of (block.data as ListData).items) {
+            listItems.push(this.reconcileTextBlock(item));
+          }
+          (block.data as ListData).items = listItems;
+          outputBlocks.push(block);
+          break;
         default:
           outputBlocks.push(block);
       }
@@ -33,9 +40,9 @@ export class BlockAnnoteMarkerReconciler {
     return { blocks: outputBlocks, map: this._uuidPinMap };
   }
 
-  private reconcileTextBlock(block: AnyBlockType): string {
-    if (block.text.includes("data-pin=")) {
-      const newText = block.text.replace(/data-pin="\d+"/g, () => {
+  private reconcileTextBlock(text: string): string {
+    if (text.includes("data-pin=")) {
+      const newText = text.replace(/data-pin="\d+"/g, () => {
         const replacementData = `data-pin="${this._pinCount}"`;
         this._pinCount++;
         return replacementData;
@@ -45,7 +52,7 @@ export class BlockAnnoteMarkerReconciler {
       this.parseSplitMarkData(splitByMarkData);
       return newText;
     }
-    return block.text;
+    return text;
   }
 
   private parseSplitMarkData(splitText: string[]) {
