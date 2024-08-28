@@ -1,101 +1,90 @@
 <template>
-  <section class="px-4 py-16 text-center bg-gray-100">
-    <h2 class="mb-12 text-4xl font-bold">How Annote Works</h2>
-    <div class="flex flex-col gap-8">
-      <!-- Step 1 -->
-      <div
-        class="flex flex-col items-center gap-4 p-6 bg-white lg:flex-row justify-evenly"
-      >
-        <div class="flex flex-col gap-8">
-          <div class="flex flex-col items-center justify-center">
-            <h1
-              class="flex items-center justify-center w-12 h-12 mb-4 text-3xl font-bold text-white bg-purple-600 rounded-full"
-            >
-              1
-            </h1>
-            <h3 class="mb-2 text-2xl font-semibold text-purple-800">
-              Import URL
-            </h3>
-            <p class="text-purple-600">
-              Easily import content from any web page with a single click
+  <section class="py-16">
+    <div class="container px-4 mx-auto">
+      <h2 class="mb-16 text-4xl font-bold text-center text-gray-800">
+        Simplify Your Workflow with Annote
+      </h2>
+      <div class="space-y-24">
+        <!-- Step 1 -->
+        <div class="flex flex-col items-center md:flex-row">
+          <div class="mb-8 md:w-1/2 md:mb-0 md:pr-8">
+            <div class="flex items-center mb-4">
+              <div
+                class="flex items-center justify-center w-12 h-12 mr-4 text-xl font-bold text-white bg-purple-600 rounded-full"
+              >
+                1
+              </div>
+              <h3 class="text-2xl font-semibold text-purple-800">
+                Instant Web Import
+              </h3>
+            </div>
+            <p class="text-gray-600">
+              Seamlessly capture web content with a single click, transforming
+              any page into your personal canvas
             </p>
           </div>
-
-          <!-- <div class="flex flex-col text-start">
-              <p>- Lorem ipsum dolor sit amet, consectetur adipiscing elit,</p>
-              <p>- Lorem ipsum dolor sit amet, consectetur adipiscing elit,</p>
-            </div> -->
+          <div class="md:w-1/2">
+            <img
+              src="https://res.cloudinary.com/dgxqotorm/image/upload/v1723411677/Screenshot_2024-08-11_at_5.26.52_PM_kentbh.png"
+              alt="Instant Web Import"
+              class="w-full rounded-lg shadow-lg"
+            />
+          </div>
         </div>
-        <img
-          src="https://res.cloudinary.com/dgxqotorm/image/upload/v1723411677/Screenshot_2024-08-11_at_5.26.52_PM_kentbh.png"
-          alt="Import URL"
-          class="self-center rounded-lg shadow-md lg:w-1/2"
-        />
-      </div>
 
-      <!-- Step 2 -->
-      <div
-        class="flex flex-col flex-col-reverse items-center gap-4 p-6 bg-white lg:flex-row justify-evenly"
-      >
-        <img
-          src="https://res.cloudinary.com/dgxqotorm/image/upload/v1723411483/Screenshot_2024-08-11_at_5.23.27_PM_k6zdyd.png"
-          alt="Select From Library"
-          class="rounded-lg shadow-md lg:w-1/2"
-        />
-        <div class="flex flex-col gap-8">
-          <div class="flex flex-col items-center justify-center">
-            <h1
-              class="flex items-center justify-center w-12 h-12 mb-4 text-3xl font-bold text-white bg-yellow-600 rounded-full"
-            >
-              2
-            </h1>
-
-            <h3 class="mb-2 text-2xl font-semibold text-yellow-700">
-              Select From Library
-            </h3>
-            <p class="text-yellow-600">
-              Access your imported content in your personal library and start
-              editing
+        <!-- Step 2 -->
+        <div class="flex flex-col items-center md:flex-row-reverse">
+          <div class="mb-8 md:w-1/2 md:mb-0 md:pl-8">
+            <div class="flex items-center mb-4">
+              <div
+                class="flex items-center justify-center w-12 h-12 mr-4 text-xl font-bold text-white bg-yellow-600 rounded-full"
+              >
+                2
+              </div>
+              <h3 class="text-2xl font-semibold text-yellow-700">
+                Smart Content Library
+              </h3>
+            </div>
+            <p class="text-gray-600">
+              Dive into your personalized knowledge hub, where all your imported
+              content awaits your creative touch
             </p>
           </div>
-
-          <!-- <div class="flex flex-col text-start">
-              <p>- Lorem ipsum dolor sit amet, consectetur adipiscing elit,</p>
-              <p>- Lorem ipsum dolor sit amet, consectetur adipiscing elit,</p>
-            </div> -->
+          <div class="md:w-1/2">
+            <img
+              src="https://res.cloudinary.com/dgxqotorm/image/upload/v1723411483/Screenshot_2024-08-11_at_5.23.27_PM_k6zdyd.png"
+              alt="Smart Content Library"
+              class="w-full rounded-lg shadow-lg"
+            />
+          </div>
         </div>
-      </div>
 
-      <!-- Step 3 -->
-      <div
-        class="flex flex-col items-center gap-4 p-6 bg-white lg:flex-row justify-evenly"
-      >
-        <div class="flex flex-col items-center justify-center gap-8">
-          <div class="flex flex-col items-center justify-center">
-            <h1
-              class="flex items-center justify-center w-12 h-12 mb-4 text-3xl font-bold text-white bg-teal-600 rounded-full"
-            >
-              3
-            </h1>
-
-            <h3 class="mb-2 text-2xl font-semibold text-teal-700">
-              Update Document
-            </h3>
-            <p class="text-teal-600">
-              Add notes, highlights, and annotations to enhance your document
+        <!-- Step 3 -->
+        <div class="flex flex-col items-center md:flex-row">
+          <div class="mb-8 md:w-1/2 md:mb-0 md:pr-8">
+            <div class="flex items-center mb-4">
+              <div
+                class="flex items-center justify-center w-12 h-12 mr-4 text-xl font-bold text-white bg-pink-600 rounded-full"
+              >
+                3
+              </div>
+              <h3 class="text-2xl font-semibold text-pink-700">
+                Dynamic Document Enhancement
+              </h3>
+            </div>
+            <p class="text-gray-600">
+              Elevate your content with intuitive annotations, vibrant
+              highlights, and insightful notes, bringing your ideas to life
             </p>
           </div>
-
-          <!-- <div class="flex flex-col text-start">
-              <p>- Lorem ipsum dolor sit amet, consectetur adipiscing elit,</p>
-              <p>- Lorem ipsum dolor sit amet, consectetur adipiscing elit,</p>
-            </div> -->
+          <div class="md:w-1/2">
+            <img
+              src="https://res.cloudinary.com/dgxqotorm/image/upload/v1723228093/Screenshot_2024-08-09_at_2.20.45_PM_vt81sw.png"
+              alt="Dynamic Document Enhancement"
+              class="w-full rounded-lg shadow-lg"
+            />
+          </div>
         </div>
-        <img
-          src="https://res.cloudinary.com/dgxqotorm/image/upload/v1723228093/Screenshot_2024-08-09_at_2.20.45_PM_vt81sw.png"
-          alt="Update Document"
-          class="rounded-lg shadow-md lg:w-1/2"
-        />
       </div>
     </div>
   </section>
