@@ -1,7 +1,7 @@
 <template>
   <section class="py-16">
     <div class="container px-4 mx-auto">
-      <h2 class="mb-12 text-3xl font-bold text-center">What Our Users Say</h2>
+      <h2 class="mb-12 text-4xl font-bold text-center">What Our Users Say</h2>
       <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
         <div
           v-for="(review, index) in reviews"
@@ -15,12 +15,14 @@
               class="w-12 h-12 mr-4 rounded-full"
             />
             <div>
-              <h3 class="text-lg font-semibold">{{ review.name }}</h3>
+              <h3 class="text-lg font-semibold text-teal-500">
+                {{ review.name }}
+              </h3>
               <p class="text-gray-600">{{ review.title }}</p>
             </div>
           </div>
           <p class="mb-4 text-gray-700">{{ review.comment }}</p>
-          <div class="flex text-yellow-400">
+          <div class="flex text-yellow-500">
             <Icon
               v-for="star in 5"
               :key="star"

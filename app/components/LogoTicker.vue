@@ -8,10 +8,10 @@
             :key="index"
             class="flex items-center mx-10"
           >
-            <Icon :name="company.icon" class="w-8 h-8 mr-3 text-gray-700" />
+            <Icon :name="company.icon" class="w-8 h-8 mr-3 text-gray-400" />
             <span
               :class="[
-                'text-3xl font-bold whitespace-nowrap text-transparent bg-clip-text bg-gradient-to-r from-gray-700 to-gray-600',
+                'text-3xl font-bold text-gray-400 whitespace-nowrap bg-clip-text',
                 company.font,
               ]"
             >

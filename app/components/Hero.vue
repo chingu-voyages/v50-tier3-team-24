@@ -24,9 +24,10 @@
           </NuxtLink>
           <NuxtLink
             to="/about"
-            class="px-6 py-3 font-bold text-center transition duration-300 border-2 border-black rounded-lg animate-fade-in-up animation-delay-900"
+            class="inline-flex items-center px-2 font-bold transition duration-300"
           >
             Learn More
+            <Icon name="mdi:arrow-right" class="ml-2" />
           </NuxtLink>
         </div>
       </div>
@@ -88,6 +89,7 @@
   background-clip: text;
   color: transparent;
 }
+
 .animate-float {
   animation: float 6s ease-in-out infinite;
 }
