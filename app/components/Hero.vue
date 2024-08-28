@@ -1,14 +1,16 @@
 <template>
-  <section class="relative flex overflow-hidden modern-gradient rounded-xl">
-    <div class="flex items-center w-1/2 p-10">
-      <div class="px-12">
+  <section
+    class="relative flex flex-col overflow-hidden md:flex-row modern-gradient rounded-xl"
+  >
+    <div class="flex items-center w-full p-6 md:w-1/2 md:p-10">
+      <div class="px-4 md:px-12">
         <h1
-          class="mb-4 text-4xl font-bold lg:text-6xl animate-fade-in-left gradient-text-primary"
+          class="mb-4 text-3xl font-bold md:text-4xl lg:text-6xl animate-fade-in-left gradient-text-primary"
         >
           Welcome to Annote
         </h1>
         <p
-          class="mb-8 text-xl animate-fade-in-left animation-delay-300 gradient-text-secondary"
+          class="mb-8 text-lg md:text-xl animate-fade-in-left animation-delay-300 gradient-text-secondary"
         >
           Streamline your note-taking and boost productivity with our innovative
           annotation tool.
@@ -18,7 +20,7 @@
         >
           <NuxtLink
             to="/new"
-            class="px-6 py-3 font-bold text-center text-white transition duration-300 rounded-lg bg-gradient-to-r from-teal-500 to-teal-600 animate-fade-in-up animation-delay-600 hover:from-teal-600 hover:to-teal-700"
+            class="px-6 py-3 font-bold text-center text-white transition duration-300 rounded-lg bg-gradient-to-r from-teal-500 to-teal-600 animate-fade-in-up animation-delay-600 hover:from-teal-600 hover:to-teal-700 z-1"
           >
             Try Annote
           </NuxtLink>
@@ -32,30 +34,31 @@
         </div>
       </div>
     </div>
-    <div class="absolute top-0 bottom-0 right-0 w-1/2">
+    <div class="relative w-full h-64 md:w-1/2 md:h-auto">
       <img
         src="@/public/assets/icons/hero1.svg"
-        class="absolute w-96 h-96 right-1/4 floating-image-1"
+        class="absolute w-48 h-48 top-5 md:w-96 md:h-96 right-1/4 floating-image-1"
         alt="Vector 1"
       />
       <img
         src="@/public/assets/icons/hero2.svg"
-        class="absolute w-32 h-32 top-1/2 right-3/4 floating-image-2 animation-delay-400"
+        class="absolute w-16 h-16 md:w-32 md:h-32 top-1/2 right-3/4 floating-image-2 animation-delay-400"
         alt="Vector 2"
       />
       <img
         src="@/public/assets/icons/hero3.svg"
-        class="absolute w-24 h-24 top-1/4 right-20 floating-image-3 animation-delay-300"
+        class="absolute w-12 h-12 md:w-24 md:h-24 top-1/4 right-20 floating-image-3 animation-delay-300"
         alt="Vector 3"
       />
       <img
         src="@/public/assets/icons/hero4.svg"
-        class="absolute w-20 h-20 top-2/3 right-10 floating-image-4 animation-delay-300"
+        class="absolute w-10 h-10 md:w-20 md:h-20 top-2/3 right-10 floating-image-4 animation-delay-300"
         alt="Vector 4"
       />
     </div>
   </section>
 </template>
+
 <style scoped>
 .modern-gradient {
   background: linear-gradient(135deg, #ffffff, #14b8a6, #ffffff, #14b8a6);
