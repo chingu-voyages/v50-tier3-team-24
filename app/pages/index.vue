@@ -4,6 +4,7 @@
     <LogoTicker />
     <KeyFeatures />
     <HowItWorks />
+    <UserReviews />
     <CallToAction />
   </div>
 </template>
