@@ -66,7 +66,8 @@
 
 <script setup lang="ts">
 import { isEqual } from 'lodash';
-import type { AnyBlockType } from '~/types/annote-document/editjs-block';
+import { BlockAnnoteMarkerReconciler } from '~/app/utils/block-annote-marker-reconciler/block-annote-marker-reconciler';
+import type { AnyBlockType, EditorJsBlock } from '~/types/annote-document/editjs-block';
 import type { ActionType } from '~/types/sticky/action-type/action-type';
 import type { StickyCreateActionData, StickyUpdateActionData } from '~/types/sticky/sticky-action-data/sticky-action-data';
 import type { LinkSticky, Sticky, VideoSticky } from '~/types/sticky/sticky-types';
@@ -222,12 +223,17 @@ async function handleEditorLostFocus() {
   const newBlockData = await editorController.value?.save();
   const oldBlockData = annoteComparisonDocument.value?.blocks;
 
+  console.log("onBlur newBlockData:", newBlockData)
+
+  const reconciler = new BlockAnnoteMarkerReconciler();
+  const response = reconciler.reconcile(newBlockData?.blocks as EditorJsBlock[]);
+  console.log(response)
   if (isEqual(newBlockData?.blocks, oldBlockData)) return;
 
   await syncAnnoteDocumentData();
 
   // Here we can reconcile any orphaned stickies
-  await reconcileStickies();
+  // TODO: Fix await reconcileStickies();
 }
 
 async function reconcileStickies (): Promise<void> {
