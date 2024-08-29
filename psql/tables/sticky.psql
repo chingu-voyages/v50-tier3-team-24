@@ -18,6 +18,6 @@ CREATE TABLE public.sticky (
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
 	updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   CONSTRAINT pk_sticky PRIMARY KEY(sticky_id),
-  CONSTRAINT fk_document FOREIGN KEY(document_id) REFERENCES annote_document(document_id),
+  CONSTRAINT fk_document FOREIGN KEY(document_id) REFERENCES annote_document(document_id) ON DELETE CASCADE,
   CONSTRAINT fk_user FOREIGN KEY(user_id) REFERENCES users(user_id)
 );  
