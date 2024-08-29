@@ -24,7 +24,7 @@ export class BlockAnnoteMarkerReconciler {
           outputBlocks.push(block);
           break;
         case EditorJsBlockType.List:
-          // We need to loop through the items
+          // We need to loop through the items and reconcile the text
           const listItems: string[] = [];
           for (const item of (block.data as ListData).items) {
             listItems.push(this.reconcileTextBlock(item));
@@ -36,26 +36,48 @@ export class BlockAnnoteMarkerReconciler {
           outputBlocks.push(block);
       }
     }
-
     return { blocks: outputBlocks, map: this._uuidPinMap };
   }
 
   private reconcileTextBlock(text: string): string {
+    // This keeps track of the pins that were assigned in the initial parsing
+    const pinsSelected: number[] = [];
+
     if (text.includes("data-pin=")) {
-      const newText = text.replace(/data-pin="\d+"/g, () => {
+      // The firstTextCleanupp updates the data-pin attribute to the new pin number
+      const firstTextCleanup = text.replace(/data-pin="\d+"/g, () => {
         const replacementData = `data-pin="${this._pinCount}"`;
+        pinsSelected.push(this._pinCount);
         this._pinCount++;
         return replacementData;
       });
 
-      const splitByMarkData = newText.split("<mark class=");
-      this.parseSplitMarkData(splitByMarkData);
-      return newText;
+      // This is used to keep track of the index of the pinsSelected array
+      let i = 0;
+
+      // The div with the pin number is in the format <div class="pin" style="background-color rgb(x, y, z)">{x}</div>
+      // The secondTextCleanup replaces the {x} with the new pin number, using pinSelected array that kept track of the pins assigned above
+      const secondTextCleanup = firstTextCleanup.replace(
+        /<div class="pin" style="background-color: rgb\(\d+, \d+, \d+\);">\d+<\/div>/g,
+        (substring) => {
+          // Replace the number between the div tags with the new pin number
+          const replacementData = substring.replace(
+            />\d+</,
+            `>${pinsSelected[i].toString()}<`
+          );
+          i++;
+          return replacementData;
+        }
+      );
+
+      this.createUuidPinNumberMap(secondTextCleanup.split("<mark class="));
+      return secondTextCleanup;
     }
     return text;
   }
 
-  private parseSplitMarkData(splitText: string[]) {
+  private createUuidPinNumberMap(splitText: string[]) {
+    // This function creates a map of the uuid to the pin number
     splitText.forEach((text) => {
       if (text.includes("data-pin=")) {
         const pin = this.extractPin(text.match(/data-pin="\d+"/g)![0]);
