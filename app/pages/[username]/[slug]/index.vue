@@ -127,8 +127,6 @@ function handleWindowScroll () {
   }
 
   stickiesInView.value = stickies.value.filter((sticky) => uuidsInViewPort.includes(sticky.sticky_id));
-
-  // console.log("In viewport", uuidsInViewPort);
 }
 
 function handleEditorReady(editor: CustomEditorJs) {
