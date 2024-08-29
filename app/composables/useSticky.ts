@@ -9,7 +9,8 @@ export function useSticky() {
       const { data: apiResponse } = await $fetch<ApiResponse<Sticky[]>>(
         `/api/annote_documents/${id}/sticky`
       );
-      return apiResponse || [];
+      // Sort ascending by anchor
+      return apiResponse?.sort((a, b) => a.anchor - b.anchor) || [];
     } catch (error: any) {
       console.error(error.message);
     }

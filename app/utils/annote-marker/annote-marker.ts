@@ -1,5 +1,6 @@
 import { IconDotCircle } from "@codexteam/icons";
 
+import { ANNOTE_MARKER_CSS } from "~/types/annote-document/annote-document";
 import { COLOR_PALLET_MAP } from "~/types/definitions/color-pallet-map/color-pallet-map";
 import type { AnnoteMarkerConfig } from "./definitions/types";
 import "./style.css";
@@ -196,7 +197,7 @@ export default class AnnoteMarker {
       this._config.onMarkerInserted({
         pinNumber: pinNumber,
         color: palletData.colorHex,
-        text: marker.textContent!.substring(1),
+        text: marker.textContent!.substring(pinNumber.toString().length), // This needs to take into account the pin number being multiple digits
         uuid: newUuid,
       });
     }
@@ -296,7 +297,7 @@ export default class AnnoteMarker {
   }
 
   static get CSS() {
-    return "cdx-marker";
+    return ANNOTE_MARKER_CSS;
   }
 
   static get isReadOnlySupported() {

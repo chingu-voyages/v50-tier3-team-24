@@ -28,11 +28,12 @@ export default defineEventHandler(async (event) => {
     });
   } catch (error: any) {
     setResponseStatus(event, 400);
+    console.log(JSON.stringify(error));
     return {
       status: "fail",
       error: createError({
         statusCode: 400,
-        statusMessage: error.message,
+        statusMessage: JSON.stringify(error.errors),
       }),
     };
   }

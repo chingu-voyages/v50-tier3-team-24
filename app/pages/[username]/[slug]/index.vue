@@ -56,17 +56,19 @@
         </div>
       </div>
       <div>
-        <div class="flex flex-wrap">
-          <StickyNote
-            :readonly="true"
-            v-for="sticky in stickies"
-            :key="sticky.sticky_id"
-            :stickyData="sticky"
-            :pinNumber="sticky.anchor"
-            :documentId="sticky.document_id"
-            :uuid="sticky.sticky_id"
-            :color="sticky.color"
-          />
+        <div class="flex flex-wrap bg-white fixed">
+          <TransitionGroup>
+            <StickyNote
+              :readonly="true"
+              v-for="sticky in stickiesInView"
+              :key="sticky.sticky_id"
+              :stickyData="sticky"
+              :pinNumber="sticky.anchor"
+              :documentId="sticky.document_id"
+              :uuid="sticky.sticky_id"
+              :color="sticky.color"
+            />
+          </TransitionGroup>
         </div>
       </div>
     </div>
@@ -74,21 +76,34 @@
 </template>
 <script setup lang="ts">
 import { VueSpinner } from 'vue3-spinners';
+import { ANNOTE_MARKER_CSS } from '~/types/annote-document/annote-document';
 const route = useRoute();
 const annoteDocument = ref<AnnoteDocument | null>(null);
 const editorController = ref<CustomEditorJs | null>(null);
 const stickies = ref<Sticky[]>([]); // These will be readonly stickies
+
+const stickiesInView = ref<Sticky[]>([]); // These will be stickies in view port
 const router = useRouter();
 const { fetchStickies } = useSticky();
-const { deleteDocument } = useDocument();
+const { deleteDocument, isMarkerInViewPort } = useDocument();
 const { getCurrentUser } = useAuth();
 
 const currentUser = (await getCurrentUser())?.data;
 const confirmDeleteWindowOpen = ref(false);
 
 const { id } = route.query;
-const { username } = route.params;
 const isBusy = ref(false);
+
+onMounted(() => {
+  window.addEventListener("scroll", handleWindowScroll);
+
+  // This is hacky - but we need to wait for DOM to be ready before we can check for markers in viewport on initial load
+  
+  setTimeout(() => {
+    handleWindowScroll();
+  }, 100);
+  
+});
 
 if (id) {
   const { data: apiResponse } = await useFetch<ApiResponse<AnnoteDocument>>(
@@ -99,6 +114,19 @@ if (id) {
 
   stickies.value = await fetchStickies(id as string);
   useHead({ title: `${annoteDocument.value?.title} | Annote` });
+}
+
+function handleWindowScroll () {
+  const markers = document.getElementsByClassName(ANNOTE_MARKER_CSS);
+  const uuidsInViewPort: string[] = [];
+
+  for (let i = 0; i < markers.length; i++) {
+    if (markers[i] && isMarkerInViewPort(markers[i] as HTMLElement)) {
+      uuidsInViewPort.push((markers[i] as any)?.dataset.uuid);
+    }
+  }
+
+  stickiesInView.value = stickies.value.filter((sticky) => uuidsInViewPort.includes(sticky.sticky_id));
 }
 
 function handleEditorReady(editor: CustomEditorJs) {
@@ -131,3 +159,14 @@ async function handleDeleteDocument() {
   }
 }
 </script>
+<style scoped>
+  .v-enter-active,
+  .v-leave-active {
+    transition: opacity 0.5s ease;
+  }
+
+  .v-enter-from,
+  .v-leave-to {
+    opacity: 0;
+  }
+</style>

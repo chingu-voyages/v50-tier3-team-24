@@ -10,6 +10,11 @@ export interface ParagraphData extends BasicTextData {}
 
 export interface MarkerData extends BasicTextData {}
 
+export interface LinkToolData {
+  link: string;
+  meta?: Object;
+}
+
 export interface ListData {
   style: "ordered" | "unordered";
   items: string[];
@@ -18,10 +23,12 @@ export enum EditorJsBlockType {
   Header = "header",
   Paragraph = "paragraph",
   List = "list",
+  LinkTool = "linkTool",
 }
 
 export type AnyBlockType = HeaderData | ParagraphData | MarkerData;
 export interface EditorJsBlock {
   type: EditorJsBlockType;
-  data: AnyBlockType | ListData;
+  data: AnyBlockType | ListData | LinkToolData;
+  id?: string;
 }
