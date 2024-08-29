@@ -197,7 +197,7 @@ export default class AnnoteMarker {
       this._config.onMarkerInserted({
         pinNumber: pinNumber,
         color: palletData.colorHex,
-        text: marker.textContent!.substring(1),
+        text: marker.textContent!.substring(pinNumber.toString().length), // This needs to take into account the pin number being multiple digits
         uuid: newUuid,
       });
     }
