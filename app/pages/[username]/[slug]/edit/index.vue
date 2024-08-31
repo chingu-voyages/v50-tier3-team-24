@@ -216,12 +216,12 @@ async function handleUpdateCreateSticky(
   handleWindowScroll();
 }
 
-function handleCloseOutSticky() {
+async function handleCloseOutSticky() {
   isInsertingNewAnnotation.value = false;
   newStickyData.value = null;
 
   // This should re-render the editor to the last fetched-from-API state, undoing the new marker. TODO: It's hacky
-  editorController.value?.render({
+  await editorController.value?.render({
     blocks: annoteDocument.value?.blocks as any,
   })
 }
@@ -236,6 +236,7 @@ async function handleEditorLostFocus() {
   const oldBlockData = annoteComparisonDocument.value?.blocks;
 
   if (isEqual(newBlockData?.blocks, oldBlockData)) return;
+  if (isInsertingNewAnnotation.value) return;
 
   await syncAnnoteDocumentData();
 }
