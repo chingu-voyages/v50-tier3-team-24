@@ -38,6 +38,19 @@ export default defineEventHandler<Promise<ApiResponse<AnnoteDocument>>>(
       return apiResponse;
     }
 
+    // Calculate privacy
+    if (
+      annoteDocument.visibility === "private" &&
+      annoteDocument.user_id !== user.id
+    ) {
+      setResponseStatus(event, 403);
+      apiResponse.status = "fail";
+      apiResponse.error = createError({
+        statusCode: 403,
+        statusMessage: "Forbidden",
+      });
+      return apiResponse;
+    }
     return { status: "ok", data: annoteDocument };
   }
 );
