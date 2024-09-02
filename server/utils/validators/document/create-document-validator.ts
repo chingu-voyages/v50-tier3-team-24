@@ -11,4 +11,5 @@ export const createDocumentValidator = object({
   ),
   description: string().optional(),
   source_url: string().url().optional(),
+  visibility: string().oneOf(["public", "private"]).required(),
 });

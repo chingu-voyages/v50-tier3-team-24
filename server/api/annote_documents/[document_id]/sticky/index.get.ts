@@ -22,10 +22,7 @@ export default defineEventHandler<Promise<ApiResponse<Sticky[]>>>(
 
     try {
       const client = new StickyDbClient();
-      const stickies = await client.getAllStickiesByDocumentId(
-        user.id,
-        document_id!
-      );
+      const stickies = await client.getAllStickiesByDocumentId(document_id!);
 
       return {
         status: "ok",
