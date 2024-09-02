@@ -212,12 +212,6 @@ function handleEditorReady(editor: CustomEditorJs) {
 }
 
 async function handleUpdateVisibility(e: Event) {
-  if (e) {
-    console.log("isVisible checked?", isVisible.value)
-    console.log("event target", (e.target as any)?.checked)
-    // isVisible.value = false;
-  }
-
   const visibility = isVisible.value ? "public" : "private";
 
   setTimeout(async () => {
