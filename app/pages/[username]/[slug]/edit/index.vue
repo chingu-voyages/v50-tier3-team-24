@@ -1,22 +1,29 @@
 <template>
   <div>
     <div class="flex">
-      <input type="text" v-model="documentTitle" @blur="handleDocumentTitleBlur"
+      <input type="text" v-model="documentTitle" @blur="handleDocumentTitleBlur" :disabled="isReadOnly"
         class="w-full p-2 border border-gray-300 rounded font-verdana" placeholder="Title" />
       <div class="flex items-center gap-2 ml-2">
-        <button class="hover:custom-green">
+        <button class="hover:custom-green" :disabled="isReadOnly">
           <Icon name="mdi:check" />
         </button>
-        <button class="hover:text-[#F64C00]" @click="toggleConfirmDeleteWindow">
+        <button class="hover:text-[#F64C00]" @click="toggleConfirmDeleteWindow" :disabled="isReadOnly">
           <Icon name="mdi:trash-can-outline" />
         </button>
       </div>
+    </div>
+    <!-- visibility setting -->
+    <div class="my-2 flex">
+      <VueSpinner v-if="isBusy" size="20" color="#03a58d" />
+      <input id="visibility" type="checkbox" v-model="isVisible" :disabled="isBusy || isReadOnly"
+        v-on:change="handleUpdateVisibility" />
+      <label for="visibility" class="text-base ml-2">Public</label>
     </div>
     <div class="flex bg-gray-100 border border-gray-300 rounded p-5 min-h-[300px] my-5">
       <ClientOnly>
         <div class="min-w-[50%]">
           <EditorComponent :onEditorReady="handleEditorReady" :onMarkerInserted="handleMarkerInserted"
-            :onMarkerDeleted="handleDeleteMarker" :onLostFocus="handleEditorLostFocus" />
+            :onMarkerDeleted="handleDeleteMarker" :onLostFocus="handleEditorLostFocus" :readOnly="isReadOnly" />
         </div>
       </ClientOnly>
       <div>
@@ -25,16 +32,17 @@
             <!-- This is for new annotation stickes -->
             <StickyNote :isNew="isInsertingNewAnnotation" :color="newStickyData?.color!"
               :pinNumber="newStickyData?.pinNumber!" :documentId="newStickyData?.documentId!"
-              :title="newStickyData?.title" :onUpdateCreate="handleUpdateCreateSticky" :onCancel="handleCloseOutSticky"
-              :uuid="newStickyData?.uuid" />
+              :author="newStickyData?.author" :title="newStickyData?.title" :onUpdateCreate="handleUpdateCreateSticky"
+              :onCancel="handleCloseOutSticky" :uuid="newStickyData?.uuid" />
           </div>
         </Transition>
         <div class="flex flex-wrap fixed" v-if="!isInsertingNewAnnotation">
           <!-- This is rendering the existing stickies in readonly mode, but can be edited if they click the menu option -->
           <TransitionGroup>
             <StickyNote v-for="sticky in stickiesInView" :key="sticky.sticky_id" :stickyData="sticky"
-              :color="sticky.color" :pinNumber="sticky.anchor" :documentId="sticky.document_id" :readonly="true"
-              :uuid="sticky.sticky_id" :canEdit="true" :onUpdateCreate="handleUpdateCreateSticky" />
+              :author="sticky.author" :color="sticky.color" :pinNumber="sticky.anchor" :documentId="sticky.document_id"
+              :readonly="true" :uuid="sticky.sticky_id" :canEdit="isReadOnly === false"
+              :onUpdateCreate="handleUpdateCreateSticky" />
           </TransitionGroup>
         </div>
       </div>
@@ -46,6 +54,7 @@
 
 <script setup lang="ts">
 import { isEmpty, isEqual } from 'lodash';
+import { VueSpinner } from 'vue3-spinners';
 import { BlockAnnoteMarkerReconciler } from '~/app/utils/block-annote-marker-reconciler/block-annote-marker-reconciler';
 import type { EditorJsBlock } from '~/types/annote-document/editjs-block';
 import type { ActionType } from '~/types/sticky/action-type/action-type';
@@ -56,6 +65,11 @@ import type { AnnoteOnMarkerInsertedData, AnnotteOnMarkerDeletedData } from '../
 const route = useRoute();
 const { deleteDocument, isMarkerInViewPort } = useDocument();
 const { fetchStickies } = useSticky();
+const { getCurrentUser } = useAuth();
+
+const currentUser = (await getCurrentUser())?.data;
+const isReadOnly = ref(true);
+
 const router = useRouter();
 
 const annoteDocument = ref<AnnoteDocument | null>(null);
@@ -65,14 +79,16 @@ const annoteComparisonDocument = ref<AnnoteDocument | null>(null);
 const documentTitle = ref("");
 const editorController = ref<CustomEditorJs | null>(null);
 
+const isVisible = ref<boolean>(false);
+
 const initialDocumentTitle = ref(""); // The original title when the document loads. This will not change.
 
 const isInsertingNewAnnotation = ref(false);
-const newStickyData = ref<{ pinNumber: number; color: string; title: string, documentId: string, uuid: string } | null>(null);
+const newStickyData = ref<{ pinNumber: number; color: string; title: string, documentId: string, uuid: string, author: string } | null>(null);
 
 const stickies = ref<Sticky[]>([]);
 const stickiesInView = ref<Sticky[]>([]);
-
+const isBusy = ref<boolean>(false);
 
 const confirmDeleteWindowOpen = ref(false);
 
@@ -150,16 +166,30 @@ async function patchAnnoteDocumentBlocks(): Promise<AnnoteDocument> {
 }
 
 if (id) {
+  isBusy.value = true;
   const { data: apiResponse } = await useFetch<ApiResponse<AnnoteDocument>>(
     `/api/annote_documents/${id}`
   );
+
+  if (apiResponse.value?.status !== "ok") {
+    await navigateTo("/forbidden");
+  }
+
+  if (currentUser?.user_id === apiResponse.value?.data?.user_id) {
+    isReadOnly.value = false;
+  }
+
   annoteDocument.value = apiResponse.value?.data!;
   annoteComparisonDocument.value = apiResponse.value?.data!;
 
   initialDocumentTitle.value = annoteDocument.value.title;
   documentTitle.value = annoteDocument.value.title;
+
+  // Set the visiblity for the initial render
+  isVisible.value = annoteDocument.value.visibility === "public";
   useHead({ title: `Edit - ${annoteDocument.value?.title} | Annote` });
   stickies.value = await fetchStickies(id as string);
+  isBusy.value = false;
 }
 
 function handleMarkerInserted(data?: AnnoteOnMarkerInsertedData) {
@@ -169,7 +199,7 @@ function handleMarkerInserted(data?: AnnoteOnMarkerInsertedData) {
   }
   isInsertingNewAnnotation.value = true;
   const { pinNumber, color, text, uuid } = data!;
-  newStickyData.value = { pinNumber, color, title: text || "", documentId: annoteDocument.value?.document_id!, uuid };
+  newStickyData.value = { pinNumber, color, title: text || "", documentId: annoteDocument.value?.document_id!, uuid, author: currentUser?.username! };
 }
 
 function handleEditorReady(editor: CustomEditorJs) {
@@ -179,6 +209,29 @@ function handleEditorReady(editor: CustomEditorJs) {
       blocks: annoteDocument.value?.blocks as any,
     });
   });
+}
+
+async function handleUpdateVisibility(e: Event) {
+  if (e) {
+    console.log("isVisible checked?", isVisible.value)
+    console.log("event target", (e.target as any)?.checked)
+    // isVisible.value = false;
+  }
+
+  const visibility = isVisible.value ? "public" : "private";
+
+  setTimeout(async () => {
+    const { data: apiResponse } = await useFetch<ApiResponse<AnnoteDocument>>(
+      `/api/annote_documents/${id}`,
+      {
+        method: "PATCH",
+        body: { visibility },
+      }
+    );
+    annoteDocument.value = apiResponse.value?.data!;
+    isVisible.value = annoteDocument.value.visibility === "public";
+    isBusy.value = false;
+  }, 1000);
 }
 
 async function handleUpdateCreateSticky(
@@ -192,9 +245,10 @@ async function handleUpdateCreateSticky(
     anchor,
     color,
     sticky_type,
+    author,
     source_url } = values;
 
-  const requestBody = { document_id, title, body, color, anchor, sticky_type, sticky_id, source_url };
+  const requestBody = { document_id, title, body, color, anchor, sticky_type, sticky_id, source_url, author };
   const endPoint = action === "create" ? "/api/sticky" : `/api/sticky/${sticky_id}`;
 
   await useFetch<ApiResponse<Sticky | VideoSticky | LinkSticky>>(
@@ -231,6 +285,10 @@ function toggleConfirmDeleteWindow() {
 }
 
 async function handleEditorLostFocus() {
+  if (isReadOnly.value) {
+    console.info("Editor is readonly mode.");
+    return;
+  }
   // This function handles the click away event from the editor and sends the patch request to
   const newBlockData = await editorController.value?.save();
   const oldBlockData = annoteComparisonDocument.value?.blocks;

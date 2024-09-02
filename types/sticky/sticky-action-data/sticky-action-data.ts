@@ -6,6 +6,7 @@ interface BaseStickyActionData {
   anchor: number;
   sticky_type: "sticky" | "video" | "link";
   source_url?: string;
+  author: string;
 }
 
 export interface StickyUpdateActionData extends BaseStickyActionData {}

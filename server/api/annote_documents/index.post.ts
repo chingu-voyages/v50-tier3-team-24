@@ -40,6 +40,7 @@ export default defineEventHandler<Promise<ApiResponse<AnnoteDocument>>>(
       blocks: EditorJsBlock[];
       description?: string;
       source_url?: string;
+      visibility: "public" | "private";
     }>(event);
 
     // Validate the request body using   a yup validator schema
@@ -58,7 +59,7 @@ export default defineEventHandler<Promise<ApiResponse<AnnoteDocument>>>(
       };
     }
 
-    const { title, blocks, description, source_url } = requestBody;
+    const { title, blocks, description, source_url, visibility } = requestBody;
 
     try {
       const slug = await createSlugFromDocumentTitle(title);
@@ -70,6 +71,7 @@ export default defineEventHandler<Promise<ApiResponse<AnnoteDocument>>>(
         description,
         source_url,
         user_id: user.id,
+        visibility,
       });
       setResponseStatus(event, 201);
 

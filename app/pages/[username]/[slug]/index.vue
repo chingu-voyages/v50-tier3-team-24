@@ -1,8 +1,6 @@
 <template>
   <div>
-    <div
-      class="flex bg-gray-100 border border-gray-300 rounded p-5 min-h-[300px] my-5"
-    >
+    <div class="flex bg-gray-100 border border-gray-300 rounded p-5 min-h-[300px] my-5">
       <div>
         <header>
           <!-- Document Titles -->
@@ -10,33 +8,28 @@
             <h1 class="text-2xl font-semibold font-verdana">
               {{ annoteDocument?.title }}
             </h1>
+
             <div class="pt-2">
-              <ShareLinkButtons
-                v-if="currentUser?.user_id === annoteDocument?.user_id"
-                :link-url="`${annoteDocument?.slug}/edit?id=${annoteDocument?.document_id}`"
-              >
-              <button @click="toggleConfirmDeleteWindow">
-                <!-- This is the document delete button. -->
-                <Icon name="mdi:trash-can-outline" class="text-gray-300 hover:text-[#F64C00]" />
-              </button>
-            </ShareLinkButtons>
-            <ConfirmationModal
-              prompt="Are you sure you want to delete this document?"
-              :open="confirmDeleteWindowOpen" 
-              :onClose="toggleConfirmDeleteWindow" 
-              :onConfirmAction="handleDeleteDocument"
-              :confirmActionLabel="'Delete'"
-              />
+              <ShareLinkButtons v-if="currentUser?.user_id === annoteDocument?.user_id"
+                :link-url="`${annoteDocument?.slug}/edit?id=${annoteDocument?.document_id}`">
+                <button @click="toggleConfirmDeleteWindow">
+                  <!-- This is the document delete button. -->
+                  <Icon name="mdi:trash-can-outline" class="text-gray-300 hover:text-[#F64C00]" />
+                </button>
+              </ShareLinkButtons>
+              <ConfirmationModal prompt="Are you sure you want to delete this document?" :open="confirmDeleteWindowOpen"
+                :onClose="toggleConfirmDeleteWindow" :onConfirmAction="handleDeleteDocument"
+                :confirmActionLabel="'Delete'" />
             </div>
+          </div>
+          <div v-if="annoteDocument?.visibility === 'public'" class="pl-4 flex gap-[2px] bg-white">
+            <Icon name="mdi:share-variant-outline mt-[3px]" :style="{ color: '#75D3D4' }" />
+            <p class="text-teal-500 text-base mb-2">Public</p>
           </div>
           <!-- Document Link -->
           <NuxtLink :to="annoteDocument?.source_url" target="_blank">
             <div class="flex gap-2 pl-4 pr-4 bg-white">
-              <Icon
-                name="mdi:arrow-top-right-thin-circle-outline"
-                style="color: #787878"
-                size="20px"
-              />
+              <Icon name="mdi:arrow-top-right-thin-circle-outline" style="color: #787878" size="20px" />
               <p class="font-verdana greyLinkColor">
                 {{ annoteDocument?.source_url }}
               </p>
@@ -48,26 +41,16 @@
         </div>
         <div v-else>
           <ClientOnly>
-            <EditorComponent
-              :onEditorReady="handleEditorReady"
-              :readOnly="true"
-            />
+            <EditorComponent :onEditorReady="handleEditorReady" :readOnly="true" />
           </ClientOnly>
         </div>
       </div>
       <div>
         <div class="flex flex-wrap bg-white fixed">
           <TransitionGroup>
-            <StickyNote
-              :readonly="true"
-              v-for="sticky in stickiesInView"
-              :key="sticky.sticky_id"
-              :stickyData="sticky"
-              :pinNumber="sticky.anchor"
-              :documentId="sticky.document_id"
-              :uuid="sticky.sticky_id"
-              :color="sticky.color"
-            />
+            <StickyNote :readonly="true" v-for="sticky in stickiesInView" :key="sticky.sticky_id" :stickyData="sticky"
+              :pinNumber="sticky.anchor" :documentId="sticky.document_id" :uuid="sticky.sticky_id" :color="sticky.color"
+              :author="sticky.author" />
           </TransitionGroup>
         </div>
       </div>
@@ -98,11 +81,11 @@ onMounted(() => {
   window.addEventListener("scroll", handleWindowScroll);
 
   // This is hacky - but we need to wait for DOM to be ready before we can check for markers in viewport on initial load
-  
+
   setTimeout(() => {
     handleWindowScroll();
   }, 100);
-  
+
 });
 
 if (id) {
@@ -110,13 +93,16 @@ if (id) {
     `/api/annote_documents/${id}`
   );
 
+  if (apiResponse.value?.status !== "ok") {
+    await navigateTo("/forbidden");
+  }
   annoteDocument.value = apiResponse.value?.data!;
 
   stickies.value = await fetchStickies(id as string);
   useHead({ title: `${annoteDocument.value?.title} | Annote` });
 }
 
-function handleWindowScroll () {
+function handleWindowScroll() {
   const markers = document.getElementsByClassName(ANNOTE_MARKER_CSS);
   const uuidsInViewPort: string[] = [];
 
@@ -147,7 +133,7 @@ async function handleDeleteDocument() {
     console.error("We can't delete this document. It's probably null.", annoteDocument.value);
     return;
   }
-  
+
   const res = await deleteDocument(annoteDocument.value.document_id);
 
   if (res?.status === "ok") {
@@ -160,13 +146,13 @@ async function handleDeleteDocument() {
 }
 </script>
 <style scoped>
-  .v-enter-active,
-  .v-leave-active {
-    transition: opacity 0.5s ease;
-  }
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
 
-  .v-enter-from,
-  .v-leave-to {
-    opacity: 0;
-  }
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
 </style>

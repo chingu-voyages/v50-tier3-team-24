@@ -39,7 +39,6 @@ export class StickyDbClient extends BaseDbClient {
   }
 
   public async getAllStickiesByDocumentId(
-    user_id: string,
     document_id: string
   ): Promise<Sticky[]> {
     const { data, error } = await this.client

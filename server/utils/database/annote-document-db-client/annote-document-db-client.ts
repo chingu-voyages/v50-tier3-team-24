@@ -14,6 +14,7 @@ export class AnnoteDocumentDbClient extends BaseDbClient {
     description?: string;
     source_url?: string;
     user_id: string;
+    visibility: "public" | "private";
   }): Promise<AnnoteDocument> {
     const { data, error } = await this.client
       .from(this.TABLE_NAME)
@@ -103,5 +104,20 @@ export class AnnoteDocumentDbClient extends BaseDbClient {
       .match({ document_id, user_id });
 
     if (error) throw new Error(error.message);
+  }
+
+  public async updateDocumentVisibilityById(
+    user_id: string,
+    document_id: string,
+    visibility: "public" | "private"
+  ): Promise<AnnoteDocument> {
+    const { data, error } = await this.client
+      .from(this.TABLE_NAME)
+      .update({ visibility: visibility })
+      .match({ document_id: document_id, user_id: user_id })
+      .select();
+
+    if (error) throw new Error(error.message);
+    return data?.[0];
   }
 }

@@ -25,6 +25,7 @@ export default defineEventHandler<Promise<ApiResponse<AnnoteDocument>>>(
     const requestBody = await readBody<{
       title: string;
       blocks: EditorJsBlock[];
+      visibility: "public" | "private";
     }>(event);
 
     // Validate the request body
@@ -55,7 +56,7 @@ export default defineEventHandler<Promise<ApiResponse<AnnoteDocument>>>(
       };
     }
 
-    const { title, blocks } = requestBody;
+    const { title, blocks, visibility } = requestBody;
 
     try {
       const dbClient = new AnnoteDocumentDbClient();
@@ -78,6 +79,15 @@ export default defineEventHandler<Promise<ApiResponse<AnnoteDocument>>>(
           blocks
         );
 
+        return { status: "ok", data: updatedDocument };
+      }
+
+      if (visibility) {
+        const updatedDocument = await dbClient.updateDocumentVisibilityById(
+          user.id,
+          document_id!,
+          visibility
+        );
         return { status: "ok", data: updatedDocument };
       }
     } catch (error: any) {
