@@ -1,67 +1,57 @@
 <template>
-  <div
-    class="relative p-2 m-2 shadow-md h-fit w-60 border-l-4"
-    :style="{ backgroundColor: 'white', borderLeftColor: rgbaColor }"
-  >
+  <div class="relative p-2 m-2 shadow-md h-fit w-60 border-l-4"
+    :style="{ backgroundColor: 'white', borderLeftColor: rgbaColor }">
     <div class="pin-title-enclosure flex w-full border-b-2 pb-2" :style="{ borderBottomColor: rgbaColor }">
-      <div
-        class="absolute top-0 left-0 px-2 py-1 !text-sm text-white font-cabin font-bold pin"
-        :style="{ backgroundColor: color }"
-      >
+      <div class="absolute top-0 left-0 px-2 py-1 !text-sm text-white font-cabin font-bold pin"
+        :style="{ backgroundColor: color }">
         {{ pinNumber }}
       </div>
       <div>
-        <p v-if="readOnly" class="text-lg font-cabin leading-5 mr-2" :style="{ color: color, height: 'auto' }">{{ getTrimmedTitle(title) }}</p>
-        <textarea
-          v-else
-          v-model="title"
-          type="text"
+        <p v-if="readOnly" class="text-lg font-cabin leading-5 mr-2" :style="{ color: color, height: 'auto' }">{{
+          getTrimmedTitle(title) }}</p>
+        <textarea v-else v-model="title" type="text"
           class="sticky-title w-52 text-lg bg-transparent border-none focus:outline-none font-cabin leading-5"
-          :style="{ color: color, height: 'auto' }"
-          placeholder="Title"
-          maxlength="200"
-        />
+          :style="{ color: color, height: 'auto' }" placeholder="Title" maxlength="200" />
       </div>
       <div v-if="canEdit" class="absolute top-0 right-0 ml-4">
         <button class="p-2" @click="toggleMenuOpen">
           <Icon class="self-center" name="mdi:dots-vertical" :style="{ color: color }" />
         </button>
-        <div v-if="menuOpen" class="dropdown-menu absolute right-0 shadow-xl bg-white z-50" v-click-outside="toggleMenuOpen">
+        <div v-if="menuOpen" class="dropdown-menu absolute right-0 shadow-xl bg-white z-50"
+          v-click-outside="toggleMenuOpen">
           <ul class="bg-white border border-gray-300 rounded">
             <button class="w-full" :disabled="!readOnly" @click="handleEditMenuClick">
               <li class="p-2 hover:bg-gray-100">Edit</li>
             </button>
           </ul>
-        </div>  
+        </div>
       </div>
     </div>
     <div class="pb-2">
-      <div v-if="readOnly" class="flex border-b justify-between" :style="{ borderBottomColor: rgbaColor }"> 
+      <div v-if="readOnly" class="flex border-b justify-between" :style="{ borderBottomColor: rgbaColor }">
         <p class="text-sm font-cabin text-gray-500">{{ stickyData?.author || "No author" }}</p>
         <div class="flex items-center">
           <Icon name="mdi:link" class="text-gray-500 self-center" />
           <NuxtLink :to="source_url" target="_blank">
             <p class="text-sm font-cabin text-gray-500 source-url">{{ source_url }}</p>
-          </NuxtLink> 
+          </NuxtLink>
         </div>
       </div>
       <div v-else class="flex border-b" :style="{ borderBottomColor: rgbaColor }">
-        <input type="text" class="w-full text-sm bg-transparent border-none focus:outline-none font-cabin" placeholder="Add author..." />
+        <input type="text" class="w-full text-sm bg-transparent border-none focus:outline-none font-cabin"
+          placeholder="Add author..." v-model="author" />
         <div class="flex">
           <Icon name="mdi:link" />
-          <input v-model="source_url" type="text" class="w-full text-sm bg-transparent border-none focus:outline-none font-cabin" placeholder="Add link..." />
+          <input v-model="source_url" type="text"
+            class="w-full text-sm bg-transparent border-none focus:outline-none font-cabin" placeholder="Add link..." />
         </div>
       </div>
     </div>
     <div>
       <div>
         <p v-if="readOnly" class="text-lg font-cabin overflow-y-auto read-only-body">{{ body }}</p>
-        <textarea
-          v-else
-          v-model="body"
-          placeholder="Type your note here..."
-          class="w-full h-full text-lg bg-transparent border-none resize-none focus:outline-none font-cabin"
-        />
+        <textarea v-else v-model="body" placeholder="Type your note here..."
+          class="w-full h-full text-lg bg-transparent border-none resize-none focus:outline-none font-cabin" />
       </div>
     </div>
     <div class="absolute bottom-0 w-full edit-controls-section">
@@ -91,6 +81,7 @@ interface StickyNoteProps {
   readonly?: boolean
   canEdit?: boolean;
   title?: string | null;
+  author?: string;
   onUpdateCreate?: (action: ActionType, data: StickyCreateActionData | StickyUpdateActionData) => void;
   onCancel?: () => void;
 }
@@ -102,15 +93,16 @@ const body = ref<string>(props.stickyData?.body || "");
 const source_url = ref<string>((props.stickyData as VideoSticky)?.source_url || "");
 const rgbaColor = getRgbByHexColor(props.color);
 
+const author = ref<string>(props.author || "");
 const menuOpen = ref<boolean>(false);
 
 const readOnly = ref<boolean>(props.readonly);
 
-function toggleMenuOpen () {
+function toggleMenuOpen() {
   menuOpen.value = !menuOpen.value;
 }
 
-function handleUpdateCreateClick () {
+function handleUpdateCreateClick() {
   props.onUpdateCreate && props.onUpdateCreate(getAction(), {
     document_id: props.documentId,
     sticky_type: "sticky", // TODO: This needs to be dynamic as it can be video or link
@@ -120,25 +112,26 @@ function handleUpdateCreateClick () {
     anchor: props.pinNumber,
     sticky_id: props.uuid!,
     source_url: source_url.value,
+    author: author.value,
   });
   toggleReadOnly();
 }
 
-function handleCancelClick () {
+function handleCancelClick() {
   toggleReadOnly();
   props.onCancel && props.onCancel();
 }
 
-function getAction (): ActionType {
+function getAction(): ActionType {
   return props.isNew ? "create" : "update";
 }
 
-function handleEditMenuClick () {
+function handleEditMenuClick() {
   toggleMenuOpen();
   toggleReadOnly();
 }
 
-function toggleReadOnly () {
+function toggleReadOnly() {
   readOnly.value = !readOnly.value;
 }
 
@@ -148,25 +141,28 @@ function getTrimmedTitle(text: string) {
 </script>
 
 <style scoped>
-  .pin {
-    width: 16px;
-    height: 17px;
-    border-radius: 4px;
-  }
-  textarea.sticky-title {
-    resize: none;
-    overflow: hidden;
-  }
-  button:disabled {
-    cursor: not-allowed;
-  }
+.pin {
+  width: 16px;
+  height: 17px;
+  border-radius: 4px;
+}
 
-  .source-url {
-    max-height: 20px;
-    max-width: 130px;
-    overflow: hidden;
-  }
-  .read-only-body {
-    max-height: 90px; 
-  }
+textarea.sticky-title {
+  resize: none;
+  overflow: hidden;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+.source-url {
+  max-height: 20px;
+  max-width: 130px;
+  overflow: hidden;
+}
+
+.read-only-body {
+  max-height: 90px;
+}
 </style>

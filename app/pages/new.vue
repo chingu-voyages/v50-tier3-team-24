@@ -5,51 +5,31 @@
       <div>
         <!-- Document Title -->
         <div class="mb-4">
-          <input
-            id="documentTitle"
-            v-model="documentTitle"
-            required
-            type="text"
+          <input id="documentTitle" v-model="documentTitle" required type="text"
             class="w-full pb-2 text-3xl placeholder-gray-300 border-b-2 border-gray-100 focus:outline-none font-verdana"
-            placeholder="Untitled Document..."
-          />
+            placeholder="Untitled Document..." />
         </div>
 
         <!-- TODO - Add Cover Image Functionality -->
         <div class="mb-4">
           <div
-            class="flex items-center justify-center px-6 pt-2 pb-2 border-2 border-gray-300 border-dashed rounded-md"
-          >
-            <Icon
-              name="mdi:plus-circle-outline"
-              :style="{ color: '#75D3D4' }"
-            />
+            class="flex items-center justify-center px-6 pt-2 pb-2 border-2 border-gray-300 border-dashed rounded-md">
+            <Icon name="mdi:plus-circle-outline" :style="{ color: '#75D3D4' }" />
             <p class="pl-1 text-gray-300">Add cover image</p>
           </div>
         </div>
 
-        <!-- Source URL . This is commented out because URL scraping is not functioning now. -->
+        <!-- Source URL -->
         <div class="mb-4">
           <div class="flex">
-            <Icon class="self-center mr-2" name="mdi:link" :style="{ color: '#75D3D4'}" />
-            <input
-              id="autoImportUrl"
-              type="text"
+            <Icon class="self-center mr-2" name="mdi:link" :style="{ color: '#75D3D4' }" />
+            <input id="autoImportUrl" type="text"
               class="w-full text-base bg-transparent border-none focus:outline-none !font-cabin pr-2"
-              placeholder="Type or paste a link here to get started."
-              v-model="sourceUrl"
-            />
-            <button
-              type="button"
-              class="p-2 mt-4 text-xs md:text-sm xl:text-base text-white bg-[#03A58D] rounded font-cabin h-10 w-28 lg:h-12 lg:w-32 disabled:bg-gray-400"
-              :disabled="!isAutoImportUrlValid"
-              @click="handleAutoImport"
-            >
-              <Icon
-                name="mdi:file-import-outline"
-                class="self-center"
-                :style="{ color: '#fafafa' }"
-              />
+              placeholder="Type or paste a link here to get started." v-model="sourceUrl" />
+            <button type="button"
+              class="p-2 mt-4 text-xs xl:text-sm text-white bg-[#03A58D] rounded font-cabin h-10 w-28 lg:h-12 lg:w-32 disabled:bg-gray-400"
+              :disabled="!isAutoImportUrlValid" @click="handleAutoImport">
+              <Icon name="mdi:file-import-outline" class="self-center" :style="{ color: '#fafafa' }" />
               Auto import
             </button>
           </div>
@@ -57,24 +37,16 @@
         </div>
         <!-- User manually enters the source url  -->
         <div class="hidden">
-          <input
-            id="sourceUrl"
-            type="text"
-            v-model="sourceUrl"
+          <input id="sourceUrl" type="text" v-model="sourceUrl"
             class="w-full p-2 border border-gray-300 border-none rounded font-verdana focus:outline-none"
-            placeholder="Source URL..."
-          />
+            placeholder="Source URL..." />
         </div>
 
         <!-- Description -->
         <div>
-          <input
-            id="description"
-            type="text"
-            v-model="description"
+          <input id="description" type="text" v-model="description"
             class="w-full p-2 border border-gray-300 border-none rounded font-verdana focus:outline-none"
-            placeholder="Description"
-          />
+            placeholder="Description" />
         </div>
       </div>
 
@@ -84,16 +56,19 @@
           <EditorComponent :onEditorReady="handleEditorReady" />
         </ClientOnly>
       </div>
-
+      <!-- visibility setting  -->
+      <div>
+        <input id="visibility" type="checkbox" v-model="isVisible" />
+        <label for="visibility" class="text-base ml-2">Public</label>
+      </div>
       <!-- Submit Button -->
       <div class="w-20 h-10 mb-8 ml-4">
         <SpinnerButton :isBusy="isBusy" title="Done" class="p-2 mt-4 text-white bg-[#03A58D] rounded font-cabin" />
-      
       </div>
     </form>
 
     <!-- Error message -->
-    <div class="text-center">
+    <div class="text-center text-red-500">
       <p v-if="apiError">{{ apiError }}</p>
     </div>
   </div>
@@ -116,10 +91,17 @@ const editorController = ref<CustomEditorJs | null>(null);
 const isBusy = ref<boolean>(false);
 const hasImportError = ref<string | null>(null);
 
+const isVisible = ref<boolean>(false);
+
 useHead({ title: "New Document | Annote" });
 
 async function handleSubmit() {
   const outputData = await editorController.value?.save();
+  if (outputData?.blocks.length === 0) {
+    apiError.value = "The document can't be empty: please add some content.";
+    return;
+  }
+
   try {
     isBusy.value = true;
     const { data: apiResponse } = await useFetch<ApiResponse<AnnoteDocument>>(
@@ -131,6 +113,7 @@ async function handleSubmit() {
           blocks: outputData?.blocks,
           source_url: sourceUrl.value,
           description: description.value,
+          visibility: isVisible.value ? "public" : "private",
         },
       }
     );
@@ -174,7 +157,7 @@ async function handleAutoImport() {
     isBusy.value = false;
     return;
   }
-  
+
   // Render the editor with the received data
   const { data } = res.data.value;
 
@@ -192,7 +175,7 @@ async function handleAutoImport() {
   isBusy.value = false;
 }
 
-function renderAutoImportError (errorMessage: string) {
+function renderAutoImportError(errorMessage: string) {
   hasImportError.value = errorMessage;
 }
 </script>
