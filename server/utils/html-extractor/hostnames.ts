@@ -9,6 +9,7 @@ const HOST_NAMES: Record<string, string[]> = {
   "constitutioncenter.org": [".container article"],
   "www.japantimes.co.jp": ["#jtarticle"],
   "www.nbcnews.com": [".article-body"],
+  "www.cp24.com": [".articleBody"],
 };
 
 export const getSelectorsByHostName = (hostName: string): string[] => {
