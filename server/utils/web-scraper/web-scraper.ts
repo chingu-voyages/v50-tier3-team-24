@@ -15,7 +15,6 @@ export const WebScraper = {
           "Sec-Fetch-User": "?1",
           Priority: "u=0, i",
         },
-        mode: "cors",
       });
       return await content.text();
     } catch (error: any) {
