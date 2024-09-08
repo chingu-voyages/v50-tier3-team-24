@@ -61,9 +61,28 @@
 }
 
 .ce-popover--inline .ce-popover__container {
-  height:auto;
+  height:65px;
 }
 
 .ce-popover__items {
   overflow-y: unset;
+}
+
+@media screen and (min-width: 768px) {
+  .ce-popover__container {
+    height: fit-content;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s;
 }
