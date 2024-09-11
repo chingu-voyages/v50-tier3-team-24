@@ -26,7 +26,7 @@
             :onMarkerDeleted="handleDeleteMarker" :onLostFocus="handleEditorLostFocus" :readOnly="isReadOnly" />
         </div>
       </ClientOnly>
-      <div>
+      <div class="editor-container">
         <Transition>
           <div v-if="isInsertingNewAnnotation" id="new-sticky-container" class="p-2 fixed">
             <!-- This is for new annotation stickes -->
@@ -368,5 +368,10 @@ async function handleDeleteDocument() {
 .v-enter-from,
 .v-leave-to {
   opacity: 0;
+}
+
+.editor-container {
+  width: --webkit-fill-available;
+  min-width: 70vw;
 }
 </style>
