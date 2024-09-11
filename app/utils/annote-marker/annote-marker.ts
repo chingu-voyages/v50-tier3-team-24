@@ -47,6 +47,7 @@ export default class AnnoteMarker {
 
     const colorPickerContainer = document.createElement("div");
     colorPickerContainer.classList.add("picker-toolbar-container");
+    colorPickerContainer.classList.add("animate-fade-in");
     colorPickerContainer.style.backgroundColor = "white";
 
     // This is rendering the button on the pop-up tool box

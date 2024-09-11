@@ -46,7 +46,7 @@
         </div>
       </div>
       <div>
-        <div class="flex flex-wrap bg-white fixed">
+        <div class="flex flex-wrap bg-white lg:fixed">
           <TransitionGroup>
             <StickyNote :readonly="true" v-for="sticky in stickiesInView" :key="sticky.sticky_id" :stickyData="sticky"
               :pinNumber="sticky.anchor" :documentId="sticky.document_id" :uuid="sticky.sticky_id" :color="sticky.color"
