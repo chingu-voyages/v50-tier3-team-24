@@ -6,11 +6,24 @@ Annotate articles with ease. Import article text and annotate them with markers 
 
 https://annote.nuxt.dev/
 
+## Screenshots
+
+A quick look at the main parts of the app.
+
+| Home                                         | Login                                          |
+| -------------------------------------------- | ---------------------------------------------- |
+| ![Home page](docs/screenshots/home-page.png) | ![Login page](docs/screenshots/login-page.png) |
+
+| Library                                            | Example article                                            |
+| -------------------------------------------------- | ---------------------------------------------------------- |
+| ![Library page](docs/screenshots/library-page.png) | ![Example article view](docs/screenshots/article-page.png) |
+
 # Tech Stack
 
 - Frontend + backend: VueJs using Nuxt
+- CSS: Tailwind
 - Database: postgreSQL
-- Deployment: Nuxthub with Cloudflare
+- Deployment: Nuxthub with Cloudflare, database deployment on Supabase
 
 # How to use the app
 
