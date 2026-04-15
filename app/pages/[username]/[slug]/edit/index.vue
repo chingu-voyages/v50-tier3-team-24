@@ -19,7 +19,7 @@
         v-on:change="handleUpdateVisibility" />
       <label for="visibility" class="text-base ml-2">Public</label>
     </div>
-    <div class="flex bg-gray-100 border border-gray-300 rounded p-5 min-h-[300px] my-5">
+    <div class="flex  border border-gray-300 rounded p-5 min-h-[300px] my-5">
       <ClientOnly>
         <div class="min-w-[50%]">
           <EditorComponent :onEditorReady="handleEditorReady" :onMarkerInserted="handleMarkerInserted"
