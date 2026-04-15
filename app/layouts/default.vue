@@ -1,7 +1,7 @@
 <template>
-  <div class="flex flex-col min-h-screen">
+  <div class="app-shell app-theme-transition flex min-h-screen flex-col">
     <Navbar />
-    <main class="p-2 lg:flex-grow">
+    <main class="app-theme-transition p-2 lg:flex-grow">
       <slot />
     </main>
     <Footer />

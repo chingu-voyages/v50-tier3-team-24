@@ -26,12 +26,119 @@
   font-style: normal;
 }
 
+:root {
+  color-scheme: light;
+  --app-bg: #fffdf8;
+  --app-surface: #ffffff;
+  --app-surface-soft: #f8fafc;
+  --app-text: #111827;
+  --app-text-muted: #4b5563;
+  --app-border: #e5e7eb;
+  --app-footer-bg: #374151;
+  --app-footer-text: #f9fafb;
+  --app-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+  --app-bg: #0f172a;
+  --app-surface: #111827;
+  --app-surface-soft: #1f2937;
+  --app-text: #f8fafc;
+  --app-text-muted: #cbd5e1;
+  --app-border: #334155;
+  --app-footer-bg: #020617;
+  --app-footer-text: #e2e8f0;
+  --app-shadow: 0 10px 30px rgba(2, 6, 23, 0.45);
+}
+
+html,
+body,
+#__nuxt {
+  min-height: 100%;
+}
+
+html,
+body {
+  background-color: var(--app-bg);
+}
+
 body {
   font-family: "Cabin", sans-serif;
+  color: var(--app-text);
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
 }
 
 .greyLinkColor {
   color: #787878;
+}
+
+.app-shell {
+  background-color: var(--app-bg);
+  color: var(--app-text);
+}
+
+.app-surface {
+  background-color: var(--app-surface);
+  color: var(--app-text);
+  border-color: var(--app-border);
+}
+
+.app-theme-transition,
+.app-theme-transition * {
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.app-footer {
+  background-color: var(--app-footer-bg);
+  color: var(--app-footer-text);
+}
+
+[data-theme="dark"] .bg-white {
+  background-color: var(--app-surface) !important;
+}
+
+[data-theme="dark"] .bg-gray-50 {
+  background-color: var(--app-surface-soft) !important;
+}
+
+[data-theme="dark"] .bg-gray-700 {
+  background-color: var(--app-footer-bg) !important;
+}
+
+[data-theme="dark"] .text-black {
+  color: var(--app-text) !important;
+}
+
+[data-theme="dark"] .text-gray-700,
+[data-theme="dark"] .text-gray-600,
+[data-theme="dark"] .text-gray-500,
+[data-theme="dark"] .text-gray-400 {
+  color: var(--app-text-muted) !important;
+}
+
+[data-theme="dark"] .border-gray-100,
+[data-theme="dark"] .border-gray-200,
+[data-theme="dark"] .border-gray-300 {
+  border-color: var(--app-border) !important;
+}
+
+[data-theme="dark"] .hover\:bg-gray-100:hover {
+  background-color: rgba(148, 163, 184, 0.16) !important;
+}
+
+[data-theme="dark"] input,
+[data-theme="dark"] textarea,
+[data-theme="dark"] select {
+  background-color: var(--app-surface-soft);
+  color: var(--app-text);
+  border-color: var(--app-border);
 }
 
 #editorjs,
@@ -39,22 +146,26 @@ body {
   font-family: "Source Serif", serif;
   font-size: 1.125rem;
   font-weight: 400;
+  color: var(--app-text);
 }
 
 #editorjs h1 {
   font-family: "Cabin", sans-serif;
   font-size: 2rem;
   font-weight: 500;
+  color: var(--app-text);
 }
 
 #editorjs h2 {
   font-family: "Cabin", sans-serif;
   font-size: 1.375rem;
   font-weight: 700;
+  color: var(--app-text);
 }
 
 #editorjs h3 {
   font-family: "Cabin", sans-serif;
   font-size: 1.15rem;
   font-weight: 700;
+  color: var(--app-text);
 }
