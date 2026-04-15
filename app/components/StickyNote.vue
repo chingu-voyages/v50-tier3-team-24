@@ -1,6 +1,6 @@
 <template>
-  <div class="relative p-2 m-2 shadow-md h-fit w-60 border-l-4"
-    :style="{ backgroundColor: 'white', borderLeftColor: rgbaColor }">
+  <div class="sticky-note app-surface app-theme-transition relative m-2 h-fit w-60 border-l-4 p-2"
+    :style="{ borderLeftColor: rgbaColor }">
     <div class="pin-title-enclosure flex w-full border-b-2 pb-2" :style="{ borderBottomColor: rgbaColor }">
       <div class="absolute top-0 left-0 px-2 py-1 !text-sm text-white font-cabin font-bold pin"
         :style="{ backgroundColor: color }">
@@ -14,14 +14,14 @@
           :style="{ color: color, height: 'auto' }" placeholder="Title" maxlength="200" />
       </div>
       <div v-if="canEdit" class="absolute top-0 right-0 ml-4">
-        <button class="p-2" @click="toggleMenuOpen">
+        <button class="menu-button p-2" @click="toggleMenuOpen">
           <Icon class="self-center" name="mdi:dots-vertical" :style="{ color: color }" />
         </button>
-        <div v-if="menuOpen" class="dropdown-menu absolute right-0 shadow-xl bg-white z-50"
+        <div v-if="menuOpen" class="dropdown-menu app-surface app-theme-transition absolute right-0 z-50"
           v-click-outside="toggleMenuOpen">
-          <ul class="bg-white border border-gray-300 rounded">
+          <ul class="theme-border rounded border">
             <button class="w-full" :disabled="!readOnly" @click="handleEditMenuClick">
-              <li class="p-2 hover:bg-gray-100">Edit</li>
+              <li class="p-2 transition-colors hover:bg-gray-100">Edit</li>
             </button>
           </ul>
         </div>
@@ -141,6 +141,11 @@ function getTrimmedTitle(text: string) {
 </script>
 
 <style scoped>
+.sticky-note {
+  background-color: var(--app-surface);
+  box-shadow: var(--app-shadow);
+}
+
 .pin {
   width: 16px;
   height: 17px;
@@ -156,6 +161,19 @@ button:disabled {
   cursor: not-allowed;
 }
 
+.menu-button {
+  color: var(--app-text-muted);
+}
+
+.theme-border {
+  border-color: var(--app-border);
+}
+
+.dropdown-menu {
+  min-width: 6rem;
+  box-shadow: var(--app-shadow);
+}
+
 .source-url {
   max-height: 20px;
   max-width: 130px;
@@ -164,5 +182,11 @@ button:disabled {
 
 .read-only-body {
   max-height: 90px;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--app-text-muted);
+  opacity: 0.85;
 }
 </style>
