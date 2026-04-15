@@ -8,7 +8,21 @@ export default defineEventHandler<Promise<ApiResponse<Sticky[]>>>(
     // Endpoint to get all stickies for a document by document_id
     const document_id = getRouterParam(event, "document_id");
 
-    const user = await serverSupabaseUser(event);
+    let user = null;
+
+    try {
+      user = await serverSupabaseUser(event);
+    } catch {
+      setResponseStatus(event, 401);
+      return {
+        status: "fail",
+        error: createError({
+          statusCode: 401,
+          statusMessage: "Unauthorized",
+        }),
+      };
+    }
+
     if (!user) {
       setResponseStatus(event, 401);
       return {
@@ -38,5 +52,5 @@ export default defineEventHandler<Promise<ApiResponse<Sticky[]>>>(
         }),
       };
     }
-  }
+  },
 );
