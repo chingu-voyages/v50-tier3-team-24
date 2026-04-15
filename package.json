@@ -47,7 +47,7 @@
     "@nuxtjs/tailwindcss": "^6.12.1",
     "nuxi": "^3.13.0",
     "vue-tsc": "^2.0.29",
-    "wrangler": "^3.68.0"
+    "wrangler": "^3.114.17"
   },
   "engines": {
     "node": "20.x"
