@@ -8,7 +8,7 @@ const annoteDocs = ref<AnnoteDocument[] | null>(null);
 const stickyCountMap = ref<Record<string, number>>({});
 const { getCurrentUser } = useAuth();
 
-let currentUser: User | null | undefined = null;
+const currentUser = ref<User | null | undefined>(null);
 
 const currentPage = ref(1);
 const documentsPerPage = 10;
@@ -18,12 +18,21 @@ const sortOption = ref("createdDescending");
 const isBusy = ref(false);
 
 onMounted(async () => {
-  currentUser = (await getCurrentUser())?.data;
-  const { data: fetchedDocument } = await $fetch<ApiResponse<AnnoteDocument[]>>(
-    "/api/annote_documents"
-  );
-  if (fetchedDocument) {
-    annoteDocs.value = fetchedDocument;
+  currentUser.value = (await getCurrentUser())?.data;
+
+  if (!currentUser) {
+    annoteDocs.value = [];
+    return;
+  }
+
+  try {
+    const response = await $fetch<ApiResponse<AnnoteDocument[]>>(
+      "/api/annote_documents"
+    );
+
+    annoteDocs.value = response.data || [];
+  } catch {
+    annoteDocs.value = [];
   }
 
   if (annoteDocs.value) {
@@ -54,10 +63,14 @@ async function getStickiesCountForDocuments(
 }
 
 async function fetchStickiesForDocument(documentId: string): Promise<Sticky[]> {
-  const { data: fetchedStickies } = await $fetch<ApiResponse<Sticky[]>>(
-    `/api/annote_documents/${documentId}/sticky`
-  );
-  return fetchedStickies || [];
+  try {
+    const response = await $fetch<ApiResponse<Sticky[]>>(
+      `/api/annote_documents/${documentId}/sticky`
+    );
+    return response.data || [];
+  } catch {
+    return [];
+  }
 }
 
 const filteredDocs = computed(() => {
@@ -118,23 +131,13 @@ function setBusy() {
 </script>
 
 <template>
-  <div
-    class="flex flex-col items-center justify-between py-4 pr-4 md:flex-row gap-x-2"
-  >
-    <div
-      class="flex flex-col items-center justify-between w-full gap-4 py-4 md:flex-row gap-x-2"
-    >
+  <div class="flex flex-col items-center justify-between py-4 pr-4 md:flex-row gap-x-2">
+    <div class="flex flex-col items-center justify-between w-full gap-4 py-4 md:flex-row gap-x-2">
       <div class="w-full">
         <NuxtLink to="/new">
-          <button
-            type="submit"
-            class="p-2 text-white bg-[#03A58D] rounded font-cabin w-[107px] flex justify-center gap-2 w-full md:w-20"
-          >
-            <Icon
-              name="mdi:plus-circle"
-              class="self-center"
-              :style="{ color: '#fafafa' }"
-            />
+          <button type="submit"
+            class="p-2 text-white bg-[#03A58D] rounded font-cabin w-[107px] flex justify-center gap-2 w-full md:w-20">
+            <Icon name="mdi:plus-circle" class="self-center" :style="{ color: '#fafafa' }" />
             New
           </button>
         </NuxtLink>
@@ -143,12 +146,7 @@ function setBusy() {
         <div class="self-center mt-2 ml-2">
           <Icon name="mdi:magnify" color="black" size="1.5rem" />
         </div>
-        <input
-          v-model="searchTerm"
-          type="text"
-          placeholder="Search"
-          class="w-full p-2 border border-black"
-        />
+        <input v-model="searchTerm" type="text" placeholder="Search" class="w-full p-2 border border-black" />
       </div>
 
       <div class="w-full lightRoundedGreyBorder">
@@ -164,47 +162,35 @@ function setBusy() {
   <div v-if="isBusy">
     <div class="flex justify-center h-14">
       <VueSpinner size="30" color="#03A58D" />
-    </div>  
+    </div>
   </div>
   <ul v-else>
     <li v-if="filteredDocs.length === 0" class="p-4 bg-gray-100">
       <p v-if="!annoteDocs || annoteDocs.length === 0">
         Your library is empty. Click
-        <NuxtLink to="/new" class="text-[#03a58d] hover:underline"
-          >here</NuxtLink
-        >
+        <NuxtLink to="/new" class="text-[#03a58d] hover:underline">here</NuxtLink>
         to create a new document.
       </p>
       <p v-else>No documents match your search.</p>
     </li>
 
-    <li
-      v-else
-      v-for="(doc, index) in paginatedDocs"
-      :key="doc.document_id"
-      :class="[
-        'p-4 hover:custom-green duration-200 relative group',
-        index % 2 === 0 ? 'bg-gray-100' : 'bg-white',
-      ]"
-    >
+    <li v-else v-for="(doc, index) in paginatedDocs" :key="doc.document_id" :class="[
+      'p-4 hover:custom-green duration-200 relative group',
+
+    ]">
       <div class="flex items-center justify-between" @click="setBusy">
         <div class="flex items-center">
           <img :src="documentIcon" alt="Icon" class="w-6 h-6 mr-2" />
-          <NuxtLink
-            :to="`/${currentUser?.username}/${doc.slug}?id=${doc.document_id}`"
-          >
+          <NuxtLink :to="`/${currentUser?.username}/${doc.slug}?id=${doc.document_id}`">
             <p class="text-xs sm:text-sm md:text-m truncatable-text">
               {{ doc.title }}
             </p>
           </NuxtLink>
         </div>
-        <ShareLinkButtons
-          :linkUrl="`/${currentUser?.username}/${doc.slug}?id=${doc.document_id}`"
-        />
+        <ShareLinkButtons :linkUrl="`/${currentUser?.username}/${doc.slug}?id=${doc.document_id}`" />
       </div>
       <div
-        class="absolute flex mt-2 mr-2 text-sm transition-opacity duration-500 opacity-0 top-2 right-20 group-hover:opacity-50 hidden visibility-sticky-summary"
-      >
+        class="absolute flex mt-2 mr-2 text-sm transition-opacity duration-500 opacity-0 top-2 right-20 group-hover:opacity-50 hidden visibility-sticky-summary">
         <div class="flex items-center">
           <img :src="visibilityIcon" alt="Icon" class="w-4 h-4 mr-2" />
           <span class="mr-2 capitalize"> {{ doc.visibility }}</span>
@@ -218,36 +204,23 @@ function setBusy() {
   </ul>
 
   <div class="flex justify-end mt-4">
-    <button
-      v-if="currentPage > 1"
-      @click="prevPage"
-      class="px-4 py-2 mr-2 bg-gray-200 rounded hover:bg-gray-300"
-    >
+    <button v-if="currentPage > 1" @click="prevPage" class="px-4 py-2 mr-2 bg-gray-200 rounded hover:bg-gray-300">
       Previous
     </button>
-    <button
-      v-for="page in totalPages"
-      :key="page"
-      @click="currentPage = page"
-      :class="[
-        'px-4 py-2 mx-1 rounded',
-        currentPage === page
-          ? 'bg-[#03a58d] text-white'
-          : 'bg-gray-200 hover:bg-gray-300',
-      ]"
-    >
+    <button v-for="page in totalPages" :key="page" @click="currentPage = page" :class="[
+      'px-4 py-2 mx-1 rounded',
+      currentPage === page
+        ? 'bg-[#03a58d] text-white'
+        : 'bg-gray-200 hover:bg-gray-300',
+    ]">
       {{ page }}
     </button>
-    <button
-      @click="nextPage"
-      :disabled="currentPage === totalPages"
-      :class="[
-        'px-4 py-2 ml-2 rounded',
-        currentPage === totalPages
-          ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-          : 'bg-gray-200 hover:bg-gray-300',
-      ]"
-    >
+    <button @click="nextPage" :disabled="currentPage === totalPages" :class="[
+      'px-4 py-2 ml-2 rounded',
+      currentPage === totalPages
+        ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+        : 'bg-gray-200 hover:bg-gray-300',
+    ]">
       Next
     </button>
   </div>
@@ -284,6 +257,7 @@ select {
   .truncatable-text {
     max-width: 340px;
   }
+
   .visibility-sticky-summary {
     display: flex;
   }
@@ -293,6 +267,7 @@ select {
   .truncatable-text {
     max-width: 470px;
   }
+
   .visibility-sticky-summary {
     display: flex;
   }
