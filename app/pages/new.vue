@@ -6,7 +6,7 @@
         <!-- Document Title -->
         <div class="mb-4">
           <input id="documentTitle" v-model="documentTitle" required type="text"
-            class="w-full pb-2 text-3xl placeholder-gray-300 border-b-2 border-gray-100 focus:outline-none font-verdana"
+            class="w-full pb-2 text-3xl placeholder-gray-300 border-b-2 border-gray-100 focus:outline-none font-verdana p-2"
             placeholder="Untitled Document..." />
         </div>
 
@@ -21,13 +21,17 @@
 
         <!-- Source URL -->
         <div class="mb-4">
-          <div class="flex">
-            <Icon class="self-center mr-2" name="mdi:link" :style="{ color: '#75D3D4' }" />
-            <input id="autoImportUrl" type="text"
-              class="w-full text-base bg-transparent border-none focus:outline-none !font-cabin pr-2"
-              placeholder="Type or paste a link here to get started." v-model="sourceUrl" />
+          <div class="flex items-center gap-2">
+            <div class="link-input-group flex flex-1 items-center overflow-hidden rounded-md">
+              <span class="link-icon flex h-full items-center px-3">
+                <Icon name="mdi:link" :style="{ color: '#75D3D4' }" />
+              </span>
+              <input id="autoImportUrl" type="text"
+                class="link-input w-full border-none p-2 text-base !font-cabin focus:outline-none"
+                placeholder="Type or paste a link here to get started." v-model="sourceUrl" />
+            </div>
             <button type="button"
-              class="p-2 mt-4 text-xs xl:text-sm text-white bg-[#03A58D] rounded font-cabin h-10 w-28 lg:h-12 lg:w-32 disabled:bg-gray-400"
+              class="h-10 w-28 rounded bg-[#03A58D] p-2 font-cabin text-xs text-white disabled:bg-gray-400 xl:text-sm lg:h-12 lg:w-32"
               :disabled="!isAutoImportUrlValid" @click="handleAutoImport">
               <Icon name="mdi:file-import-outline" class="self-center" :style="{ color: '#fafafa' }" />
               Auto import
@@ -51,7 +55,7 @@
       </div>
 
       <!-- Text Editor -->
-      <div class="w-full pt-4 m-4 border border-gray-300 rounded">
+      <div class="w-full pt-4 border border-gray-300 rounded">
         <ClientOnly>
           <EditorComponent :onEditorReady="handleEditorReady" />
         </ClientOnly>
@@ -62,7 +66,7 @@
         <label for="visibility" class="text-base ml-2">Public</label>
       </div>
       <!-- Submit Button -->
-      <div class="w-20 h-10 mb-8 ml-4">
+      <div class="w-20 h-10">
         <SpinnerButton :isBusy="isBusy" title="Done" class="p-2 mt-4 text-white bg-[#03A58D] rounded font-cabin" />
       </div>
     </form>
@@ -182,5 +186,26 @@ function renderAutoImportError(errorMessage: string) {
 <style scoped>
 .containerWidth {
   max-width: 960px;
+}
+
+.link-input-group {
+  background-color: var(--app-surface-soft);
+  border: 1px solid var(--app-border);
+  color: var(--app-text);
+}
+
+.link-icon {
+  background-color: var(--app-surface-soft);
+  color: var(--app-text-muted);
+}
+
+.link-input {
+  background-color: transparent;
+  color: var(--app-text);
+}
+
+.link-input::placeholder {
+  color: var(--app-text-muted);
+  opacity: 0.85;
 }
 </style>
