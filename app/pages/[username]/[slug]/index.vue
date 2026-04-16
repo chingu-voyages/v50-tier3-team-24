@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="flex bg-gray-100 border border-gray-300 rounded p-5 min-h-[300px] my-5">
+    <div class="flex  border border-gray-300 rounded p-5 min-h-[300px] my-5">
       <div>
         <header>
           <!-- Document Titles -->
