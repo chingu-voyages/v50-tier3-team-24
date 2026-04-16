@@ -165,7 +165,7 @@ function setBusy() {
     </div>
   </div>
   <ul v-else>
-    <li v-if="filteredDocs.length === 0" class="p-4 bg-gray-100">
+    <li v-if="filteredDocs.length === 0" class="p-4">
       <p v-if="!annoteDocs || annoteDocs.length === 0">
         Your library is empty. Click
         <NuxtLink to="/new" class="text-[#03a58d] hover:underline">here</NuxtLink>
@@ -217,9 +217,7 @@ function setBusy() {
     </button>
     <button @click="nextPage" :disabled="currentPage === totalPages" :class="[
       'px-4 py-2 ml-2 rounded',
-      currentPage === totalPages
-        ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-        : 'bg-gray-200 hover:bg-gray-300',
+
     ]">
       Next
     </button>
