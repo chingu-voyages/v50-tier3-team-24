@@ -60,7 +60,7 @@ const editor = new EditorJS({
   },
 });
 
-function handleEditorLostFocus () {
+function handleEditorLostFocus() {
   // Note: This is using the v-click-outside directive to detect when the editor loses focus
   props.onLostFocus && props.onLostFocus();
 }
