@@ -20,9 +20,11 @@
         <div v-if="menuOpen" class="dropdown-menu app-surface app-theme-transition absolute right-0 z-50"
           v-click-outside="toggleMenuOpen">
           <ul class="theme-border rounded border">
-            <button class="w-full" :disabled="!readOnly" @click="handleEditMenuClick">
-              <li class="p-2 transition-colors hover:bg-gray-100">Edit</li>
-            </button>
+            <li class="p-2 transition-colors hover:bg-gray-100">
+              <button class="w-full" :disabled="!readOnly" @click="handleEditMenuClick">
+                Edit
+              </button>
+            </li>
           </ul>
         </div>
       </div>
