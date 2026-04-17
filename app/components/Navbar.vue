@@ -30,13 +30,10 @@
                 {{ currentUsername }}
               </button>
               <div v-if="isDropdownOpen" class="app-surface z-10 mt-4 w-48 lg:absolute lg:rounded-md lg:shadow-lg">
-                <NuxtLink to="/profile">
-                  <button class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
-                    @click="isDropdownOpen = false">
-                    Profile
-                  </button>
+                <NuxtLink to="/profile" @click="isDropdownOpen = false"
+                  class="block w-full px-4 py-2 text-left text-sm text-gray-700 no-underline hover:bg-gray-100">
+                  Profile
                 </NuxtLink>
-
                 <button @click="handleLogout"
                   class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100">
                   Logout
