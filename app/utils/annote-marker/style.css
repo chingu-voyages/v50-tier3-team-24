@@ -61,7 +61,7 @@
 }
 
 .ce-popover--inline .ce-popover__container {
-  height:65px;
+  height: 65px;
 }
 
 .ce-popover__items {
@@ -78,6 +78,7 @@
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
