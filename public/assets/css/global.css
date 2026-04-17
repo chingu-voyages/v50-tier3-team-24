@@ -169,3 +169,19 @@ body {
   font-weight: 700;
   color: var(--app-text);
 }
+
+.ce-popover-item-html {
+  :hover {
+    background-color: var(--app-text-muted) !important;
+  }
+}
+
+.ce-popover__items {
+  :hover {
+    background-color: var(--app-text-muted) !important;
+  }
+}
+
+.cdx-search-field__input {
+  padding-left: 5px;
+}
