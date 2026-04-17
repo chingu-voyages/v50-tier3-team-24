@@ -20,7 +20,7 @@ const isBusy = ref(false);
 onMounted(async () => {
   currentUser.value = (await getCurrentUser())?.data;
 
-  if (!currentUser) {
+  if (!currentUser.value) {
     annoteDocs.value = [];
     return;
   }
