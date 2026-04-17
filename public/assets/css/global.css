@@ -171,13 +171,13 @@ body {
 }
 
 .ce-popover-item-html {
-  :hover {
+  & :hover {
     background-color: var(--app-text-muted) !important;
   }
 }
 
 .ce-popover__items {
-  :hover {
+  & :hover {
     background-color: var(--app-text-muted) !important;
   }
 }
