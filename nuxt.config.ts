@@ -1,5 +1,15 @@
 import { defineNuxtConfig } from "nuxt/config";
 import { fileURLToPath } from "url";
+
+const enableNuxtHub =
+  process.env.NODE_ENV === "production" ||
+  process.env.NUXT_HUB_ENABLED === "true";
+
+const nuxtHubModule: [string, Record<string, boolean>] = [
+  "@nuxthub/core",
+  { database: true, kv: true, blob: true, cache: true },
+];
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   // Nuxt 4 directory structure and features
@@ -7,7 +17,7 @@ export default defineNuxtConfig({
   // Nuxt Modules
   // https://nuxt.com/modules
   modules: [
-    "@nuxthub/core",
+    ...(enableNuxtHub ? [nuxtHubModule] : []),
     "@nuxtjs/tailwindcss",
     "@nuxt/icon",
     "@nuxtjs/supabase",
@@ -21,12 +31,6 @@ export default defineNuxtConfig({
     redirect: false,
   },
   css: ["@/public/assets/css/global.css"],
-  hub: {
-    database: true,
-    kv: true,
-    blob: true,
-    cache: true,
-  },
   nitro: {
     prerender: {
       autoSubfolderIndex: false,
