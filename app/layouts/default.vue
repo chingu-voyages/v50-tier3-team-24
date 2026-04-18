@@ -10,7 +10,7 @@
 
 <script setup lang="ts">
 // Setup a global state for the username
-console.log("Initializing username state...");
+console.log("default 13 -Initializing username state...");
 const usernameState = useState("username");
 const user = useSupabaseUser();
 

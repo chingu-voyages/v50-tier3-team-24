@@ -40,6 +40,9 @@ export default defineNuxtConfig({
       openAPI: true,
     },
   },
+  experimental: {
+    appManifest: false,
+  },
   // Development
   devtools: { enabled: true },
   dir: {
@@ -61,6 +64,7 @@ export default defineNuxtConfig({
   },
   postcss: {
     plugins: {
+      "tailwindcss/nesting": false,
       tailwindcss: {},
       autoprefixer: {},
     },
