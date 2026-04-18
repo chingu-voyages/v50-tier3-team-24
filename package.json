@@ -8,7 +8,7 @@
     "build": "nuxt build",
     "start": "node .nuxt/dist/server/server.mjs",
     "preview": "nuxt preview",
-    "deploy": "nuxthub deploy",
+    "deploy": "npx vercel --prod",
     "postinstall": "nuxt prepare",
     "lint": "eslint .",
     "typecheck": "nuxt typecheck"
