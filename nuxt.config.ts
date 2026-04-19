@@ -10,6 +10,8 @@ const nuxtHubModule: [string, Record<string, boolean>] = [
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  // Keep the project root as the source directory after the Nuxt 4 upgrade.
+  srcDir: ".",
   // Nuxt 4 directory structure and features
   // https://nuxt.com/docs/getting-started/upgrade#testing-nuxt-4
   // Nuxt Modules
@@ -21,6 +23,20 @@ export default defineNuxtConfig({
     "@nuxtjs/supabase",
     "@nuxt/eslint",
   ],
+  vite: {
+    optimizeDeps: {
+      include: [
+        "lodash",
+        "click-outside-vue3",
+        "vue3-spinners",
+        "@editorjs/editorjs",
+        "@editorjs/header",
+        "@editorjs/link",
+        "@editorjs/list",
+        "@codexteam/icons",
+      ],
+    },
+  },
   icon: {
     provider: "iconify",
   },
@@ -28,7 +44,10 @@ export default defineNuxtConfig({
   supabase: {
     redirect: false,
   },
-  css: ["@/public/assets/css/global.css"],
+  // css: ["@/public/assets/css/global.css"],
+  css: [
+    fileURLToPath(new URL("./public/assets/css/global.css", import.meta.url)),
+  ],
   nitro: {
     preset: "vercel",
     prerender: {
