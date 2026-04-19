@@ -12,7 +12,7 @@ export class StickyDbClient extends BaseDbClient {
 
   public async insertSticky(
     user_id: string,
-    stickyData: Partial<Sticky | LinkSticky | VideoSticky>
+    stickyData: Partial<Sticky | LinkSticky | VideoSticky>,
   ): Promise<Sticky | VideoSticky | LinkSticky | null> {
     const { error, data } = await this.client
       .from(this.TABLE_NAME)
@@ -26,7 +26,7 @@ export class StickyDbClient extends BaseDbClient {
   public async updateStickyById(
     user_id: string,
     sticky_id: string,
-    stickyData: Partial<Sticky | VideoSticky | LinkSticky>
+    stickyData: Partial<Sticky | VideoSticky | LinkSticky>,
   ): Promise<Sticky | VideoSticky | LinkSticky> {
     const { error, data } = await this.client
       .from(this.TABLE_NAME)
@@ -39,7 +39,7 @@ export class StickyDbClient extends BaseDbClient {
   }
 
   public async getAllStickiesByDocumentId(
-    document_id: string
+    document_id: string,
   ): Promise<Sticky[]> {
     const { data, error } = await this.client
       .from(this.TABLE_NAME)
@@ -54,9 +54,9 @@ export class StickyDbClient extends BaseDbClient {
 
   public async deleteStickyById(
     user_id: string,
-    sticky_id: string
+    sticky_id: string,
   ): Promise<void> {
-    const { error, data } = await this.client
+    const { error } = await this.client
       .from(this.TABLE_NAME)
       .delete()
       .match({ sticky_id, user_id });
@@ -66,7 +66,7 @@ export class StickyDbClient extends BaseDbClient {
 
   public async deleteAllStickiesByDocumentId(
     user_id: string,
-    document_id: string
+    document_id: string,
   ): Promise<{ count: number }> {
     const { error, data } = await this.client
       .from(this.TABLE_NAME)
