@@ -4,7 +4,7 @@ Annotate articles with ease. Import article text and annotate them with markers 
 
 ## Live deploy
 
-https://annote.nuxt.dev/
+https://annote.vercel.app
 
 ## Screenshots
 
