@@ -20,10 +20,10 @@ A quick look at the main parts of the app.
 
 # Tech Stack
 
-- Frontend + backend: VueJs using Nuxt
+- Frontend + backend: VueJs, NuxtJS, Typescript
 - CSS: Tailwind
-- Database: postgreSQL
-- Deployment: Nuxthub with Cloudflare, database deployment on Supabase
+- Database: PostgreSQL
+- Deployment: Vercel, Supabase
 
 # How to use the app
 
