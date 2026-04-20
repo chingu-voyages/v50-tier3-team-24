@@ -79,8 +79,9 @@
 </template>
 
 <script lang="ts" setup>
-import { EditorJsBlockType, useRouter, type HeaderData } from "#imports";
+import { useRouter } from "#imports";
 import { ref } from "vue";
+import { type HeaderData, EditorJsBlockType } from "~/types/annote-document/editjs-block";
 import { validateUrl } from "~/utils/web-scraper/validators/url-validator";
 
 const router = useRouter();
