@@ -32,7 +32,7 @@ const editor = new EditorJS({
   tools: {
     header: {
       class: Header as any,
-      inlineToolbar: true,
+      inlineToolbar: !props.readOnly,
       config: {
         placeholder: "Enter a header",
         defaultLevel: 1,
@@ -40,22 +40,24 @@ const editor = new EditorJS({
     },
     list: {
       class: List as any,
-      inlineToolbar: true,
+      inlineToolbar: !props.readOnly,
     },
     marker: {
       class: AnnoteMarker as any,
-      inlineToolbar: true,
+      inlineToolbar: !props.readOnly,
       config: {
         onMarkerInserted: (markerData: AnnoteOnMarkerInsertedData) => {
           props.onMarkerInserted?.(markerData);
         },
         onMarkerDeleted: (markerData: AnnotteOnMarkerDeletedData) => {
           props.onMarkerDeleted?.(markerData);
-        }
+        },
+        readOnly: Boolean(props.readOnly),
       },
     },
     linkTool: {
       class: LinkTool,
+      inlineToolbar: !props.readOnly
     },
   },
 });
