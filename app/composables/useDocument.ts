@@ -1,10 +1,13 @@
 export function useDocument() {
   async function deleteDocument(id: string) {
-    const res = await useFetch(`/api/annote_documents/${id}`, {
-      method: "DELETE",
-    });
+    const res = await $fetch<{ status: string }>(
+      `/api/annote_documents/${id}`,
+      {
+        method: "DELETE",
+      },
+    );
 
-    return res.data.value;
+    return res;
   }
   function isMarkerInViewPort(htmlElement: HTMLElement): boolean {
     // Reference: https://jacobnarayan.com/blogs/how-to-tell-if-an-html-element-is-in-the-viewport
