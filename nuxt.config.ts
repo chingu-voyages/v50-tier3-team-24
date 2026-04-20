@@ -34,6 +34,7 @@ export default defineNuxtConfig({
         "@editorjs/link",
         "@editorjs/list",
         "@codexteam/icons",
+        "@iconify/vue",
       ],
     },
   },
