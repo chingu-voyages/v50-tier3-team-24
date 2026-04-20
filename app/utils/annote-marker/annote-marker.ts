@@ -13,7 +13,6 @@ export default class AnnoteMarker {
   private _currentRange: Range | null = null;
   private _termWrapper: any = null;
   private _config: AnnoteMarkerConfig;
-  private _readOnly: boolean;
 
   private _unwrapping: boolean = false;
 
@@ -22,7 +21,6 @@ export default class AnnoteMarker {
   constructor({
     api,
     config,
-    readOnly,
   }: {
     api: Object;
     config: AnnoteMarkerConfig;
@@ -32,7 +30,6 @@ export default class AnnoteMarker {
     this._button = null;
     this._tag = "MARK";
     this._config = config;
-    this._readOnly = Boolean(readOnly);
 
     // CSS Classes
     this.iconClasses = {
@@ -52,9 +49,8 @@ export default class AnnoteMarker {
     mainContainer.classList.add("main-container");
     mainContainer.classList.add("ce-inline-tool");
 
-    if (this._readOnly) {
-      mainContainer.style.display = "none";
-      return mainContainer;
+    if (this._config.readOnly) {
+      return null;
     }
 
     const buttonContainer = document.createElement("div");
@@ -91,7 +87,7 @@ export default class AnnoteMarker {
   }
 
   private handleColorPalletClicked(palletData: ColorPallet) {
-    if (this._readOnly || !this._currentRange) {
+    if (this._config.readOnly || !this._currentRange) {
       return;
     }
 
@@ -106,7 +102,7 @@ export default class AnnoteMarker {
   public surround(range: Range) {
     // This method is required and automatically called by EditorJs immediately after the render method.
     // The range parameter is automatically passed down by EditorJs.
-    if (this._readOnly) {
+    if (this._config.readOnly) {
       return;
     }
 
@@ -179,7 +175,7 @@ export default class AnnoteMarker {
    * This is the function responsible for highlighting the selected text and inserting a pin (the circle with the number)
    */
   private wrap(range: Range, palletData: ColorPallet) {
-    if (this._readOnly) {
+    if (this._config.readOnly) {
       return;
     }
 
@@ -238,7 +234,7 @@ export default class AnnoteMarker {
    * @param {HTMLElement} termWrapper - term wrapper tag
    */
   private unwrap(termWrapper: any) {
-    if (this._readOnly) {
+    if (this._config.readOnly) {
       return;
     }
 
@@ -283,7 +279,7 @@ export default class AnnoteMarker {
    * Check and change Term's state for current selection
    */
   checkState() {
-    if (this._readOnly) {
+    if (this._config.readOnly) {
       this._button?.classList.remove(this.iconClasses.active);
       return;
     }
@@ -300,7 +296,7 @@ export default class AnnoteMarker {
    * @returns {boolean} - Returns true if the term is active
    */
   private isTermActive(): boolean {
-    if (this._readOnly) {
+    if (this._config.readOnly) {
       return false;
     }
 
