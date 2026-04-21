@@ -185,3 +185,11 @@ body {
 .cdx-search-field__input {
   padding-left: 5px;
 }
+
+.app-text {
+  color: var(--app-text) !important;
+}
+
+.app-text-muted {
+  color: var(--app-text-muted) !important;
+}
