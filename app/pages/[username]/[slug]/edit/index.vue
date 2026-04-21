@@ -49,6 +49,10 @@
     </div>
     <ConfirmationModal prompt="Are you sure you want to delete this document?" :open="confirmDeleteWindowOpen"
       :onClose="toggleConfirmDeleteWindow" :onConfirmAction="handleDeleteDocument" />
+    <div>
+      <!-- This is a place to show errors -->
+      <p v-if="isApiError" class="text-red-500">An error occurred while processing your request.</p>
+    </div>
   </div>
 </template>
 
@@ -68,7 +72,7 @@ const { fetchStickies } = useSticky();
 const { getCurrentUser } = useAuth();
 
 const currentUser = (await getCurrentUser())?.data;
-const isReadOnly = ref(false);
+const isReadOnly = ref(true);
 
 const router = useRouter();
 
@@ -89,6 +93,7 @@ const newStickyData = ref<{ pinNumber: number; color: string; title: string, doc
 const stickies = ref<Sticky[]>([]);
 const stickiesInView = ref<Sticky[]>([]);
 const isBusy = ref<boolean>(false);
+const isApiError = ref<boolean>(false);
 
 const confirmDeleteWindowOpen = ref(false);
 
@@ -127,63 +132,87 @@ async function handleDocumentTitleBlur() {
   if (documentTitle.value === initialDocumentTitle.value) return;
   if (documentTitle.value.trim() === "") {
     documentTitle.value = initialDocumentTitle.value;
+    isApiError.value = true;
     return;
   }
 
-  const { data: apiResponse } = await $fetch<ApiResponse<AnnoteDocument>>(
-    `/api/annote_documents/${id}`,
-    {
-      method: "PATCH",
-      body: JSON.stringify({ title: documentTitle.value }),
-    }
-  );
+  try {
+    isApiError.value = false;
+    const { data: apiResponse } = await $fetch<ApiResponse<AnnoteDocument>>(
+      `/api/annote_documents/${id}`,
+      {
+        method: "PATCH",
+        body: { title: documentTitle.value },
+      }
+    );
 
-  const { slug, document_id } = apiResponse as AnnoteDocument;
+    const { slug, document_id } = apiResponse as AnnoteDocument;
 
-  await navigateTo({
-    path: `/library/${slug}/edit`,
-    query: {
-      id: document_id,
-    },
-  });
+    await navigateTo({
+      path: `/library/${slug}/edit`,
+      query: {
+        id: document_id,
+      },
+    });
 
+  } catch (error) {
+    console.error("An error occurred while updating the document title", error);
+    documentTitle.value = initialDocumentTitle.value;
+    isApiError.value = true;
+  }
 }
 
-async function patchAnnoteDocumentBlocks(): Promise<AnnoteDocument> {
+async function patchAnnoteDocumentBlocks(): Promise<AnnoteDocument | undefined> {
   const snapshot = await editorController.value?.save();
 
   // Reconcile the blocks to ensure that the pin numbers are in order
   const blockData = new BlockAnnoteMarkerReconciler().reconcile(snapshot?.blocks as EditorJsBlock[]);
-  const { data: apiResponse } = await $fetch<ApiResponse<AnnoteDocument>>(
-    `/api/annote_documents/${id}`,
-    {
-      method: "PATCH",
-      body: { blocks: blockData?.blocks },
-    }
-  );
 
-  return apiResponse as AnnoteDocument;
+  try {
+    const { data: apiResponse } = await $fetch<ApiResponse<AnnoteDocument>>(
+      `/api/annote_documents/${id}`,
+      {
+        method: "PATCH",
+        body: { blocks: blockData?.blocks },
+      }
+    );
+
+    return apiResponse as AnnoteDocument;
+
+  } catch (error) {
+    console.error("An error occurred while updating the document blocks", error);
+    isApiError.value = true;
+  }
 }
 
 if (id) {
   isBusy.value = true;
-  const { data: apiResponse } = await $fetch<ApiResponse<AnnoteDocument>>(
-    `/api/annote_documents/${id}`
-  );
-  const { user_id, title, visibility } = apiResponse as AnnoteDocument;
-  if (currentUser?.user_id === user_id) {
-    isReadOnly.value = false;
+  isApiError.value = false;
+  try {
+    const { data: apiResponse } = await $fetch<ApiResponse<AnnoteDocument>>(
+      `/api/annote_documents/${id}`
+    );
+    const { user_id, title, visibility } = apiResponse as AnnoteDocument;
+    if (currentUser?.user_id === user_id) {
+      isReadOnly.value = false;
+    }
+
+    annoteDocument.value = apiResponse as AnnoteDocument;
+    annoteComparisonDocument.value = apiResponse as AnnoteDocument;
+    initialDocumentTitle.value = title;
+    documentTitle.value = title;
+
+    isVisible.value = visibility === "public";
+    useHead({ title: `Edit - ${title} | Annote` });
+    stickies.value = await fetchStickies(id as string);
+
+  } catch (error) {
+    console.error("An error occurred while fetching the document data", error);
+    isApiError.value = true;
+  } finally {
+    isBusy.value = false;
+
   }
-
-  annoteDocument.value = apiResponse as AnnoteDocument;
-  annoteComparisonDocument.value = apiResponse as AnnoteDocument;
-  initialDocumentTitle.value = title;
-  documentTitle.value = title;
-
-  isVisible.value = visibility === "public";
-  useHead({ title: `Edit - ${title} | Annote` });
-  stickies.value = await fetchStickies(id as string);
-  isBusy.value = false;
 }
 
 function handleMarkerInserted(data?: AnnoteOnMarkerInsertedData) {
@@ -209,16 +238,24 @@ async function handleUpdateVisibility(e: Event) {
   const visibility = isVisible.value ? "public" : "private";
 
   setTimeout(async () => {
-    const { data: apiResponse } = await $fetch<ApiResponse<AnnoteDocument>>(
-      `/api/annote_documents/${id}`,
-      {
-        method: "PATCH",
-        body: { visibility },
-      }
-    );
-    annoteDocument.value = apiResponse as AnnoteDocument;
-    isVisible.value = annoteDocument.value.visibility === "public";
-    isBusy.value = false;
+
+    try {
+      const { data: apiResponse } = await $fetch<ApiResponse<AnnoteDocument>>(
+        `/api/annote_documents/${id}`,
+        {
+          method: "PATCH",
+          body: { visibility },
+        }
+      );
+      annoteDocument.value = apiResponse as AnnoteDocument;
+      isVisible.value = annoteDocument.value.visibility === "public";
+      isBusy.value = false;
+
+    } catch (error) {
+      console.error("An error occurred while updating the document visibility", error);
+      isVisible.value = !isVisible.value; // Revert the toggle
+      isApiError.value = true;
+    }
   }, 1000);
 }
 
@@ -239,23 +276,29 @@ async function handleUpdateCreateSticky(
   const requestBody = { document_id, title, body, color, anchor, sticky_type, sticky_id, source_url, author };
   const endPoint = action === "create" ? "/api/sticky" : `/api/sticky/${sticky_id}`;
 
-  await $fetch<ApiResponse<Sticky | VideoSticky | LinkSticky>>(
-    endPoint,
-    {
-      method: action === "create" ? "POST" : "PATCH",
-      body: requestBody
-    }
-  );
+  try {
+    await $fetch<ApiResponse<Sticky | VideoSticky | LinkSticky>>(
+      endPoint,
+      {
+        method: action === "create" ? "POST" : "PATCH",
+        body: requestBody
+      }
+    );
 
-  await syncAnnoteDocumentData();
+    await syncAnnoteDocumentData();
 
-  stickies.value = await fetchStickies(id as string);
-  isInsertingNewAnnotation.value = false;
-  newStickyData.value = null;
+    stickies.value = await fetchStickies(id as string);
+    isInsertingNewAnnotation.value = false;
+    newStickyData.value = null;
 
-  // We need to focus on the sticky if it's in view.
+    // We need to focus on the sticky if it's in view.
 
-  handleWindowScroll();
+    handleWindowScroll();
+
+  } catch (error) {
+    console.error(`An error occurred while ${action === "create" ? "creating" : "updating"} the sticky`, error);
+    isApiError.value = true;
+  }
 }
 
 async function handleCloseOutSticky() {
